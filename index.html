@@ -391,6 +391,10 @@ small{font-size:.76rem;color:var(--text2)}
     Sem Custo Transp.
     <span class="tab-badge" id="sc-count-badge" style="display:none"></span>
   </button>
+  <button class="tab-btn" onclick="showTab('curva-abc')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+    Curva ABC
+  </button>
 </nav>
 
 <!-- ═══ MAIN ════════════════════════════════════════════════════════════════ -->
@@ -820,6 +824,64 @@ small{font-size:.76rem;color:var(--text2)}
   </div>
 </div>
 
+<div id="tab-curva-abc" class="tab-panel">
+  <div class="card">
+    <div class="c-head">
+      <span class="c-title">Curva ABC — Comparativo de Períodos</span>
+      <span style="font-size:.75rem;color:var(--text3)">Resultado operacional por serviço</span>
+    </div>
+    <div class="c-body">
+      <div style="display:flex;gap:24px;flex-wrap:wrap;align-items:flex-end;padding:4px 0 18px">
+        <div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--text3);letter-spacing:.05em;margin-bottom:6px">PERÍODO A — REFERÊNCIA</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="date" id="abc-from-a" class="date-input">
+            <span style="color:var(--text3);font-size:.8rem">até</span>
+            <input type="date" id="abc-to-a" class="date-input">
+          </div>
+        </div>
+        <div>
+          <div style="font-size:.72rem;font-weight:700;color:var(--text3);letter-spacing:.05em;margin-bottom:6px">PERÍODO B — ATUAL</div>
+          <div style="display:flex;align-items:center;gap:6px">
+            <input type="date" id="abc-from-b" class="date-input">
+            <span style="color:var(--text3);font-size:.8rem">até</span>
+            <input type="date" id="abc-to-b" class="date-input">
+          </div>
+        </div>
+        <button onclick="applyABC()" style="background:var(--accent);color:#fff;border:none;border-radius:8px;padding:8px 22px;font-size:.85rem;font-weight:600;cursor:pointer;height:36px">Comparar</button>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-bottom:18px;font-size:.78rem">
+        <span style="display:flex;align-items:center;gap:5px"><span style="background:#10b981;border-radius:4px;padding:1px 10px;color:#fff;font-weight:700">A</span> Top 80% do faturamento</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="background:#f59e0b;border-radius:4px;padding:1px 10px;color:#fff;font-weight:700">B</span> 80% – 95%</span>
+        <span style="display:flex;align-items:center;gap:5px"><span style="background:#94a3b8;border-radius:4px;padding:1px 10px;color:#fff;font-weight:700">C</span> 95% – 100%</span>
+        <span style="display:flex;align-items:center;gap:5px">
+          <span style="background:#10b981;border-radius:4px;padding:1px 8px;color:#fff;font-weight:600;font-size:.72rem">▲ Melhorou</span>
+          <span style="background:#ef4444;border-radius:4px;padding:1px 8px;color:#fff;font-weight:600;font-size:.72rem">▼ Piorou</span>
+          <span style="background:rgba(148,163,184,0.35);border-radius:4px;padding:1px 8px;font-weight:600;font-size:.72rem">▪ Período A</span>
+        </span>
+      </div>
+      <div id="abc-chart-wrap" style="height:400px;margin-bottom:24px;position:relative">
+        <canvas id="abc-chart"></canvas>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="tbl">
+          <thead><tr>
+            <th>Classe</th>
+            <th>Serviço</th>
+            <th class="text-right">Min. A</th>
+            <th class="text-right">Min. B</th>
+            <th class="text-right">Resultado A</th>
+            <th class="text-right">Resultado B</th>
+            <th class="text-right">Δ Variação</th>
+            <th>Tendência</th>
+          </tr></thead>
+          <tbody id="abc-tbody"><tr><td colspan="8" style="text-align:center;padding:32px;color:var(--text3);font-size:.9rem">Selecione os períodos acima e clique em <strong>Comparar</strong></td></tr></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+
 </main>
 
 <script>
@@ -832,6 +894,171 @@ function toggleDark(){
     ?'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
     :'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
 }
+// ─── CURVA ABC ──────────────────────────────────────────────────────────────
+let abcChartInst = null;
+
+function _isoToDate(iso) {
+  if (!iso) return null;
+  const p = iso.split('-');
+  return new Date(+p[0], +p[1]-1, +p[2]);
+}
+
+function _parseBRDate(str) {
+  if (!str) return null;
+  const p = str.split('/');
+  if (p.length !== 3) return null;
+  return new Date(+p[2], +p[1]-1, +p[0]);
+}
+
+function _fmtBRL(v) {
+  return 'R\u0024\u00a0' + Math.abs(v).toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+
+function computeABCPeriod(fromISO, toISO) {
+  const from = _isoToDate(fromISO);
+  const to   = _isoToDate(toISO);
+  const byS  = {};
+  for (const r of DATA.minutas) {
+    const d = _parseBRDate(r.data);
+    if (!d) continue;
+    if (from && d < from) continue;
+    if (to   && d > to)   continue;
+    const s = r.servico || 'N/D';
+    if (!byS[s]) byS[s] = {minutas:0, frete:0, lucro:0};
+    byS[s].minutas++;
+    byS[s].frete += (r.frete || 0);
+    byS[s].lucro += (r.lucro || 0);
+  }
+  return byS;
+}
+
+function applyABC() {
+  const fromA = document.getElementById('abc-from-a').value;
+  const toA   = document.getElementById('abc-to-a').value;
+  const fromB = document.getElementById('abc-from-b').value;
+  const toB   = document.getElementById('abc-to-b').value;
+
+  const dA = computeABCPeriod(fromA, toA);
+  const dB = computeABCPeriod(fromB, toB);
+
+  const allServs = new Set([...Object.keys(dA), ...Object.keys(dB)]);
+  let rows = Array.from(allServs).map(s => ({
+    servico:  s,
+    minutasA: dA[s]?.minutas || 0, freteA: dA[s]?.frete || 0, lucroA: dA[s]?.lucro || 0,
+    minutasB: dB[s]?.minutas || 0, freteB: dB[s]?.frete || 0, lucroB: dB[s]?.lucro || 0,
+  })).map(r => ({ ...r, delta: r.lucroB - r.lucroA }));
+
+  // ABC by combined frete
+  const totFrete = rows.reduce((s,r) => s + r.freteA + r.freteB, 0);
+  rows.sort((a,b) => (b.freteA+b.freteB) - (a.freteA+a.freteB));
+  let cum = 0;
+  rows = rows.map(r => {
+    cum += r.freteA + r.freteB;
+    const pct = totFrete ? (cum/totFrete*100) : 100;
+    return { ...r, abc: pct<=80 ? 'A' : pct<=95 ? 'B' : 'C' };
+  });
+
+  // ── Chart ──────────────────────────────────────────────────────────────────
+  const chartH = Math.max(340, rows.length * 46);
+  document.getElementById('abc-chart-wrap').style.height = chartH + 'px';
+  if (abcChartInst) abcChartInst.destroy();
+
+  const colorsB = rows.map(r => r.delta >= 0 ? 'rgba(16,185,129,0.85)' : 'rgba(239,68,68,0.82)');
+  const ctx = document.getElementById('abc-chart').getContext('2d');
+  abcChartInst = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: rows.map(r => r.servico),
+      datasets: [
+        {
+          label: 'Período A (ref.)',
+          data: rows.map(r => +r.lucroA.toFixed(2)),
+          backgroundColor: 'rgba(148,163,184,0.4)',
+          borderColor: 'rgba(148,163,184,0.8)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: 'Período B (atual)',
+          data: rows.map(r => +r.lucroB.toFixed(2)),
+          backgroundColor: colorsB,
+          borderRadius: 3,
+        }
+      ]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'top', labels: { font:{size:12}, padding:16 } },
+        tooltip: {
+          callbacks: {
+            label: c => {
+              const v = c.raw;
+              return c.dataset.label + ': ' + (v<0?'-':'') + _fmtBRL(v);
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(148,163,184,0.12)' },
+          ticks: {
+            callback: v => {
+              const abs = Math.abs(v);
+              const s = abs>=1000 ? (v/1000).toFixed(0)+'k' : v.toFixed(0);
+              return 'R$' + s;
+            }
+          }
+        },
+        y: { grid:{display:false}, ticks:{font:{size:11}} }
+      }
+    }
+  });
+
+  // ── Table ──────────────────────────────────────────────────────────────────
+  const abcCol = {A:'#10b981', B:'#f59e0b', C:'#94a3b8'};
+  document.getElementById('abc-tbody').innerHTML = rows.map(r => {
+    const dc   = r.delta>=0 ? '#10b981' : '#ef4444';
+    const icon = r.delta>=0 ? '▲ Melhorou' : '▼ Piorou';
+    const fmtV = v => (v<0?'-':'') + _fmtBRL(v);
+    const fmtD = v => (v>=0?'+':'-') + _fmtBRL(Math.abs(v));
+    return `<tr>
+      <td style="white-space:nowrap">
+        <span style="background:${abcCol[r.abc]};color:#fff;border-radius:4px;padding:2px 9px;font-weight:700;font-size:.72rem">${r.abc}</span>
+      </td>
+      <td><strong>${r.servico}</strong></td>
+      <td class="text-right">${r.minutasA}</td>
+      <td class="text-right">${r.minutasB}</td>
+      <td class="text-right" style="color:${r.lucroA>=0?'#10b981':'#ef4444'}">${fmtV(r.lucroA)}</td>
+      <td class="text-right" style="color:${r.lucroB>=0?'#10b981':'#ef4444'}">${fmtV(r.lucroB)}</td>
+      <td class="text-right" style="color:${dc};font-weight:700">${fmtD(r.delta)}</td>
+      <td style="color:${dc};font-weight:600;white-space:nowrap">${icon}</td>
+    </tr>`;
+  }).join('');
+}
+
+function initABCDefaults() {
+  function brToISO(s) {
+    if (!s) return '';
+    const p = s.split('/');
+    return p.length===3 ? `${p[2]}-${p[1].padStart(2,'0')}-${p[0].padStart(2,'0')}` : '';
+  }
+  const iniISO = brToISO(DATA.kpis.data_inicial);
+  const finISO = brToISO(DATA.kpis.data_final);
+  if (!iniISO || !finISO) return;
+  const ini = new Date(iniISO), fin = new Date(finISO);
+  const mid = new Date(Math.round((ini.getTime()+fin.getTime())/2));
+  const midM1 = new Date(mid); midM1.setDate(midM1.getDate()-1);
+  const fmt = d => d.toISOString().split('T')[0];
+  document.getElementById('abc-from-a').value = fmt(ini);
+  document.getElementById('abc-to-a').value   = fmt(midM1);
+  document.getElementById('abc-from-b').value = fmt(mid);
+  document.getElementById('abc-to-b').value   = fmt(fin);
+}
+
+
 </script>
 
 <script>
@@ -860,6 +1087,7 @@ function showTab(id) {
   if (id === 'clientes') { renderClientes(); }
   if (id === 'negativas') { renderNeg(); }
   if (id === 'sem-custo') { renderSemCusto(); }
+  if (id === 'curva-abc') { if (!document.getElementById('abc-from-a').value) initABCDefaults(); applyABC(); }
 }
 
 // ─── KPIs ──────────────────────────────────────────────────────────────────
