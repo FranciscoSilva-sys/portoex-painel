@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise de Terceiros — 20/07/2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+  :root {
+    --navy: #1F3864; --blue: #2E5FAA; --light-blue: #BDD7EE;
+    --green: #006100; --green-bg: #C6EFCE;
+    --red: #9C0006; --red-bg: #FFC7CE;
+    --orange: #7D4700; --orange-bg: #FFE699;
+    --bg: #F0F4F8; --card: #FFFFFF; --text: #1a1a2e; --sub: #64748b;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); }
+
+  /* HEADER */
+  .header { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: white; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(31,56,100,.3); }
+  .header-left h1 { font-size: 22px; font-weight: 700; letter-spacing: .5px; }
+  .header-left p { font-size: 13px; opacity: .8; margin-top: 4px; }
+  .header-badge { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 8px; padding: 8px 16px; text-align: center; }
+  .header-badge .date { font-size: 20px; font-weight: 700; }
+  .header-badge .label { font-size: 11px; opacity: .7; margin-top: 2px; }
+
+  /* LAYOUT */
+  .main { max-width: 1300px; margin: 0 auto; padding: 28px 24px; }
+
+  /* KPI CARDS */
+  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 28px; }
+  .kpi { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border-top: 4px solid var(--blue); }
+  .kpi .label { font-size: 11px; font-weight: 600; color: var(--sub); text-transform: uppercase; letter-spacing: .8px; }
+  .kpi .value { font-size: 26px; font-weight: 700; color: var(--navy); margin-top: 8px; line-height: 1; }
+  .kpi .sub { font-size: 12px; color: var(--sub); margin-top: 6px; }
+  .kpi.green { border-top-color: #006100; } .kpi.green .value { color: #006100; }
+  .kpi.orange { border-top-color: #D97706; }
+
+  /* GRID 2 cols */
+  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
+  .grid3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
+
+  /* CARD */
+  .card { background: var(--card); border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
+  .card-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
+  .card-title .icon { font-size: 18px; }
+
+  /* TABELA DE OPERADORES */
+  table { width: 100%; border-collapse: collapse; font-size: 13px; }
+  thead th { background: var(--navy); color: white; padding: 10px 12px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; }
+  tbody tr { border-bottom: 1px solid #EEF2F7; transition: background .15s; }
+  tbody tr:hover { background: #F8FAFC; }
+  tbody td { padding: 10px 12px; vertical-align: middle; }
+
+  /* STATUS BADGES */
+  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
+  .badge-fora { background: var(--red-bg); color: var(--red); }
+  .badge-dentro { background: var(--green-bg); color: var(--green); }
+  .badge-abaixo { background: #DBEAFE; color: #1D4ED8; }
+
+  /* RESULTADO COLORIDO */
+  .res-pos { color: var(--green); font-weight: 700; }
+  .res-neg { color: var(--red); font-weight: 700; }
+  .mg-pos { color: var(--green); font-size: 12px; }
+  .mg-neg { color: var(--red); font-size: 12px; }
+
+  /* TIPO TAG */
+  .tipo-frac { background: #DBEAFE; color: #1E40AF; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+  .tipo-ded { background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
+
+  /* TARGET STATUS LISTA */
+  .status-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
+  .status-item { display: flex; align-items: center; gap: 12px; }
+  .status-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
+  .status-info { flex: 1; }
+  .status-name { font-size: 13px; font-weight: 600; }
+  .status-bar-wrap { background: #EEF2F7; border-radius: 4px; height: 6px; margin-top: 4px; overflow: hidden; }
+  .status-bar { height: 100%; border-radius: 4px; }
+
+  /* FOOTER */
+  .footer { text-align: center; padding: 20px; font-size: 12px; color: var(--sub); }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>🚚 Análise de Terceiros — Portoex</h1>
+    <p>Fechamento diário de operadores agregados</p>
+  </div>
+  <div class="header-badge">
+    <div class="date">20/07/2026</div>
+    <div class="label">Data de referência</div>
+  </div>
+</div>
+
+<div class="main">
+
+  <!-- KPI CARDS -->
+  <div class="kpis">
+    <div class="kpi">
+      <div class="label">Faturamento</div>
+      <div class="value">R$ 84,3K</div>
+      <div class="sub">8 operadores</div>
+    </div>
+    <div class="kpi green">
+      <div class="label">Resultado Op.</div>
+      <div class="value">R$ 27,5K</div>
+      <div class="sub">+R$ 27.538,83</div>
+    </div>
+    <div class="kpi green">
+      <div class="label">Margem</div>
+      <div class="value">32,65%</div>
+      <div class="sub">Consolidado</div>
+    </div>
+    <div class="kpi">
+      <div class="label">Nº CTEs</div>
+      <div class="value">74</div>
+      <div class="sub">Fracionado: 70 | Ded: 4</div>
+    </div>
+    <div class="kpi orange">
+      <div class="label">Fora do Target</div>
+      <div class="value">2</div>
+      <div class="sub">Robson · Giovane</div>
+    </div>
+  </div>
+
+  <!-- CHARTS ROW -->
+  <div class="grid3" style="margin-bottom:20px;">
+
+    <!-- BAR CHART - Faturamento x Resultado -->
+    <div class="card">
+      <div class="card-title"><span class="icon">📊</span> Faturamento vs Resultado por Operador</div>
+      <canvas id="chartBar" height="220"></canvas>
+    </div>
+
+    <!-- STATUS DONUT -->
+    <div class="card">
+      <div class="card-title"><span class="icon">🎯</span> Status por Target</div>
+      <canvas id="chartDonut" height="180"></canvas>
+      <ul class="status-list" style="margin-top:16px;">
+        <li class="status-item">
+          <div class="status-dot" style="background:#006100;"></div>
+          <div class="status-info">
+            <div class="status-name">Dentro do Target — <b>5</b></div>
+            <div class="status-bar-wrap"><div class="status-bar" style="background:#006100;width:62.5%"></div></div>
+          </div>
+        </li>
+        <li class="status-item">
+          <div class="status-dot" style="background:#1D4ED8;"></div>
+          <div class="status-info">
+            <div class="status-name">Abaixo do Target — <b>1</b></div>
+            <div class="status-bar-wrap"><div class="status-bar" style="background:#1D4ED8;width:12.5%"></div></div>
+          </div>
+        </li>
+        <li class="status-item">
+          <div class="status-dot" style="background:#9C0006;"></div>
+          <div class="status-info">
+            <div class="status-name">Fora do Target — <b>2</b></div>
+            <div class="status-bar-wrap"><div class="status-bar" style="background:#9C0006;width:25%"></div></div>
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- TABELA OPERADORES -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title"><span class="icon">👥</span> Detalhamento por Operador</div>
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo</th><th>Operador</th><th>CTEs</th>
+          <th>Faturamento</th><th>C. Transf+Entrega</th><th>C. Outros</th>
+          <th>Resultado</th><th>Margem</th>
+          <th>Veículo</th><th>Trecho</th>
+          <th>Target</th><th>Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td><span class="tipo-ded">DEDICADO</span></td><td><b>Robson</b></td><td>1</td>
+          <td>R$ 8.700,00</td><td>R$ 6.000,00</td><td>R$ 0,00</td>
+          <td class="res-neg">R$ -9,36</td><td class="mg-neg">-0,11%</td>
+          <td>Carreta</td><td style="font-size:11px;color:#64748b;">Itajai × Guarulhos</td>
+          <td>R$ 5.500</td><td><span class="badge badge-fora">FORA</span></td>
+        </tr>
+        <tr>
+          <td><span class="tipo-ded">DEDICADO</span></td><td><b>Aldenir</b></td><td>1</td>
+          <td>R$ 3.669,65</td><td>R$ 1.500,00</td><td>R$ 3,39</td>
+          <td class="res-pos">R$ 1.113,21</td><td class="mg-pos">30,34%</td>
+          <td>3/4</td><td style="font-size:11px;color:#64748b;">Itajai × Curitiba</td>
+          <td>R$ 1.500</td><td><span class="badge badge-dentro">DENTRO</span></td>
+        </tr>
+        <tr>
+          <td><span class="tipo-ded">DEDICADO</span></td><td><b>Duarte</b></td><td>1</td>
+          <td>R$ 2.653,96</td><td>R$ 400,00</td><td>R$ 2,47</td>
+          <td class="res-pos">R$ 1.606,36</td><td class="mg-pos">60,53%</td>
+          <td>Fiorino</td><td style="font-size:11px;color:#64748b;">SP × SP</td>
+          <td>R$ 400</td><td><span class="badge badge-dentro">DENTRO</span></td>
+        </tr>
+        <tr>
+          <td><span class="tipo-ded">DEDICADO</span></td><td><b>Gabriel</b></td><td>1</td>
+          <td>R$ 3.088,11</td><td>R$ 1.800,00</td><td>R$ 0,00</td>
+          <td class="res-pos">R$ 114,63</td><td class="mg-pos">3,71%</td>
+          <td>Fiorino</td><td style="font-size:11px;color:#64748b;">Novo Hamburgo × Itajaí</td>
+          <td>R$ 1.800</td><td><span class="badge badge-dentro">DENTRO</span></td>
+        </tr>
+        <tr>
+          <td><span class="tipo-frac">FRACIONADO</span></td><td><b>Giovane</b></td><td>2</td>
+          <td>R$ 208,34</td><td>R$ 450,00</td><td>R$ 0,00</td>
+          <td class="res-neg">R$ -107,58</td><td class="mg-neg">-51,64%</td>
+          <td>Van</td><td style="font-size:11px;color:#64748b;">Itajaí × Itajaí</td>
+          <td>R$ 350</td><td><span class="badge badge-fora">FORA</span></td>
+        </tr>
+        <tr style="background:#F0FFF4;">
+          <td><span class="tipo-frac">FRACIONADO</span></td><td><b>Ricardo</b></td><td>37</td>
+          <td>R$ 53.287,04</td><td>R$ 14.088,55</td><td>R$ 651,21</td>
+          <td class="res-pos">R$ 23.158,62</td><td class="mg-pos">43,46%</td>
+          <td>Carreta</td><td style="font-size:11px;color:#64748b;">Itajaí × São Paulo</td>
+          <td>R$ 5.100</td><td><span class="badge badge-dentro">DENTRO</span></td>
+        </tr>
+        <tr>
+          <td><span class="tipo-frac">FRACIONADO</span></td><td><b>Renato</b></td><td>17</td>
+          <td>R$ 3.371,90</td><td>R$ 2.244,96</td><td>R$ 0,03</td>
+          <td class="res-pos">R$ 185,86</td><td class="mg-pos">5,51%</td>
+          <td>Carreta</td><td style="font-size:11px;color:#64748b;">SP × Itajaí</td>
+          <td>R$ 1.850</td><td><span class="badge badge-dentro">DENTRO</span></td>
+        </tr>
+        <tr>
+          <td><span class="tipo-frac">FRACIONADO</span></td><td><b>Eloir</b></td><td>14</td>
+          <td>R$ 9.358,95</td><td>R$ 4.100,00</td><td>R$ 1.044,21</td>
+          <td class="res-pos">R$ 1.477,09</td><td class="mg-pos">15,78%</td>
+          <td>Truck</td><td style="font-size:11px;color:#64748b;">Itajaí × Várzea Paulista</td>
+          <td>R$ 4.300</td><td><span class="badge badge-abaixo">ABAIXO</span></td>
+        </tr>
+      </tbody>
+      <tfoot>
+        <tr style="background:var(--navy);color:white;font-weight:700;">
+          <td colspan="2">TOTAL GERAL</td><td>74</td>
+          <td>R$ 84.337,95</td><td>R$ 30.583,51</td><td>R$ 1.701,31</td>
+          <td style="color:#86EFAC;">R$ 27.538,83</td><td style="color:#86EFAC;">32,65%</td>
+          <td colspan="4"></td>
+        </tr>
+      </tfoot>
+    </table>
+  </div>
+
+  <!-- MARGEM POR OPERADOR -->
+  <div class="card" style="margin-bottom:20px;">
+    <div class="card-title"><span class="icon">📈</span> Margem por Operador</div>
+    <canvas id="chartMargem" height="100"></canvas>
+  </div>
+
+</div>
+
+<div class="footer">
+  Portoex Logística · Análise de Terceiros · Gerado automaticamente pelo Craudin
+</div>
+
+<script>
+const operadores = ['Robson','Aldenir','Duarte','Gabriel','Giovane','Ricardo','Renato','Eloir'];
+const fat = [8700, 3669.65, 2653.96, 3088.11, 208.34, 53287.04, 3371.90, 9358.95];
+const res = [-9.36, 1113.21, 1606.36, 114.63, -107.58, 23158.62, 185.86, 1477.09];
+const mg  = [-0.11, 30.34, 60.53, 3.71, -51.64, 43.46, 5.51, 15.78];
+
+const resColors = res.map(v => v >= 0 ? 'rgba(0,97,0,0.8)' : 'rgba(156,0,6,0.8)');
+const mgColors  = mg.map(v => v >= 0 ? 'rgba(0,97,0,0.85)' : 'rgba(156,0,6,0.85)');
+
+// BAR CHART
+new Chart(document.getElementById('chartBar'), {
+  type: 'bar',
+  data: {
+    labels: operadores,
+    datasets: [
+      { label: 'Faturamento', data: fat, backgroundColor: 'rgba(46,95,170,0.6)', borderColor: 'rgba(46,95,170,1)', borderWidth: 1 },
+      { label: 'Resultado Op.', data: res, backgroundColor: resColors, borderColor: resColors, borderWidth: 1 }
+    ]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { position: 'top', labels: { font: { size: 12 } } },
+      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: R$ ${ctx.raw.toLocaleString('pt-BR',{minimumFractionDigits:2})}` } }
+    },
+    scales: {
+      y: { ticks: { callback: v => `R$ ${(v/1000).toFixed(0)}K` }, grid: { color: '#EEF2F7' } },
+      x: { grid: { display: false } }
+    }
+  }
+});
+
+// DONUT STATUS
+new Chart(document.getElementById('chartDonut'), {
+  type: 'doughnut',
+  data: {
+    labels: ['Dentro do Target', 'Abaixo do Target', 'Fora do Target'],
+    datasets: [{ data: [5, 1, 2], backgroundColor: ['#006100','#1D4ED8','#9C0006'], borderWidth: 2, borderColor: '#fff' }]
+  },
+  options: {
+    responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} operador(es)` } }
+    },
+    cutout: '65%'
+  }
+});
+
+// MARGEM HORIZONTAL BAR
+new Chart(document.getElementById('chartMargem'), {
+  type: 'bar',
+  data: {
+    labels: operadores,
+    datasets: [{ label: 'Margem (%)', data: mg, backgroundColor: mgColors, borderColor: mgColors, borderWidth: 1, borderRadius: 4 }]
+  },
+  options: {
+    indexAxis: 'y', responsive: true, maintainAspectRatio: true,
+    plugins: { legend: { display: false },
+      tooltip: { callbacks: { label: ctx => `Margem: ${ctx.raw.toFixed(2)}%` } }
+    },
+    scales: {
+      x: { ticks: { callback: v => `${v}%` }, grid: { color: '#EEF2F7' } },
+      y: { grid: { display: false } }
+    }
+  }
+});
+</script>
+</body>
+</html>
