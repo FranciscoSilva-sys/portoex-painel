@@ -917,6 +917,80 @@ function _isoToDate(s) {
   return new Date(+p[0], +p[1]-1, +p[2]);
 }
 
+// ─── Recalcular KPIs e por_servico/por_uf a partir de minutas filtradas ────
+const _EXCLUIDOS = new Set(['REPASSE', 'SERVIÇO LOGÍSTICO', 'CORTESIA']);
+
+function _recalcFromMinutas(allMinutas) {
+  const principais = allMinutas.filter(r => !_EXCLUIDOS.has((r.servico||'').toUpperCase()));
+
+  // por_servico
+  const byS = {};
+  for (const r of principais) {
+    const s = r.servico || 'N/D';
+    if (!byS[s]) byS[s] = {servico:s, minutas:0, frete:0, custo:0, resultado:0};
+    byS[s].minutas++;
+    byS[s].frete     += (r.frete || 0);
+    byS[s].custo     += (r.custo || 0);
+    byS[s].resultado += (r.lucro || 0);
+  }
+  const totF = Object.values(byS).reduce((s,v) => s + v.frete, 0);
+  DATA.por_servico = Object.values(byS).map(v => ({
+    ...v,
+    frete:     Math.round(v.frete*100)/100,
+    custo:     Math.round(v.custo*100)/100,
+    resultado: Math.round(v.resultado*100)/100,
+    margem:    v.frete ? Math.round(v.resultado/v.frete*10000)/100 : 0,
+    pct_total: totF   ? Math.round(v.frete/totF*10000)/100 : 0,
+  })).sort((a,b) => b.frete - a.frete);
+
+  // por_uf
+  const byUF = {};
+  for (const r of principais) {
+    const uf = r.uf || r.destino || 'N/D';
+    if (!byUF[uf]) byUF[uf] = {uf, minutas:0, frete:0, resultado:0};
+    byUF[uf].minutas++;
+    byUF[uf].frete     += (r.frete || 0);
+    byUF[uf].resultado += (r.lucro || 0);
+  }
+  DATA.por_uf = Object.values(byUF).map(v => ({
+    ...v,
+    frete:     Math.round(v.frete*100)/100,
+    resultado: Math.round(v.resultado*100)/100,
+    margem:    v.frete ? Math.round(v.resultado/v.frete*10000)/100 : 0,
+    pct_total: totF   ? Math.round(v.frete/totF*10000)/100 : 0,
+  })).sort((a,b) => b.frete - a.frete);
+
+  // kpis
+  const comLucro = principais.filter(r => (r.lucro||0) >= 0).length;
+  const comPrej  = principais.filter(r => (r.lucro||0) < 0).length;
+  const totLucro = principais.reduce((s,r) => s+(r.lucro||0), 0);
+  DATA.kpis = {
+    ...DATA.kpis,
+    minutas:        principais.length,
+    com_lucro:      comLucro,
+    com_prejuizo:   comPrej,
+    pct_lucrativas: principais.length ? (comLucro/principais.length*100) : 0,
+    pct_prejuizo:   principais.length ? (comPrej/principais.length*100) : 0,
+    frete:          Math.round(totF*100)/100,
+    lucro:          Math.round(totLucro*100)/100,
+    margem:         totF ? (totLucro/totF*100) : 0,
+  };
+
+  // Atualizar KPI cards
+  document.getElementById('kpi-minutas').textContent   = DATA.kpis.minutas.toLocaleString('pt-BR');
+  document.getElementById('kpi-margem').textContent    = DATA.kpis.margem.toFixed(1) + '%';
+  document.getElementById('kpi-lucrativas').textContent = DATA.kpis.pct_lucrativas.toFixed(1) + '%';
+  document.getElementById('kpi-prejuizo').textContent  = DATA.kpis.pct_prejuizo.toFixed(1) + '%';
+  document.getElementById('kpi-lucro-count').textContent = DATA.kpis.com_lucro.toLocaleString('pt-BR') + ' minutas com lucro';
+  document.getElementById('kpi-prej-count').textContent  = DATA.kpis.com_prejuizo.toLocaleString('pt-BR') + ' minutas negativas';
+
+  // Destruir e re-inicializar gráficos da visão geral
+  ['donut','servico-visao','servico-vol','uf-visao','servico-full','uf-full'].forEach(k => {
+    if (charts[k]) { charts[k].destroy(); delete charts[k]; }
+  });
+  initOverviewCharts();
+}
+
 function applyDateFilter() {
   const fromISO = document.getElementById('date-from').value;
   const toISO   = document.getElementById('date-to').value;
@@ -938,14 +1012,17 @@ function applyDateFilter() {
     });
   }
 
-  DATA.minutas          = filterRows(_ORIG.minutas);
-  DATA.minutas_neg      = filterRows(_ORIG.minutas_neg);
+  DATA.minutas           = filterRows(_ORIG.minutas);
+  DATA.minutas_neg       = filterRows(_ORIG.minutas_neg);
   DATA.minutas_sem_custo = filterRows(_ORIG.minutas_sem_custo);
 
   const cnt = DATA.minutas.length;
-  info.textContent = cnt + ' minutas no período';
+  info.textContent = cnt.toLocaleString('pt-BR') + ' minutas no período';
 
-  // Atualizar badges e re-renderizar tabelas ativas
+  // Recalcular e re-renderizar Visão Geral
+  _recalcFromMinutas(DATA.minutas);
+
+  // Atualizar badges e re-renderizar abas ativas
   document.getElementById('neg-count-badge').textContent = DATA.minutas_neg.length;
   if (document.getElementById('tab-negativas').classList.contains('active')) renderNeg();
   if (document.getElementById('tab-clientes').classList.contains('active')) renderClientes();
@@ -959,6 +1036,8 @@ function resetDateFilter() {
   DATA.minutas           = [..._ORIG.minutas];
   DATA.minutas_neg       = [..._ORIG.minutas_neg];
   DATA.minutas_sem_custo = [..._ORIG.minutas_sem_custo];
+  _recalcFromMinutas(DATA.minutas);
+  document.getElementById('neg-count-badge').textContent = DATA.minutas_neg.length;
   if (document.getElementById('tab-negativas').classList.contains('active')) renderNeg();
   if (document.getElementById('tab-clientes').classList.contains('active')) renderClientes();
   if (document.getElementById('tab-sem-custo').classList.contains('active')) renderSemCusto();
