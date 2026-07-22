@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Análise de Terceiros — 22/07/2026 | Portoex</title>
+<title>Análise de Terceiros — 17/07/2026 | Portoex</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
   :root {
@@ -13,31 +13,26 @@
   }
   *{box-sizing:border-box;margin:0;padding:0}
   body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:var(--txt)}
-
   header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(31,56,100,.3)}
   .logo{font-size:19px;font-weight:700;letter-spacing:1px}
   .sub{font-size:11px;opacity:.8;margin-top:3px}
   .hdr-dates{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
   .dtbadge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:5px 14px;font-size:12px;font-weight:600;white-space:nowrap}
   .dtbadge span.lbl{opacity:.8;font-weight:400;margin-right:5px}
-
   .kpi-strip{display:flex;gap:12px;padding:16px 24px;background:#fff;border-bottom:1px solid var(--bdr);flex-wrap:wrap}
   .kpi{flex:1;min-width:130px;padding:12px 16px;background:var(--gry);border-radius:9px;border-left:4px solid var(--blue)}
   .kpi.k0{border-left-color:var(--navy)}.kpi.k1{border-left-color:#27ae60}.kpi.k2{border-left-color:#2E5FAA}.kpi.k3{border-left-color:#e67e22}.kpi.k4{border-left-color:#8e44ad}.kpi.k5{border-left-color:#16a085}
   .kl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#888;font-weight:600}
   .kv{font-size:20px;font-weight:700;color:var(--navy);margin-top:3px;line-height:1.1}
   .ks{font-size:11px;color:#999;margin-top:2px}
-
   .wrap{max-width:1380px;margin:0 auto;padding:20px 22px}
   .sh{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:var(--navy);margin:20px 0 12px;text-transform:uppercase;letter-spacing:.5px}
   .sh::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--lbl),transparent)}
-
   .g4{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:18px}
   .g2{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:18px}
   .g3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:15px;margin-bottom:18px}
   .card{background:#fff;border-radius:10px;padding:16px 18px;box-shadow:0 2px 8px rgba(31,56,100,.07)}
   .ctitle{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px}
-
   .tw{overflow-x:auto;border-radius:10px;box-shadow:0 2px 8px rgba(31,56,100,.07);margin-bottom:20px}
   table{width:100%;border-collapse:collapse;background:#fff;font-size:11.5px}
   thead th{background:var(--navy);color:#fff;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.4px;text-align:center;white-space:nowrap;position:sticky;top:0;z-index:2}
@@ -52,18 +47,12 @@
   tr.sd td{background:#FFF2CC;font-weight:700;color:var(--orf)}
   tr.gt td{background:var(--navy);color:#fff;font-weight:700}
   tr.ev td{background:#f9fbfd}
-  tr.tn td{background:#FFF5F5}
-  tr.tp td{background:#F0FFF4}
-  tr.tsep td{background:var(--blue);color:#fff;font-weight:700;font-size:10px;padding:6px 10px;text-align:left}
-
   .b{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
   .bg{background:var(--gbg);color:var(--green)}.br{background:var(--rbg);color:var(--red)}.bo{background:var(--obg);color:var(--orf)}.bb{background:var(--lbl);color:var(--navy)}.bgy{background:#e8e8e8;color:#555}
   .pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}
-
   .occ-wrap{display:flex;align-items:center;gap:5px;justify-content:center}
   .occ-t{width:52px;height:6px;background:#e0e0e0;border-radius:4px;overflow:hidden}
   .occ-f{height:100%;border-radius:4px}
-
   @media(max-width:1000px){.g4{grid-template-columns:1fr 1fr}.g3{grid-template-columns:1fr 1fr}}
   @media(max-width:700px){.g4,.g2,.g3{grid-template-columns:1fr}.kpi-strip{gap:8px}}
 </style>
@@ -73,12 +62,11 @@
 <header>
   <div><div class="logo">PORTOEX LOGÍSTICA</div><div class="sub">Painel de Análise de Terceiros</div></div>
   <div class="hdr-dates">
-    <div class="dtbadge"><span class="lbl">DATA DA OPERAÇÃO</span>22/07/2026</div>
+    <div class="dtbadge"><span class="lbl">DATA DA OPERAÇÃO</span>17/07/2026</div>
     <div class="dtbadge"><span class="lbl">DATA DA ANÁLISE</span>22/07/2026</div>
   </div>
 </header>
 
-<!-- KPI STRIP -->
 <div class="kpi-strip">
   <div class="kpi k0"><div class="kl">Faturamento Total</div><div class="kv">R$ 130.805,55</div><div class="ks">7 viagens · 254 CTEs</div></div>
   <div class="kpi k1"><div class="kl">Resultado Operacional</div><div class="kv" style="color:#006100">R$ 39.240,91</div><div class="ks">Margem geral: 30,00%</div></div>
@@ -89,123 +77,85 @@
 </div>
 
 <div class="wrap">
-
   <div class="sh">📊 Visão Geral por Operador</div>
   <div class="g3">
-    <div class="card">
-      <div class="ctitle">Resultado Operacional por Operador (R$)</div>
-      <canvas id="resChart" height="160"></canvas>
-    </div>
-    <div class="card">
-      <div class="ctitle">Margem por Operador (%)</div>
-      <canvas id="mgChart" height="160"></canvas>
-    </div>
-    <div class="card">
-      <div class="ctitle">Status do Target</div>
-      <canvas id="targetChart" height="160"></canvas>
-    </div>
+    <div class="card"><div class="ctitle">Resultado Operacional por Operador (R$)</div><canvas id="resChart" height="160"></canvas></div>
+    <div class="card"><div class="ctitle">Margem por Operador (%)</div><canvas id="mgChart" height="160"></canvas></div>
+    <div class="card"><div class="ctitle">Status do Target</div><canvas id="targetChart" height="160"></canvas></div>
   </div>
-
   <div class="sh">👥 Por Cliente · 🚚 Ocupação</div>
   <div class="g2">
-    <div class="card">
-      <div class="ctitle">Top 10 Clientes — Lucro Líquido (R$)</div>
-      <canvas id="cliChart" height="160"></canvas>
-    </div>
-    <div class="card">
-      <div class="ctitle">Taxa de Ocupação por Veículo (%)</div>
-      <canvas id="occChart" height="160"></canvas>
-    </div>
+    <div class="card"><div class="ctitle">Top 10 Clientes — Lucro Líquido (R$)</div><canvas id="cliChart" height="160"></canvas></div>
+    <div class="card"><div class="ctitle">Taxa de Ocupação por Veículo (%)</div><canvas id="occChart" height="160"></canvas></div>
   </div>
-
-  <!-- ── RESUMO TABLE ── -->
   <div class="sh">📋 Resumo Executivo — Detalhamento por Viagem</div>
   <div class="tw">
     <table>
-      <thead>
-        <tr>
-          <th>Tipo</th><th class="l">Operador</th><th>CTEs</th>
-          <th>Faturamento</th><th>C.Transf.</th><th>C.Entrega</th><th>C.Transf+Entrega</th><th>C.Outros</th>
-          <th>Resultado Op.</th><th>Margem</th><th>Veículo</th><th>Taxa Ocup.</th>
-          <th class="l">Trecho</th><th>Target</th><th>Diferença</th><th>Status</th>
-          <th class="l">Clientes</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th>
-          <th>Peso (kg)</th><th>Custo/kg</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th>Tipo</th><th class="l">Operador</th><th>CTEs</th>
+        <th>Faturamento</th><th>C.Transf.</th><th>C.Entrega</th><th>C.Transf+Entrega</th><th>C.Outros</th>
+        <th>Resultado Op.</th><th>Margem</th><th>Veículo</th><th>Taxa Ocup.</th>
+        <th class="l">Trecho</th><th>Target</th><th>Diferença</th><th>Status</th>
+        <th class="l">Clientes</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th>
+        <th>Peso (kg)</th><th>Custo/kg</th>
+      </tr></thead>
       <tbody id="resBody"></tbody>
     </table>
   </div>
-
-  <!-- ── POR CLIENTE TABLE ── -->
   <div class="sh">👥 Rentabilidade por Cliente (37 clientes)</div>
   <div class="tw">
     <table>
-      <thead>
-        <tr>
-          <th class="l">#</th><th class="l">Cliente</th><th>CTEs</th>
-          <th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th>
-          <th>Peso (kg)</th><th>C.Outros</th><th>Rentabilidade</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th class="l">#</th><th class="l">Cliente</th><th>CTEs</th>
+        <th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th>
+        <th>Peso (kg)</th><th>C.Outros</th><th>Rentabilidade</th>
+      </tr></thead>
       <tbody id="cliBody"></tbody>
     </table>
   </div>
-
-  <!-- ── RANKING CTEs ── -->
   <div class="sh">🏆 Ranking CTEs — Top 5 e Bottom 5</div>
   <div class="g2">
     <div class="tw" style="margin-bottom:0">
       <table>
         <thead><tr><th colspan="9" style="background:#27ae60;text-align:left;padding:8px 12px">✅ TOP 5 — MELHORES LUCRO LÍQUIDO</th></tr>
           <tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th></tr>
-        </thead>
-        <tbody id="top5"></tbody>
+        </thead><tbody id="top5"></tbody>
       </table>
     </div>
     <div class="tw" style="margin-bottom:0">
       <table>
         <thead><tr><th colspan="9" style="background:#c0392b;text-align:left;padding:8px 12px">❌ BOTTOM 5 — PIORES LUCRO LÍQUIDO</th></tr>
           <tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th></tr>
-        </thead>
-        <tbody id="bot5"></tbody>
+        </thead><tbody id="bot5"></tbody>
       </table>
     </div>
   </div>
-
-  <!-- ── TODOS OS CTEs ── -->
   <div class="sh">📋 Todos os CTEs — Ordenados por Lucro Líquido (254 CTEs)</div>
   <div class="tw" style="max-height:460px;overflow-y:auto">
     <table>
-      <thead>
-        <tr>
-          <th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th>
-          <th class="l">Serviço</th><th>Minuta</th><th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th>
-          <th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th>
+        <th class="l">Serviço</th><th>Minuta</th><th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th>
+        <th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th>
+      </tr></thead>
       <tbody id="allCTE"></tbody>
     </table>
   </div>
-
-  <!-- ── VEÍCULOS & TARGET ── -->
   <div class="sh">🚚 Veículos, Trechos & Target</div>
   <div class="tw">
     <table>
-      <thead>
-        <tr>
-          <th class="l">Operador</th><th>Veículo</th><th>Peso Veíc.</th><th>Peso Fat.</th><th>Taxa Ocup.</th>
-          <th class="l">Trecho</th><th>C.Transf+Entrega</th><th>Target</th><th>Diferença</th><th>Status</th>
-          <th>Resultado Op.</th><th>Margem</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th>
-        </tr>
-      </thead>
+      <thead><tr>
+        <th class="l">Operador</th><th>Veículo</th><th>Peso Veíc.</th><th>Peso Fat.</th><th>Taxa Ocup.</th>
+        <th class="l">Trecho</th><th>C.Transf+Entrega</th><th>Target</th><th>Diferença</th><th>Status</th>
+        <th>Resultado Op.</th><th>Margem</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th>
+      </tr></thead>
       <tbody id="veiBody"></tbody>
     </table>
   </div>
-
 </div>
 
 <footer style="text-align:center;font-size:11px;color:#aaa;padding:16px">
-  Portoex Logística · Análise de Terceiros 22/07/2026 · Gerado automaticamente
+  Portoex Logística · Análise de Terceiros 17/07/2026 · Gerado automaticamente
 </footer>
 
 <script>
@@ -555,17 +505,14 @@ function occBar(v){
   return '<div class="occ-wrap"><div class="occ-t"><div class="occ-f" style="width:'+pct.toFixed(0)+'%;background:'+c+'"></div></div><span style="font-size:10px">'+(v*100).toFixed(1)+'%</span></div>';
 }
 
-// ── Resumo table
 const rb=document.getElementById('resBody');
 const frac_ops=ops.filter(o=>o.tipo.includes('FRAC'));
 const ded_ops=ops.filter(o=>!o.tipo.includes('FRAC'));
 function addOpsRows(arr,trClass){
   arr.forEach(o=>{
-    const tr=document.createElement('tr');
-    tr.className=trClass;
+    const tr=document.createElement('tr'); tr.className=trClass;
     const tipoBadge=o.tipo.includes('FRAC')?'<span class="b bb">FRAC.</span>':'<span class="b bo">DED.</span>';
-    const difHtml=o.dif<0?`<span class="neg">R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`
-      :`<span class="pos">R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;
+    const difHtml=o.dif<0?`<span class="neg">R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`:`<span class="pos">R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;
     tr.innerHTML=`<td>${tipoBadge}</td><td class="l">${o.nome}</td><td>${o.ctes}</td>
       <td>${BR(o.fat)}</td><td>${BR(o.ct)}</td><td>${BR(o.ce)}</td><td>${BR(o.ctot)}</td><td>${BR(o.co)}</td>
       <td class="${cls(o.res)}">${BR(o.res)}</td><td class="${cls(o.mg)}">${PCT(o.mg)}</td>
@@ -580,7 +527,6 @@ function addOpsRows(arr,trClass){
   });
 }
 addOpsRows(frac_ops,'sf');
-// Subtotal FRAC
 if(frac_ops.length){
   const tf=frac_ops.reduce((a,o)=>{a.fat+=o.fat;a.res+=o.res;a.ctes+=o.ctes;a.ctot+=o.ctot;a.co+=o.co;a.peso+=o.peso;return a;},{fat:0,res:0,ctes:0,ctot:0,co:0,peso:0});
   const sr=document.createElement('tr'); sr.className='sf';
@@ -600,7 +546,6 @@ if(ded_ops.length){
     <td colspan="10"></td><td><b>${td2.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</b></td><td></td>`;
   rb.appendChild(sr);
 }
-// Grand total
 const gt=ops.reduce((a,o)=>{a.fat+=o.fat;a.res+=o.res;a.ctes+=o.ctes;a.ctot+=o.ctot;a.co+=o.co;a.peso+=o.peso;return a;},{fat:0,res:0,ctes:0,ctot:0,co:0,peso:0});
 const gtr=document.createElement('tr'); gtr.className='gt';
 gtr.innerHTML=`<td>TOTAL</td><td class="l">CONSOLIDADO GERAL</td><td>${gt.ctes}</td>
@@ -609,27 +554,22 @@ gtr.innerHTML=`<td>TOTAL</td><td class="l">CONSOLIDADO GERAL</td><td>${gt.ctes}<
   <td colspan="10"></td><td>${gt.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td></td>`;
 rb.appendChild(gtr);
 
-// ── Por Cliente table
 const cb=document.getElementById('cliBody');
 clientes.forEach((c,i)=>{
-  const tr=document.createElement('tr');
-  tr.className=i%2===0?'ev':'';
+  const tr=document.createElement('tr'); tr.className=i%2===0?'ev':'';
   const renBadge=c.ren==='P'?'<span class="b bg">🟢 Positiva</span>':c.ren==='N'?'<span class="b br">🔴 Negativa</span>':'<span class="b bo">🟡 Baixa</span>';
   tr.innerHTML=`<td class="l">${i+1}</td><td class="l">${c.cli}</td><td>${c.ctes}</td>
     <td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td>
-    <td class="${cls(c.ll)}">${BR(c.ll)}</td>
-    <td class="${cls(c.mg)}">${PCT(c.mg)}</td>
+    <td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td>
     <td>${c.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
     <td>${BR(c.out)}</td><td>${renBadge}</td>`;
   cb.appendChild(tr);
 });
 
-// ── Ranking CTEs
-function fillRankTable(tbodyId, data){
+function fillRankTable(tbodyId,data){
   const tb=document.getElementById(tbodyId);
   data.forEach((c,i)=>{
-    const tr=document.createElement('tr');
-    tr.className=i%2===0?'ev':'';
+    const tr=document.createElement('tr'); tr.className=i%2===0?'ev':'';
     tr.innerHTML=`<td>${i+1}</td><td class="l">${c.op}</td><td class="l">${c.cli}</td>
       <td class="l">${c.dest}</td><td class="l">${c.serv}</td>
       <td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td>
@@ -640,11 +580,9 @@ function fillRankTable(tbodyId, data){
 fillRankTable('top5',top5cte);
 fillRankTable('bot5',bot5cte);
 
-// ── Todos os CTEs
 const ab=document.getElementById('allCTE');
 allCTEs.forEach((c,i)=>{
-  const tr=document.createElement('tr');
-  tr.className=i%2===0?'ev':'';
+  const tr=document.createElement('tr'); tr.className=i%2===0?'ev':'';
   tr.innerHTML=`<td>${i+1}</td><td class="l">${c.op}</td><td class="l">${c.cli}</td>
     <td class="l">${c.dest}</td><td class="l">${c.serv}</td><td>${c.min}</td>
     <td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td>
@@ -653,90 +591,29 @@ allCTEs.forEach((c,i)=>{
   ab.appendChild(tr);
 });
 
-// ── Veículos table
 const vb=document.getElementById('veiBody');
 ops.forEach((o,i)=>{
-  const tr=document.createElement('tr');
-  tr.className=i%2===0?'ev':'';
-  const difHtml=o.dif<0?`<span class="neg">-R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`
-    :`<span class="pos">+R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;
+  const tr=document.createElement('tr'); tr.className=i%2===0?'ev':'';
+  const difHtml=o.dif<0?`<span class="neg">-R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`:`<span class="pos">+R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;
   tr.innerHTML=`<td class="l">${o.nome}</td><td>${o.vei}</td>
     <td>—</td><td>${o.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td>
-    <td>${occBar(o.ocup)}</td>
-    <td class="l wrap2" style="max-width:200px">${o.trecho}</td>
-    <td>${BR(o.ctot)}</td><td>${BR(o.tgt)}</td><td>${difHtml}</td>
-    <td>${stBadge(o.st)}</td>
-    <td class="${cls(o.res)}">${BR(o.res)}</td>
-    <td class="${cls(o.mg)}">${PCT(o.mg)}</td>
+    <td>${occBar(o.ocup)}</td><td class="l wrap2" style="max-width:200px">${o.trecho}</td>
+    <td>${BR(o.ctot)}</td><td>${BR(o.tgt)}</td><td>${difHtml}</td><td>${stBadge(o.st)}</td>
+    <td class="${cls(o.res)}">${BR(o.res)}</td><td class="${cls(o.mg)}">${PCT(o.mg)}</td>
     <td class="l">${o.rt}</td><td class="l">${o.re}</td>`;
   vb.appendChild(tr);
 });
 
-// ── CHARTS ─────────────────────────────────────────────────────────────────
-const NAMES = ops.map(o=>o.nome);
-const COLS_RES = ops.map(o=>o.res>0?'rgba(0,97,0,.8)':'rgba(156,0,6,.8)');
-const COLS_RES_BD = ops.map(o=>o.res>0?'#006100':'#9C0006');
-
-// 1. Resultado bar
-new Chart(document.getElementById('resChart'),{
-  type:'bar',
-  data:{labels:NAMES,datasets:[{label:'Resultado Op. (R$)',data:ops.map(o=>o.res),
-    backgroundColor:COLS_RES,borderColor:COLS_RES_BD,borderWidth:1}]},
-  options:{responsive:true,plugins:{legend:{display:false},
-    tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},
-    scales:{y:{ticks:{callback:v=>BR(v),font:{size:9}}},x:{ticks:{font:{size:10}}}}
-  }
+const NAMES=ops.map(o=>o.nome);
+new Chart(document.getElementById('resChart'),{type:'bar',data:{labels:NAMES,datasets:[{label:'Resultado Op. (R$)',data:ops.map(o=>o.res),backgroundColor:ops.map(o=>o.res>0?'rgba(0,97,0,.8)':'rgba(156,0,6,.8)'),borderColor:ops.map(o=>o.res>0?'#006100':'#9C0006'),borderWidth:1}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},scales:{y:{ticks:{callback:v=>BR(v),font:{size:9}}},x:{ticks:{font:{size:10}}}}}
 });
-
-// 2. Margem bar
-new Chart(document.getElementById('mgChart'),{
-  type:'bar',
-  data:{labels:NAMES,datasets:[{label:'Margem %',data:ops.map(o=>+(o.mg*100).toFixed(2)),
-    backgroundColor:'rgba(46,95,170,.75)',borderColor:'#2E5FAA',borderWidth:1}]},
-  options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},
-    tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(2).replace('.',',')+' %'}}},
-    scales:{x:{ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:10}}}}
-  }
+new Chart(document.getElementById('mgChart'),{type:'bar',data:{labels:NAMES,datasets:[{label:'Margem %',data:ops.map(o=>+(o.mg*100).toFixed(2)),backgroundColor:'rgba(46,95,170,.75)',borderColor:'#2E5FAA',borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(2).replace('.',',')+' %'}}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:10}}}}}
 });
-
-// 3. Target donut
-const tgCounts=[3,1,3];
-new Chart(document.getElementById('targetChart'),{
-  type:'doughnut',
-  data:{
-    labels:['Dentro do Target','Abaixo do Target','Fora do Target'],
-    datasets:[{data:tgCounts,backgroundColor:['#BDD7EE','#C6EFCE','#FFC7CE'],
-      borderColor:['#2E5FAA','#006100','#9C0006'],borderWidth:2}]
-  },
-  options:{responsive:true,cutout:'60%',
-    plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},
-      tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw+' op.'}}}
-  }
+new Chart(document.getElementById('targetChart'),{type:'doughnut',data:{labels:['Dentro do Target','Abaixo do Target','Fora do Target'],datasets:[{data:[3,1,3],backgroundColor:['#BDD7EE','#C6EFCE','#FFC7CE'],borderColor:['#2E5FAA','#006100','#9C0006'],borderWidth:2}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw+' op.'}}}}
 });
-
-// 4. Top10 clientes bar
-new Chart(document.getElementById('cliChart'),{
-  type:'bar',
-  data:{labels:top10cli.map(c=>c.cli),datasets:[{label:'Lucro Líq. (R$)',data:top10cli.map(c=>c.ll),
-    backgroundColor:top10cli.map(c=>c.ll>0?'rgba(0,97,0,.75)':'rgba(156,0,6,.75)'),
-    borderColor:top10cli.map(c=>c.ll>0?'#006100':'#9C0006'),borderWidth:1}]},
-  options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},
-    tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},
-    scales:{x:{ticks:{callback:v=>BR(v),font:{size:9}}},y:{ticks:{font:{size:9}}}}
-  }
+new Chart(document.getElementById('cliChart'),{type:'bar',data:{labels:top10cli.map(c=>c.cli),datasets:[{label:'Lucro Líq. (R$)',data:top10cli.map(c=>c.ll),backgroundColor:top10cli.map(c=>c.ll>0?'rgba(0,97,0,.75)':'rgba(156,0,6,.75)'),borderColor:top10cli.map(c=>c.ll>0?'#006100':'#9C0006'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},scales:{x:{ticks:{callback:v=>BR(v),font:{size:9}}},y:{ticks:{font:{size:9}}}}}
 });
-
-// 5. Ocupação bar
-new Chart(document.getElementById('occChart'),{
-  type:'bar',
-  data:{labels:ops.map(o=>o.nome+' ('+o.vei+')'),
-    datasets:[{label:'Taxa Ocupação %',data:ops.map(o=>+(o.ocup*100).toFixed(1)),
-      backgroundColor:ops.map(o=>o.ocup>1?'rgba(156,0,6,.7)':o.ocup<0.5?'rgba(230,126,34,.7)':'rgba(0,97,0,.7)'),
-      borderColor:ops.map(o=>o.ocup>1?'#9C0006':o.ocup<0.5?'#e67e22':'#006100'),borderWidth:1}]},
-  options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},
-    tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(1).replace('.',',')+' %'}}},
-    scales:{x:{max:110,ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:9}}}}
-  }
+new Chart(document.getElementById('occChart'),{type:'bar',data:{labels:ops.map(o=>o.nome+' ('+o.vei+')'),datasets:[{label:'Taxa Ocupação %',data:ops.map(o=>+(o.ocup*100).toFixed(1)),backgroundColor:ops.map(o=>o.ocup>1?'rgba(156,0,6,.7)':o.ocup<0.5?'rgba(230,126,34,.7)':'rgba(0,97,0,.7)'),borderColor:ops.map(o=>o.ocup>1?'#9C0006':o.ocup<0.5?'#e67e22':'#006100'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(1).replace('.',',')+' %'}}},scales:{x:{max:110,ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:9}}}}}
 });
 </script>
 </body>
