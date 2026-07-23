@@ -1,328 +1,344 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Análise de Terceiros — 20/07/2026</title>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Análise de Terceiros — 20/07/2026 | Portoex</title>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
 <style>
-  :root {
-    --navy: #1F3864; --blue: #2E5FAA; --light-blue: #BDD7EE;
-    --green: #006100; --green-bg: #C6EFCE;
-    --red: #9C0006; --red-bg: #FFC7CE;
-    --orange: #7D4700; --orange-bg: #FFE699;
-    --bg: #F0F4F8; --card: #FFFFFF; --text: #1a1a2e; --sub: #64748b;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'Segoe UI', Arial, sans-serif; background: var(--bg); color: var(--text); }
-
-  /* HEADER */
-  .header { background: linear-gradient(135deg, var(--navy) 0%, var(--blue) 100%); color: white; padding: 24px 32px; display: flex; align-items: center; justify-content: space-between; box-shadow: 0 4px 20px rgba(31,56,100,.3); }
-  .header-left h1 { font-size: 22px; font-weight: 700; letter-spacing: .5px; }
-  .header-left p { font-size: 13px; opacity: .8; margin-top: 4px; }
-  .header-badge { background: rgba(255,255,255,.15); border: 1px solid rgba(255,255,255,.3); border-radius: 8px; padding: 8px 16px; text-align: center; }
-  .header-badge .date { font-size: 20px; font-weight: 700; }
-  .header-badge .label { font-size: 11px; opacity: .7; margin-top: 2px; }
-
-  /* LAYOUT */
-  .main { max-width: 1300px; margin: 0 auto; padding: 28px 24px; }
-
-  /* KPI CARDS */
-  .kpis { display: grid; grid-template-columns: repeat(5, 1fr); gap: 16px; margin-bottom: 28px; }
-  .kpi { background: var(--card); border-radius: 12px; padding: 20px; box-shadow: 0 2px 12px rgba(0,0,0,.07); border-top: 4px solid var(--blue); }
-  .kpi .label { font-size: 11px; font-weight: 600; color: var(--sub); text-transform: uppercase; letter-spacing: .8px; }
-  .kpi .value { font-size: 26px; font-weight: 700; color: var(--navy); margin-top: 8px; line-height: 1; }
-  .kpi .sub { font-size: 12px; color: var(--sub); margin-top: 6px; }
-  .kpi.green { border-top-color: #006100; } .kpi.green .value { color: #006100; }
-  .kpi.orange { border-top-color: #D97706; }
-
-  /* GRID 2 cols */
-  .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-bottom: 20px; }
-  .grid3 { display: grid; grid-template-columns: 2fr 1fr; gap: 20px; margin-bottom: 20px; }
-
-  /* CARD */
-  .card { background: var(--card); border-radius: 12px; padding: 24px; box-shadow: 0 2px 12px rgba(0,0,0,.07); }
-  .card-title { font-size: 14px; font-weight: 700; color: var(--navy); margin-bottom: 18px; display: flex; align-items: center; gap: 8px; }
-  .card-title .icon { font-size: 18px; }
-
-  /* TABELA DE OPERADORES */
-  table { width: 100%; border-collapse: collapse; font-size: 13px; }
-  thead th { background: var(--navy); color: white; padding: 10px 12px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .5px; white-space: nowrap; }
-  tbody tr { border-bottom: 1px solid #EEF2F7; transition: background .15s; }
-  tbody tr:hover { background: #F8FAFC; }
-  tbody td { padding: 10px 12px; vertical-align: middle; }
-
-  /* STATUS BADGES */
-  .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 700; white-space: nowrap; }
-  .badge-fora { background: var(--red-bg); color: var(--red); }
-  .badge-dentro { background: var(--green-bg); color: var(--green); }
-  .badge-abaixo { background: #DBEAFE; color: #1D4ED8; }
-
-  /* RESULTADO COLORIDO */
-  .res-pos { color: var(--green); font-weight: 700; }
-  .res-neg { color: var(--red); font-weight: 700; }
-  .mg-pos { color: var(--green); font-size: 12px; }
-  .mg-neg { color: var(--red); font-size: 12px; }
-
-  /* TIPO TAG */
-  .tipo-frac { background: #DBEAFE; color: #1E40AF; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-  .tipo-ded { background: #FEF3C7; color: #92400E; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; }
-
-  /* TARGET STATUS LISTA */
-  .status-list { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-top: 8px; }
-  .status-item { display: flex; align-items: center; gap: 12px; }
-  .status-dot { width: 12px; height: 12px; border-radius: 50%; flex-shrink: 0; }
-  .status-info { flex: 1; }
-  .status-name { font-size: 13px; font-weight: 600; }
-  .status-bar-wrap { background: #EEF2F7; border-radius: 4px; height: 6px; margin-top: 4px; overflow: hidden; }
-  .status-bar { height: 100%; border-radius: 4px; }
-
-  /* FOOTER */
-  .footer { text-align: center; padding: 20px; font-size: 12px; color: var(--sub); }
+  :root{--navy:#1F3864;--blue:#2E5FAA;--lbl:#BDD7EE;--pale:#E9F0F7;--green:#006100;--gbg:#C6EFCE;--red:#9C0006;--rbg:#FFC7CE;--orf:#7D4700;--obg:#FFE699;--wht:#fff;--gry:#f5f7fb;--bdr:#d0d9e8;--txt:#1a2940}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:var(--txt)}
+  header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(31,56,100,.3)}
+  .logo{font-size:19px;font-weight:700;letter-spacing:1px}.sub{font-size:11px;opacity:.8;margin-top:3px}
+  .hdr-dates{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+  .dtbadge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:5px 14px;font-size:12px;font-weight:600;white-space:nowrap}
+  .dtbadge span.lbl{opacity:.8;font-weight:400;margin-right:5px}
+  .kpi-strip{display:flex;gap:12px;padding:16px 24px;background:#fff;border-bottom:1px solid var(--bdr);flex-wrap:wrap}
+  .kpi{flex:1;min-width:130px;padding:12px 16px;background:var(--gry);border-radius:9px;border-left:4px solid var(--blue)}
+  .kpi.k0{border-left-color:var(--navy)}.kpi.k1{border-left-color:#27ae60}.kpi.k2{border-left-color:#2E5FAA}.kpi.k3{border-left-color:#e67e22}.kpi.k4{border-left-color:#8e44ad}.kpi.k5{border-left-color:#16a085}
+  .kl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#888;font-weight:600}
+  .kv{font-size:20px;font-weight:700;color:var(--navy);margin-top:3px;line-height:1.1}.ks{font-size:11px;color:#999;margin-top:2px}
+  .wrap{max-width:1380px;margin:0 auto;padding:20px 22px}
+  .sh{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:var(--navy);margin:20px 0 12px;text-transform:uppercase;letter-spacing:.5px}
+  .sh::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--lbl),transparent)}
+  .g2{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:18px}
+  .g3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:15px;margin-bottom:18px}
+  .card{background:#fff;border-radius:10px;padding:16px 18px;box-shadow:0 2px 8px rgba(31,56,100,.07)}
+  .ctitle{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px}
+  .tw{overflow-x:auto;border-radius:10px;box-shadow:0 2px 8px rgba(31,56,100,.07);margin-bottom:20px}
+  table{width:100%;border-collapse:collapse;background:#fff;font-size:11.5px}
+  thead th{background:var(--navy);color:#fff;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.4px;text-align:center;white-space:nowrap;position:sticky;top:0;z-index:2}
+  th.l{text-align:left}
+  tbody tr{border-bottom:1px solid #eef1f7}tbody tr:hover{background:var(--pale)}tbody tr:last-child{border-bottom:none}
+  td{padding:7px 10px;text-align:center;white-space:nowrap}td.l{text-align:left;font-weight:600;color:var(--navy)}
+  td.wrap2{text-align:left;white-space:normal;max-width:200px;font-size:10.5px}
+  tr.sf td{background:#DEEBF7;font-weight:700;color:#00376E}tr.sd td{background:#FFF2CC;font-weight:700;color:var(--orf)}
+  tr.gt td{background:var(--navy);color:#fff;font-weight:700}tr.ev td{background:#f9fbfd}
+  .b{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+  .bg{background:var(--gbg);color:var(--green)}.br{background:var(--rbg);color:var(--red)}.bo{background:var(--obg);color:var(--orf)}.bb{background:var(--lbl);color:var(--navy)}.bgy{background:#e8e8e8;color:#555}
+  .pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}
+  .occ-wrap{display:flex;align-items:center;gap:5px;justify-content:center}
+  .occ-t{width:52px;height:6px;background:#e0e0e0;border-radius:4px;overflow:hidden}.occ-f{height:100%;border-radius:4px}
+  @media(max-width:1000px){.g3{grid-template-columns:1fr 1fr}}@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}.kpi-strip{gap:8px}}
 </style>
 </head>
 <body>
-
-<div class="header">
-  <div class="header-left">
-    <h1>🚚 Análise de Terceiros — Portoex</h1>
-    <p>Fechamento diário de operadores agregados</p>
+<header>
+  <div><div class="logo">PORTOEX LOGÍSTICA</div><div class="sub">Painel de Análise de Terceiros</div></div>
+  <div class="hdr-dates">
+    <div class="dtbadge"><span class="lbl">DATA DA OPERAÇÃO</span>20/07/2026</div>
+    <div class="dtbadge"><span class="lbl">DATA DA ANÁLISE</span>23/07/2026</div>
   </div>
-  <div class="header-badge">
-    <div class="date">20/07/2026</div>
-    <div class="label">Data de referência</div>
-  </div>
+</header>
+<div class="kpi-strip">
+  <div class="kpi k0"><div class="kl">Faturamento Total</div><div class="kv">R$ 63.474,14</div><div class="ks">6 viagens · 117 CTEs</div></div>
+  <div class="kpi k1"><div class="kl">Resultado Operacional</div><div class="kv" style="color:#006100">R$ 8.119,59</div><div class="ks">Margem geral: 12,79%</div></div>
+  <div class="kpi k2"><div class="kl">Fracionado (3 viagens)</div><div class="kv">R$ 46.821,89</div><div class="ks">Res R$ 7.377,15 · 15,76%</div></div>
+  <div class="kpi k3"><div class="kl">Dedicado (3 viagens)</div><div class="kv">R$ 16.652,25</div><div class="ks">Res R$ 742,44 · 4,46%</div></div>
+  <div class="kpi k4"><div class="kl">Status Target</div><div class="kv">3✔ / 3✘</div><div class="ks">Dentro/Abaixo · Fora do target</div></div>
+  <div class="kpi k5"><div class="kl">C.Transf+Entrega Total</div><div class="kv">R$ 33.382,82</div><div class="ks">Peso: 50.872,00 kg</div></div>
 </div>
-
-<div class="main">
-
-  <!-- KPI CARDS -->
-  <div class="kpis">
-    <div class="kpi">
-      <div class="label">Faturamento</div>
-      <div class="value">R$ 84,3K</div>
-      <div class="sub">8 operadores</div>
-    </div>
-    <div class="kpi green">
-      <div class="label">Resultado Op.</div>
-      <div class="value">R$ 27,5K</div>
-      <div class="sub">+R$ 27.538,83</div>
-    </div>
-    <div class="kpi green">
-      <div class="label">Margem</div>
-      <div class="value">32,65%</div>
-      <div class="sub">Consolidado</div>
-    </div>
-    <div class="kpi">
-      <div class="label">Nº CTEs</div>
-      <div class="value">74</div>
-      <div class="sub">Fracionado: 70 | Ded: 4</div>
-    </div>
-    <div class="kpi orange">
-      <div class="label">Fora do Target</div>
-      <div class="value">2</div>
-      <div class="sub">Robson · Giovane</div>
-    </div>
+<div class="wrap">
+  <div class="sh">📊 Visão Geral por Operador</div>
+  <div class="g3">
+    <div class="card"><div class="ctitle">Resultado Operacional por Operador (R$)</div><canvas id="resChart" height="160"></canvas></div>
+    <div class="card"><div class="ctitle">Margem por Operador (%)</div><canvas id="mgChart" height="160"></canvas></div>
+    <div class="card"><div class="ctitle">Status do Target</div><canvas id="targetChart" height="160"></canvas></div>
   </div>
-
-  <!-- CHARTS ROW -->
-  <div class="grid3" style="margin-bottom:20px;">
-
-    <!-- BAR CHART - Faturamento x Resultado -->
-    <div class="card">
-      <div class="card-title"><span class="icon">📊</span> Faturamento vs Resultado por Operador</div>
-      <canvas id="chartBar" height="220"></canvas>
-    </div>
-
-    <!-- STATUS DONUT -->
-    <div class="card">
-      <div class="card-title"><span class="icon">🎯</span> Status por Target</div>
-      <canvas id="chartDonut" height="180"></canvas>
-      <ul class="status-list" style="margin-top:16px;">
-        <li class="status-item">
-          <div class="status-dot" style="background:#006100;"></div>
-          <div class="status-info">
-            <div class="status-name">Dentro do Target — <b>5</b></div>
-            <div class="status-bar-wrap"><div class="status-bar" style="background:#006100;width:62.5%"></div></div>
-          </div>
-        </li>
-        <li class="status-item">
-          <div class="status-dot" style="background:#1D4ED8;"></div>
-          <div class="status-info">
-            <div class="status-name">Abaixo do Target — <b>1</b></div>
-            <div class="status-bar-wrap"><div class="status-bar" style="background:#1D4ED8;width:12.5%"></div></div>
-          </div>
-        </li>
-        <li class="status-item">
-          <div class="status-dot" style="background:#9C0006;"></div>
-          <div class="status-info">
-            <div class="status-name">Fora do Target — <b>2</b></div>
-            <div class="status-bar-wrap"><div class="status-bar" style="background:#9C0006;width:25%"></div></div>
-          </div>
-        </li>
-      </ul>
-    </div>
+  <div class="sh">👥 Por Cliente · 🚚 Ocupação</div>
+  <div class="g2">
+    <div class="card"><div class="ctitle">Top 10 Clientes — Lucro Líquido (R$)</div><canvas id="cliChart" height="160"></canvas></div>
+    <div class="card"><div class="ctitle">Taxa de Ocupação por Veículo (%)</div><canvas id="occChart" height="160"></canvas></div>
   </div>
-
-  <!-- TABELA OPERADORES -->
-  <div class="card" style="margin-bottom:20px;">
-    <div class="card-title"><span class="icon">👥</span> Detalhamento por Operador</div>
-    <table>
-      <thead>
-        <tr>
-          <th>Tipo</th><th>Operador</th><th>CTEs</th>
-          <th>Faturamento</th><th>C. Transf+Entrega</th><th>C. Outros</th>
-          <th>Resultado</th><th>Margem</th>
-          <th>Veículo</th><th>Trecho</th>
-          <th>Target</th><th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td><span class="tipo-ded">DEDICADO</span></td><td><b>Robson</b></td><td>1</td>
-          <td>R$ 8.700,00</td><td>R$ 6.000,00</td><td>R$ 0,00</td>
-          <td class="res-neg">R$ -9,36</td><td class="mg-neg">-0,11%</td>
-          <td>Carreta</td><td style="font-size:11px;color:#64748b;">Itajai × Guarulhos</td>
-          <td>R$ 5.500</td><td><span class="badge badge-fora">FORA</span></td>
-        </tr>
-        <tr>
-          <td><span class="tipo-ded">DEDICADO</span></td><td><b>Aldenir</b></td><td>1</td>
-          <td>R$ 3.669,65</td><td>R$ 1.500,00</td><td>R$ 3,39</td>
-          <td class="res-pos">R$ 1.113,21</td><td class="mg-pos">30,34%</td>
-          <td>3/4</td><td style="font-size:11px;color:#64748b;">Itajai × Curitiba</td>
-          <td>R$ 1.500</td><td><span class="badge badge-dentro">DENTRO</span></td>
-        </tr>
-        <tr>
-          <td><span class="tipo-ded">DEDICADO</span></td><td><b>Duarte</b></td><td>1</td>
-          <td>R$ 2.653,96</td><td>R$ 400,00</td><td>R$ 2,47</td>
-          <td class="res-pos">R$ 1.606,36</td><td class="mg-pos">60,53%</td>
-          <td>Fiorino</td><td style="font-size:11px;color:#64748b;">SP × SP</td>
-          <td>R$ 400</td><td><span class="badge badge-dentro">DENTRO</span></td>
-        </tr>
-        <tr>
-          <td><span class="tipo-ded">DEDICADO</span></td><td><b>Gabriel</b></td><td>1</td>
-          <td>R$ 3.088,11</td><td>R$ 1.800,00</td><td>R$ 0,00</td>
-          <td class="res-pos">R$ 114,63</td><td class="mg-pos">3,71%</td>
-          <td>Fiorino</td><td style="font-size:11px;color:#64748b;">Novo Hamburgo × Itajaí</td>
-          <td>R$ 1.800</td><td><span class="badge badge-dentro">DENTRO</span></td>
-        </tr>
-        <tr>
-          <td><span class="tipo-frac">FRACIONADO</span></td><td><b>Giovane</b></td><td>2</td>
-          <td>R$ 208,34</td><td>R$ 450,00</td><td>R$ 0,00</td>
-          <td class="res-neg">R$ -107,58</td><td class="mg-neg">-51,64%</td>
-          <td>Van</td><td style="font-size:11px;color:#64748b;">Itajaí × Itajaí</td>
-          <td>R$ 350</td><td><span class="badge badge-fora">FORA</span></td>
-        </tr>
-        <tr style="background:#F0FFF4;">
-          <td><span class="tipo-frac">FRACIONADO</span></td><td><b>Ricardo</b></td><td>37</td>
-          <td>R$ 53.287,04</td><td>R$ 14.088,55</td><td>R$ 651,21</td>
-          <td class="res-pos">R$ 23.158,62</td><td class="mg-pos">43,46%</td>
-          <td>Carreta</td><td style="font-size:11px;color:#64748b;">Itajaí × São Paulo</td>
-          <td>R$ 5.100</td><td><span class="badge badge-dentro">DENTRO</span></td>
-        </tr>
-        <tr>
-          <td><span class="tipo-frac">FRACIONADO</span></td><td><b>Renato</b></td><td>17</td>
-          <td>R$ 3.371,90</td><td>R$ 2.244,96</td><td>R$ 0,03</td>
-          <td class="res-pos">R$ 185,86</td><td class="mg-pos">5,51%</td>
-          <td>Carreta</td><td style="font-size:11px;color:#64748b;">SP × Itajaí</td>
-          <td>R$ 1.850</td><td><span class="badge badge-dentro">DENTRO</span></td>
-        </tr>
-        <tr>
-          <td><span class="tipo-frac">FRACIONADO</span></td><td><b>Eloir</b></td><td>14</td>
-          <td>R$ 9.358,95</td><td>R$ 4.100,00</td><td>R$ 1.044,21</td>
-          <td class="res-pos">R$ 1.477,09</td><td class="mg-pos">15,78%</td>
-          <td>Truck</td><td style="font-size:11px;color:#64748b;">Itajaí × Várzea Paulista</td>
-          <td>R$ 4.300</td><td><span class="badge badge-abaixo">ABAIXO</span></td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr style="background:var(--navy);color:white;font-weight:700;">
-          <td colspan="2">TOTAL GERAL</td><td>74</td>
-          <td>R$ 84.337,95</td><td>R$ 30.583,51</td><td>R$ 1.701,31</td>
-          <td style="color:#86EFAC;">R$ 27.538,83</td><td style="color:#86EFAC;">32,65%</td>
-          <td colspan="4"></td>
-        </tr>
-      </tfoot>
-    </table>
+  <div class="sh">📋 Resumo Executivo — Detalhamento por Viagem</div>
+  <div class="tw"><table>
+    <thead><tr><th>Tipo</th><th class="l">Operador</th><th>CTEs</th><th>Faturamento</th><th>C.Transf.</th><th>C.Entrega</th><th>C.Transf+Entrega</th><th>C.Outros</th><th>Resultado Op.</th><th>Margem</th><th>Veículo</th><th>Taxa Ocup.</th><th class="l">Trecho</th><th>Target</th><th>Diferença</th><th>Status</th><th class="l">Clientes</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th><th>Peso (kg)</th><th>Custo/kg</th></tr></thead>
+    <tbody id="resBody"></tbody>
+  </table></div>
+  <div class="sh">👥 Rentabilidade por Cliente (31 clientes)</div>
+  <div class="tw"><table>
+    <thead><tr><th class="l">#</th><th class="l">Cliente</th><th>CTEs</th><th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th><th>Peso (kg)</th><th>C.Outros</th><th>Rentabilidade</th></tr></thead>
+    <tbody id="cliBody"></tbody>
+  </table></div>
+  <div class="sh">🏆 Ranking CTEs — Top 5 e Bottom 5</div>
+  <div class="g2">
+    <div class="tw" style="margin-bottom:0"><table>
+      <thead><tr><th colspan="9" style="background:#27ae60;text-align:left;padding:8px 12px">✅ TOP 5 — MELHORES LUCRO LÍQUIDO</th></tr>
+        <tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th></tr>
+      </thead><tbody id="top5"></tbody>
+    </table></div>
+    <div class="tw" style="margin-bottom:0"><table>
+      <thead><tr><th colspan="9" style="background:#c0392b;text-align:left;padding:8px 12px">❌ BOTTOM 5 — PIORES LUCRO LÍQUIDO</th></tr>
+        <tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th></tr>
+      </thead><tbody id="bot5"></tbody>
+    </table></div>
   </div>
-
-  <!-- MARGEM POR OPERADOR -->
-  <div class="card" style="margin-bottom:20px;">
-    <div class="card-title"><span class="icon">📈</span> Margem por Operador</div>
-    <canvas id="chartMargem" height="100"></canvas>
-  </div>
-
+  <div class="sh">📋 Todos os CTEs — Ordenados por Lucro Líquido (117 CTEs)</div>
+  <div class="tw" style="max-height:460px;overflow-y:auto"><table>
+    <thead><tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Minuta</th><th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th></tr></thead>
+    <tbody id="allCTE"></tbody>
+  </table></div>
+  <div class="sh">🚚 Veículos, Trechos & Target</div>
+  <div class="tw"><table>
+    <thead><tr><th class="l">Operador</th><th>Veículo</th><th>Peso Veíc.</th><th>Peso Fat.</th><th>Taxa Ocup.</th><th class="l">Trecho</th><th>C.Transf+Entrega</th><th>Target</th><th>Diferença</th><th>Status</th><th>Resultado Op.</th><th>Margem</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th></tr></thead>
+    <tbody id="veiBody"></tbody>
+  </table></div>
 </div>
-
-<div class="footer">
-  Portoex Logística · Análise de Terceiros · Gerado automaticamente pelo Craudin
-</div>
-
+<footer style="text-align:center;font-size:11px;color:#aaa;padding:16px">Portoex Logística · Análise de Terceiros 20/07/2026 · Gerado automaticamente</footer>
 <script>
-const operadores = ['Robson','Aldenir','Duarte','Gabriel','Giovane','Ricardo','Renato','Eloir'];
-const fat = [8700, 3669.65, 2653.96, 3088.11, 208.34, 53287.04, 3371.90, 9358.95];
-const res = [-9.36, 1113.21, 1606.36, 114.63, -107.58, 23158.62, 185.86, 1477.09];
-const mg  = [-0.11, 30.34, 60.53, 3.71, -51.64, 43.46, 5.51, 15.78];
-
-const resColors = res.map(v => v >= 0 ? 'rgba(0,97,0,0.8)' : 'rgba(156,0,6,0.8)');
-const mgColors  = mg.map(v => v >= 0 ? 'rgba(0,97,0,0.85)' : 'rgba(156,0,6,0.85)');
-
-// BAR CHART
-new Chart(document.getElementById('chartBar'), {
-  type: 'bar',
-  data: {
-    labels: operadores,
-    datasets: [
-      { label: 'Faturamento', data: fat, backgroundColor: 'rgba(46,95,170,0.6)', borderColor: 'rgba(46,95,170,1)', borderWidth: 1 },
-      { label: 'Resultado Op.', data: res, backgroundColor: resColors, borderColor: resColors, borderWidth: 1 }
-    ]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: true,
-    plugins: { legend: { position: 'top', labels: { font: { size: 12 } } },
-      tooltip: { callbacks: { label: ctx => `${ctx.dataset.label}: R$ ${ctx.raw.toLocaleString('pt-BR',{minimumFractionDigits:2})}` } }
-    },
-    scales: {
-      y: { ticks: { callback: v => `R$ ${(v/1000).toFixed(0)}K` }, grid: { color: '#EEF2F7' } },
-      x: { grid: { display: false } }
-    }
-  }
+const ops=[
+  {tipo:"FRACIONADO",nome:"Robson",ctes:18,fat:4420.81,ct:1600.00,ce:0.00,ctot:1600.00,co:0.00,res:1210.9100,mg:0.273911,vei:"Truck",ocup:0.209049,trecho:"S\u00e3o Paulo-Sp X Itajai-Sctruck",tgt:2500.00,dif:900.00,st:"ABAIXO DO TARGET",cli:"ANSELL BRAZIL L, LIGHT ENGINE IL, FRETE CLICK",rt:"ROBSON APARECIDO GOUVEA",re:"HELTON JOHN DA SILVA, LUIZ FELIPE FERNANDES DA",peso:2299.54,ckg:0.6958},
+  {tipo:"FECHADO",nome:"Rafael",ctes:1,fat:8700.00,ct:0.00,ce:6000.00,ctot:6000.00,co:0.00,res:-94.5300,mg:-0.010866,vei:"Carreta",ocup:1.000000,trecho:"Itajai-Sc X Guarulhos-Spcarreta",tgt:5500.00,dif:-500.00,st:"FORA DO TARGET",cli:"MAC FER INDUSTR",rt:"INDEFINIDO",re:"ALEMAOZINHO EXPRESS TRANS",peso:30001.90,ckg:0.0000},
+  {tipo:"FECHADO",nome:"William",ctes:1,fat:6000.00,ct:0.00,ce:1500.00,ctot:1500.00,co:858.00,res:-58.6700,mg:-0.009778,vei:"Van",ocup:1.000000,trecho:"Itajai-Sc X Colombo-Prvan",tgt:1400.00,dif:-100.00,st:"FORA DO TARGET",cli:"WEB NORDESTE LT",rt:"ELZINHA DE MORAIS SENA",re:"WILLIAM LUIZ WEEGE",peso:1344.00,ckg:0.0000},
+  {tipo:"FECHADO",nome:"Jefferson",ctes:1,fat:1952.25,ct:0.00,ce:400.00,ctot:400.00,co:0.00,res:895.6400,mg:0.458773,vei:"Van",ocup:0.133333,trecho:"S\u00e3o Paulo-Sp X S\u00e3o Paulo-Spfiorino",tgt:400.00,dif:0.00,st:"DENTRO DO TARGET",cli:"FORTE TRANSPORT",rt:"INDEFINIDO",re:"JEFFERSON VILELA DOS SANT",peso:160.00,ckg:0.0000},
+  {tipo:"FRACIONADO",nome:"Jean",ctes:2,fat:12800.00,ct:0.00,ce:11200.00,ctot:11200.00,co:0.00,res:757.6600,mg:0.059192,vei:"Truck",ocup:0.341393,trecho:"Itajai-Sc X Mantena-Mgtruck",tgt:10800.00,dif:-400.00,st:"FORA DO TARGET",cli:"TRUE MEN INDUST",rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA",peso:3755.32,ckg:0.0000},
+  {tipo:"FRACIONADO",nome:"Ederson",ctes:94,fat:29601.08,ct:5500.00,ce:7182.82,ctot:12682.82,co:103.74,res:5408.5800,mg:0.182716,vei:"Carreta",ocup:0.605056,trecho:"Itajai-Sc X S\u00e3o Paulo-Spcarreta",tgt:5500.00,dif:0.00,st:"DENTRO DO TARGET",cli:"SKO COMERCIO, I, HERCULES EQUIPA, ITACORDA INDUST",rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES, LUCAS ROBERTO XAVIER DE O",peso:13311.24,ckg:0.4132}
+];
+const clientes=[
+  {cli:"FORTE TRANSPORT",ctes:9,fat:4619.73,res:1584.24,ll:1584.24,mg:0.3429,peso:1377.10,out:0.00,ren:"P"},
+  {cli:"IND.E COM.LEAL",ctes:29,fat:3383.78,res:1203.09,ll:1175.05,mg:0.3473,peso:893.05,out:0.00,ren:"P"},
+  {cli:"TRUE MEN INDUST",ctes:2,fat:12800.00,res:757.66,ll:757.66,mg:0.0592,peso:3755.32,out:0.00,ren:"P"},
+  {cli:"STEEL SERV COME",ctes:1,fat:2355.45,res:713.87,ll:651.69,mg:0.2767,peso:109.70,out:101.04,ren:"P"},
+  {cli:"BATIKI COM IMPO",ctes:6,fat:2338.12,res:690.65,ll:628.92,mg:0.2690,peso:585.00,out:0.00,ren:"P"},
+  {cli:"COMEXPORT COMPA",ctes:1,fat:2837.31,res:539.09,ll:539.09,mg:0.1900,peso:987.21,out:0.00,ren:"P"},
+  {cli:"SKO COMERCIO, I",ctes:17,fat:4270.12,res:637.23,ll:533.22,mg:0.1249,peso:1601.11,out:0.00,ren:"P"},
+  {cli:"KUKA PRODUTOS I",ctes:2,fat:1117.83,res:344.45,ll:314.94,mg:0.2817,peso:545.79,out:0.00,ren:"P"},
+  {cli:"ITACORDA INDUST",ctes:7,fat:2487.25,res:313.74,ll:303.61,mg:0.1221,peso:2106.09,out:0.00,ren:"P"},
+  {cli:"STRATUS COMERCI",ctes:4,fat:1366.69,res:236.94,ll:236.94,mg:0.1734,peso:1614.31,out:0.00,ren:"P"},
+  {cli:"LAHUMAN DISTRIB",ctes:1,fat:2296.48,res:238.37,ll:218.16,mg:0.0950,peso:1090.00,out:0.00,ren:"P"},
+  {cli:"ANDRITZ HYDRO L",ctes:1,fat:566.17,res:185.02,ll:170.07,mg:0.3004,peso:223.00,out:0.00,ren:"P"},
+  {cli:"HAYA DO BRASIL",ctes:1,fat:691.49,res:185.71,ll:167.45,mg:0.2422,peso:23.00,out:0.00,ren:"P"},
+  {cli:"ANSELL BRAZIL L",ctes:3,fat:440.86,res:160.78,ll:160.78,mg:0.3647,peso:170.53,out:0.00,ren:"P"},
+  {cli:"MAC FER INDUSTR",ctes:12,fat:10380.34,res:193.26,ll:159.36,mg:0.0154,peso:31114.58,out:0.00,ren:"B"},
+  {cli:"SAINT PAULS IMP",ctes:3,fat:471.18,res:157.04,ll:144.60,mg:0.3069,peso:6.64,out:0.00,ren:"P"},
+  {cli:"SEGER COMERCIAL",ctes:1,fat:226.87,res:118.84,ll:118.84,mg:0.5238,peso:15.65,out:0.00,ren:"P"},
+  {cli:"IMAGINE DECOR I",ctes:1,fat:1233.98,res:90.01,ll:57.43,mg:0.0465,peso:610.53,out:0.00,ren:"B"},
+  {cli:"LIGHT ENGINE IL",ctes:1,fat:141.06,res:34.51,ll:30.79,mg:0.2183,peso:84.55,out:0.00,ren:"P"},
+  {cli:"IGP - CLINI COM",ctes:1,fat:371.55,res:29.07,ll:29.07,mg:0.0782,peso:56.60,out:0.00,ren:"P"},
+  {cli:"COFLEX INDUSTRI",ctes:1,fat:116.61,res:22.81,ll:22.81,mg:0.1956,peso:4.50,out:0.00,ren:"P"},
+  {cli:"LEE TRADING IMP",ctes:1,fat:395.56,res:25.22,ll:14.78,mg:0.0374,peso:225.00,out:0.00,ren:"B"},
+  {cli:"1823-1",ctes:1,fat:0.00,res:56.14,ll:0.00,mg:0.0000,peso:20.00,out:2.70,ren:"P"},
+  {cli:"FRETE CLICK",ctes:1,fat:161.14,res:-13.57,ll:-13.57,mg:-0.0842,peso:178.20,out:0.00,ren:"N"},
+  {cli:"HERCULES EQUIPA",ctes:2,fat:218.62,res:-17.98,ll:-17.98,mg:-0.0822,peso:81.80,out:0.00,ren:"N"},
+  {cli:"NEOPAN DO BRASI",ctes:1,fat:409.53,res:-23.57,ll:-23.57,mg:-0.0576,peso:421.82,out:0.00,ren:"N"},
+  {cli:"BLUE BAY COMERC",ctes:1,fat:198.92,res:-31.20,ll:-31.20,mg:-0.1568,peso:120.32,out:0.00,ren:"N"},
+  {cli:"62.878.450 ANDR",ctes:1,fat:255.90,res:-32.61,ll:-32.61,mg:-0.1274,peso:55.00,out:0.00,ren:"N"},
+  {cli:"WEB NORDESTE LT",ctes:1,fat:6000.00,res:-58.67,ll:-58.67,mg:-0.0098,peso:1344.00,out:858.00,ren:"N"},
+  {cli:"ASTERI DISTRIBU",ctes:1,fat:386.23,res:-76.91,ll:-76.91,mg:-0.1991,peso:300.00,out:0.00,ren:"N"},
+  {cli:"CLICK HOME COME",ctes:3,fat:935.37,res:-143.64,ll:-165.56,mg:-0.1770,peso:1151.60,out:0.00,ren:"N"}
+];
+const top10cli=[
+  {cli:"FORTE TRANSPORT",ctes:9,fat:4619.73,res:1584.24,ll:1584.24,mg:0.3429,peso:1377.10,out:0.00,ren:"P"},
+  {cli:"IND.E COM.LEAL",ctes:29,fat:3383.78,res:1203.09,ll:1175.05,mg:0.3473,peso:893.05,out:0.00,ren:"P"},
+  {cli:"TRUE MEN INDUST",ctes:2,fat:12800.00,res:757.66,ll:757.66,mg:0.0592,peso:3755.32,out:0.00,ren:"P"},
+  {cli:"STEEL SERV COME",ctes:1,fat:2355.45,res:713.87,ll:651.69,mg:0.2767,peso:109.70,out:101.04,ren:"P"},
+  {cli:"BATIKI COM IMPO",ctes:6,fat:2338.12,res:690.65,ll:628.92,mg:0.2690,peso:585.00,out:0.00,ren:"P"},
+  {cli:"COMEXPORT COMPA",ctes:1,fat:2837.31,res:539.09,ll:539.09,mg:0.1900,peso:987.21,out:0.00,ren:"P"},
+  {cli:"SKO COMERCIO, I",ctes:17,fat:4270.12,res:637.23,ll:533.22,mg:0.1249,peso:1601.11,out:0.00,ren:"P"},
+  {cli:"KUKA PRODUTOS I",ctes:2,fat:1117.83,res:344.45,ll:314.94,mg:0.2817,peso:545.79,out:0.00,ren:"P"},
+  {cli:"ITACORDA INDUST",ctes:7,fat:2487.25,res:313.74,ll:303.61,mg:0.1221,peso:2106.09,out:0.00,ren:"P"},
+  {cli:"STRATUS COMERCI",ctes:4,fat:1366.69,res:236.94,ll:236.94,mg:0.1734,peso:1614.31,out:0.00,ren:"P"}
+];
+const allCTEs=[
+  {op:"Jefferson",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_PER",min:"292331",fat:1952.25,res:895.64,ll:895.6400,mg:0.4588,rt:"INDEFINIDO",re:"JEFFERSON VILELA DOS SANT"},
+  {op:"Ederson",cli:"STEEL SERV COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292387",fat:2355.45,res:713.87,ll:651.6900,mg:0.2767,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"COMEXPORT COMPA",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292356",fat:2837.31,res:539.09,ll:539.0900,mg:0.1900,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Jean",cli:"TRUE MEN INDUST",dest:"RIO DE JANEIRO - RJ",serv:"PERSONALIZADO_L",min:"292398",fat:6400.00,res:378.83,ll:378.8300,mg:-0.0408,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
+  {op:"Jean",cli:"TRUE MEN INDUST",dest:"MANTENA - MG",serv:"PERSONALIZADO_L",min:"292399",fat:6400.00,res:378.83,ll:378.8300,mg:-0.0408,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"909",fat:579.91,res:365.49,ll:359.6900,mg:0.6203,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"ITACORDA INDUST",dest:"SUZANO - SP",serv:"EXPRESSO_250",min:"292269",fat:560.49,res:318.31,ll:313.3800,mg:0.5591,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"BATIKI COM IMPO",dest:"SAO JOSE DO RIO PRETO - SP",serv:"ECONOMICO_250",min:"292360",fat:453.38,res:233.69,ll:221.7200,mg:0.4890,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"LAHUMAN DISTRIB",dest:"RIBEIRAO PRETO - SP",serv:"ECONOMICO_250",min:"292358",fat:2296.48,res:238.37,ll:218.1600,mg:0.0950,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Ederson",cli:"BATIKI COM IMPO",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292365",fat:1003.46,res:235.91,ll:209.4200,mg:0.2087,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Ederson",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292404",fat:1176.71,res:204.18,ll:204.1800,mg:0.1735,rt:"R5 TRANSPORTADORA LTDA",re:"ANDRE LUIS DE OLIVEIRA"},
+  {op:"Robson",cli:"ANDRITZ HYDRO L",dest:"POMERODE - SC",serv:"ECONOMICO_250",min:"292421",fat:566.17,res:185.02,ll:170.0700,mg:0.3004,rt:"ROBSON APARECIDO GOUVEA",re:"RAFAEL DE FREITAS"},
+  {op:"Robson",cli:"KUKA PRODUTOS I",dest:"BIGUACU - SC",serv:"PERSONALIZADO",min:"292390",fat:328.88,res:178.53,ll:169.8500,mg:0.5164,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"HAYA DO BRASIL",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292371",fat:691.49,res:185.71,ll:167.4500,mg:0.2422,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"919",fat:282.31,res:169.14,ll:166.3200,mg:0.5891,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"STRATUS COMERCI",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1885",fat:469.80,res:145.94,ll:145.9400,mg:0.3106,rt:"R5 TRANSPORTADORA LTDA",re:""},
+  {op:"Robson",cli:"KUKA PRODUTOS I",dest:"ICARA - SC",serv:"PERSONALIZADO",min:"292391",fat:788.95,res:165.92,ll:145.0900,mg:0.1839,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"913",fat:230.55,res:130.51,ll:128.2000,mg:0.5561,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Robson",cli:"SEGER COMERCIAL",dest:"JOINVILLE - SC",serv:"ECONOMICO_250",min:"292378",fat:226.87,res:118.84,ll:118.8400,mg:0.5238,rt:"ROBSON APARECIDO GOUVEA",re:"DULCINELSON PEREIRA DOS S"},
+  {op:"Ederson",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292405",fat:384.29,res:104.60,ll:104.6000,mg:0.2722,rt:"R5 TRANSPORTADORA LTDA",re:"ANDRE LUIS DE OLIVEIRA"},
+  {op:"Ederson",cli:"SAINT PAULS IMP",dest:"CARAGUATATUBA - SP",serv:"ECONOMICO_250",min:"292341",fat:241.51,res:108.52,ll:102.1400,mg:0.4229,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"924",fat:337.99,res:105.39,ll:102.0100,mg:0.3018,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292416",fat:310.32,res:99.11,ll:99.1100,mg:0.3194,rt:"R5 TRANSPORTADORA LTDA",re:"ANDRE LUIS DE OLIVEIRA"},
+  {op:"Ederson",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292419",fat:283.26,res:98.54,ll:98.5400,mg:0.3479,rt:"R5 TRANSPORTADORA LTDA",re:"ANDRE LUIS DE OLIVEIRA"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"928",fat:171.75,res:93.15,ll:91.4300,mg:0.5323,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"908",fat:274.39,res:93.96,ll:91.2200,mg:0.3324,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"FORTE TRANSPORT",dest:"RIBEIRAO PRETO - SP",serv:"SUBCONTRATO_EXP",min:"292413",fat:198.51,res:82.41,ll:82.4100,mg:0.4151,rt:"DFL TRANSPORTES EIRELI",re:"GATTO LOG"},
+  {op:"Ederson",cli:"BATIKI COM IMPO",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292362",fat:333.62,res:89.48,ll:80.6700,mg:0.2418,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1887",fat:181.00,res:81.52,ll:76.7400,mg:0.4240,rt:"R5 TRANSPORTADORA LTDA",re:""},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"BOTUCATU - SP",serv:"ECONOMICO_250",min:"292392",fat:521.41,res:89.30,ll:75.5300,mg:0.1449,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292393",fat:351.32,res:71.78,ll:62.5100,mg:0.1779,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"927",fat:99.90,res:62.79,ll:61.7900,mg:0.6185,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Robson",cli:"ANSELL BRAZIL L",dest:"GARUVA - SC",serv:"EXPRESSO_250",min:"292194",fat:115.39,res:60.79,ll:60.7900,mg:0.5268,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"FORTE TRANSPORT",dest:"BELO HORIZONTE - MG",serv:"SUBCONTRATO_ECO",min:"292415",fat:124.26,res:59.03,ll:59.0300,mg:0.4751,rt:"DFL TRANSPORTES EIRELI",re:"AEROMINAS CARGAS EXPRESSA"},
+  {op:"Ederson",cli:"STRATUS COMERCI",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1884",fat:178.01,res:58.68,ll:58.6800,mg:0.3296,rt:"R5 TRANSPORTADORA LTDA",re:""},
+  {op:"Ederson",cli:"BATIKI COM IMPO",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292364",fat:268.03,res:64.90,ll:57.8200,mg:0.2157,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Ederson",cli:"IMAGINE DECOR I",dest:"AMERICANA - SP",serv:"ECONOMICO_250",min:"292337",fat:1233.98,res:90.01,ll:57.4300,mg:0.0465,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"SAO BERNARDO DO CAMPO - SP",serv:"ECONOMICO_250",min:"292388",fat:270.05,res:63.91,ll:56.7800,mg:0.2103,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Robson",cli:"ANSELL BRAZIL L",dest:"INDAIAL - SC",serv:"EXPRESSO_250",min:"292195",fat:168.88,res:56.48,ll:56.4800,mg:0.3344,rt:"ROBSON APARECIDO GOUVEA",re:"HELTON JOHN DA SILVA"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1869",fat:102.77,res:58.23,ll:55.5100,mg:0.5401,rt:"R5 TRANSPORTADORA LTDA",re:""},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"ASSIS - SP",serv:"ECONOMICO_250",min:"292386",fat:250.36,res:58.59,ll:51.9800,mg:0.2076,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"933",fat:100.47,res:52.27,ll:51.2700,mg:0.5103,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"MOCOCA - SP",serv:"ECONOMICO_250",min:"292146",fat:256.95,res:56.02,ll:49.2400,mg:0.1916,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Ederson",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292270",fat:219.89,res:49.97,ll:48.0300,mg:0.2184,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292313",fat:241.49,res:50.02,ll:47.8900,mg:0.1983,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"FARTURA - SP",serv:"ECONOMICO_250",min:"292382",fat:264.56,res:52.52,ll:45.5400,mg:0.1721,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"TAUBATE - SP",serv:"ECONOMICO_250",min:"292380",fat:265.68,res:51.85,ll:44.8400,mg:0.1688,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Robson",cli:"ANSELL BRAZIL L",dest:"GUARAMIRIM - SC",serv:"EXPRESSO_250",min:"292207",fat:156.59,res:43.51,ll:43.5100,mg:0.2779,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292266",fat:128.58,res:39.93,ll:38.8000,mg:0.3018,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"906",fat:108.59,res:38.45,ll:38.4500,mg:0.3541,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"905",fat:52.27,res:37.32,ll:37.3200,mg:0.7140,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"916",fat:103.51,res:37.10,ll:36.0600,mg:0.3484,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"931",fat:84.69,res:35.94,ll:35.0900,mg:0.4143,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"929",fat:67.07,res:34.31,ll:33.6400,mg:0.5016,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"BATIKI COM IMPO",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292361",fat:144.77,res:36.35,ll:32.5300,mg:0.2247,rt:"R5 TRANSPORTADORA LTDA",re:"EDSON SANTOS DA SILVA"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1890",fat:202.28,res:36.66,ll:31.3200,mg:0.1548,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Robson",cli:"LIGHT ENGINE IL",dest:"ITAJAI - SC",serv:"ECONOMICO_250",min:"292338",fat:141.06,res:34.51,ll:30.7900,mg:0.2183,rt:"ROBSON APARECIDO GOUVEA",re:"LUIZ FELIPE FERNANDES DA"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"926",fat:52.53,res:31.21,ll:30.6800,mg:0.5840,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"IGP - CLINI COM",dest:"JUNDIAI - SP",serv:"ECONOMICO_250",min:"292355",fat:371.55,res:29.07,ll:29.0700,mg:0.0782,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"OUROESTE - SP",serv:"ECONOMICO_250",min:"292379",fat:334.67,res:37.53,ll:28.6900,mg:0.0857,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"922",fat:58.39,res:28.49,ll:27.9100,mg:0.4780,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"907",fat:69.28,res:28.54,ll:27.8500,mg:0.4020,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1889",fat:110.50,res:30.67,ll:27.7500,mg:0.2511,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Ederson",cli:"BATIKI COM IMPO",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292363",fat:134.86,res:30.32,ll:26.7600,mg:0.1984,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292417",fat:97.49,res:26.70,ll:26.7000,mg:0.2739,rt:"R5 TRANSPORTADORA LTDA",re:"ANDRE LUIS DE OLIVEIRA"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"917",fat:109.79,res:27.17,ll:26.0700,mg:0.2375,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"HERCULES EQUIPA",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292164",fat:109.31,res:25.67,ll:25.6700,mg:0.2348,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1891",fat:135.41,res:28.19,ll:24.6100,mg:0.1817,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Ederson",cli:"COFLEX INDUSTRI",dest:"SAO BERNARDO DO CAMPO - SP",serv:"ECONOMICO_250",min:"292228",fat:116.61,res:22.81,ll:22.8100,mg:0.1956,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"STRATUS COMERCI",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1883",fat:511.97,res:22.59,ll:22.5900,mg:0.0441,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"SAINT PAULS IMP",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292346",fat:108.86,res:25.29,ll:22.4200,mg:0.2060,rt:"R5 TRANSPORTADORA LTDA",re:"MARCO ANTONIO RIBEIRO DA"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"INDAIATUBA - SP",serv:"ECONOMICO_250",min:"292376",fat:158.17,res:25.78,ll:21.6000,mg:0.1366,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"AMERICANA - SP",serv:"ECONOMICO_250",min:"292377",fat:160.27,res:25.75,ll:21.5200,mg:0.1343,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292381",fat:160.26,res:24.44,ll:20.2100,mg:0.1261,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"SAINT PAULS IMP",dest:"MOGI DAS CRUZES - SP",serv:"ECONOMICO_250",min:"292351",fat:120.81,res:23.23,ll:20.0400,mg:0.1659,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292375",fat:168.05,res:22.75,ll:18.3100,mg:0.1090,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1888",fat:101.90,res:20.83,ll:18.1300,mg:0.1779,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292373",fat:166.95,res:20.40,ll:15.9900,mg:0.0958,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"915",fat:28.95,res:16.25,ll:15.9600,mg:0.5513,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1873",fat:94.03,res:18.14,ll:15.6600,mg:0.1665,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292385",fat:168.72,res:19.25,ll:14.8000,mg:0.0877,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"LEE TRADING IMP",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292223",fat:395.56,res:25.22,ll:14.7800,mg:0.0374,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"930",fat:63.68,res:15.13,ll:14.4900,mg:0.2275,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"FORTE TRANSPORT",dest:"CAMPINAS - SP",serv:"SUBCONTRATO_EXP",min:"292411",fat:92.64,res:14.03,ll:14.0300,mg:0.1514,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"ITU - SP",serv:"ECONOMICO_250",min:"292372",fat:184.36,res:18.58,ll:13.7100,mg:0.0744,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1875",fat:106.57,res:14.90,ll:12.0800,mg:0.1134,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1874",fat:135.83,res:15.31,ll:11.7300,mg:0.0864,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1870",fat:113.22,res:14.00,ll:11.0200,mg:0.0973,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Ederson",cli:"STRATUS COMERCI",dest:"SAO BERNARDO DO CAMPO - SP",serv:"ECONOMICO_250",min:"1882",fat:206.91,res:9.73,ll:9.7300,mg:0.0470,rt:"R5 TRANSPORTADORA LTDA",re:"GUILHERME DA SILVA"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"912",fat:37.77,res:8.68,ll:8.6800,mg:0.2298,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"920",fat:11.66,res:7.22,ll:7.1000,mg:0.6089,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"918",fat:11.66,res:7.13,ll:7.0100,mg:0.6012,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"925",fat:54.19,res:6.01,ll:5.4700,mg:0.1009,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"932",fat:10.47,res:4.15,ll:4.0500,mg:0.3868,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292374",fat:257.93,res:9.14,ll:2.3300,mg:0.0090,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"1823-1",dest:"CTE NORMAL",serv:"6738.98",min:"1871",fat:0.00,res:56.14,ll:0.0000,mg:-0.5635,rt:"123.51",re:"60.33"},
+  {op:"Ederson",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292262",fat:114.59,res:-0.41,ll:-0.4100,mg:-0.0036,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"914",fat:1.96,res:-2.09,ll:-2.0900,mg:-1.0663,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Ederson",cli:"SKO COMERCIO, I",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292383",fat:330.41,res:-10.36,ll:-10.3600,mg:-0.0314,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Ederson",cli:"CLICK HOME COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292438",fat:104.93,res:-10.79,ll:-10.7900,mg:-0.1028,rt:"R5 TRANSPORTADORA LTDA",re:"EDSON SANTOS DA SILVA"},
+  {op:"Robson",cli:"FRETE CLICK",dest:"FLORIANOPOLIS - SC",serv:"ECONOMICO_250",min:"292367",fat:161.14,res:-13.57,ll:-13.5700,mg:-0.0842,rt:"ROBSON APARECIDO GOUVEA",re:"GILBERTO DE OLIVEIRA"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"923",fat:91.59,res:-16.19,ll:-16.1900,mg:-0.1768,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Robson",cli:"NEOPAN DO BRASI",dest:"BLUMENAU - SC",serv:"PERSONALIZADO",min:"292389",fat:409.53,res:-23.57,ll:-23.5700,mg:-0.0576,rt:"ROBSON APARECIDO GOUVEA",re:"RAFAEL DE FREITAS"},
+  {op:"Ederson",cli:"CLICK HOME COME",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292441",fat:192.83,res:-19.84,ll:-24.9300,mg:-0.1293,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1872",fat:396.83,res:-30.66,ll:-30.6600,mg:-0.0773,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Ederson",cli:"BLUE BAY COMERC",dest:"CAIEIRAS - SP",serv:"ECONOMICO_250",min:"292339",fat:198.92,res:-31.20,ll:-31.2000,mg:-0.1568,rt:"R5 TRANSPORTADORA LTDA",re:"JURACI FERREIRA DOS SANTO"},
+  {op:"Ederson",cli:"62.878.450 ANDR",dest:"MOCOCA - SP",serv:"ECONOMICO_250",min:"292279",fat:255.90,res:-32.61,ll:-32.6100,mg:-0.1274,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Ederson",cli:"ITACORDA INDUST",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292209",fat:427.41,res:-39.77,ll:-39.7700,mg:-0.0930,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Ederson",cli:"HERCULES EQUIPA",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292165",fat:109.31,res:-43.65,ll:-43.6500,mg:-0.3993,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"921",fat:53.32,res:-46.44,ll:-46.4400,mg:-0.8710,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"William",cli:"WEB NORDESTE LT",dest:"COLOMBO - PR",serv:"PERSONALIZADO_V",min:"292150",fat:6000.00,res:-58.67,ll:-58.6700,mg:-0.0098,rt:"ELZINHA DE MORAIS SENA",re:"WILLIAM LUIZ WEEGE"},
+  {op:"Ederson",cli:"ASTERI DISTRIBU",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292340",fat:386.23,res:-76.91,ll:-76.9100,mg:-0.1991,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"910",fat:199.94,res:-83.86,ll:-83.8600,mg:-0.4194,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"911",fat:35.20,res:-84.13,ll:-84.1300,mg:-2.3901,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Rafael",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"PERSONALIZADO_L",min:"1908",fat:8700.00,res:-94.53,ll:-94.5300,mg:-0.0109,rt:"INDEFINIDO",re:"ALEMAOZINHO EXPRESS TRANS"},
+  {op:"Ederson",cli:"ITACORDA INDUST",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292210",fat:794.80,res:-104.31,ll:-104.3100,mg:-0.1312,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Ederson",cli:"CLICK HOME COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292439",fat:637.61,res:-113.01,ll:-129.8400,mg:-0.2036,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"}
+];
+const top5cte=[
+  {op:"Jefferson",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_PER",min:"292331",fat:1952.25,res:895.64,ll:895.6400,mg:0.4588,rt:"INDEFINIDO",re:"JEFFERSON VILELA DOS SANT"},
+  {op:"Ederson",cli:"STEEL SERV COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292387",fat:2355.45,res:713.87,ll:651.6900,mg:0.2767,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Ederson",cli:"COMEXPORT COMPA",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292356",fat:2837.31,res:539.09,ll:539.0900,mg:0.1900,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Jean",cli:"TRUE MEN INDUST",dest:"RIO DE JANEIRO - RJ",serv:"PERSONALIZADO_L",min:"292398",fat:6400.00,res:378.83,ll:378.8300,mg:-0.0408,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
+  {op:"Jean",cli:"TRUE MEN INDUST",dest:"MANTENA - MG",serv:"PERSONALIZADO_L",min:"292399",fat:6400.00,res:378.83,ll:378.8300,mg:-0.0408,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"}
+];
+const bot5cte=[
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"910",fat:199.94,res:-83.86,ll:-83.8600,mg:-0.4194,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"911",fat:35.20,res:-84.13,ll:-84.1300,mg:-2.3901,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Rafael",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"PERSONALIZADO_L",min:"1908",fat:8700.00,res:-94.53,ll:-94.5300,mg:-0.0109,rt:"INDEFINIDO",re:"ALEMAOZINHO EXPRESS TRANS"},
+  {op:"Ederson",cli:"ITACORDA INDUST",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292210",fat:794.80,res:-104.31,ll:-104.3100,mg:-0.1312,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Ederson",cli:"CLICK HOME COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292439",fat:637.61,res:-113.01,ll:-129.8400,mg:-0.2036,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"}
+];
+function BR(v){return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
+function PCT(v){return (v*100).toFixed(2).replace('.',',')+'%'}
+function cls(v){return v>0?'pos':'neg'}
+function stBadge(st){
+  if(st.includes('FORA'))return'<span class="b br">FORA</span>';
+  if(st.includes('DENTRO'))return'<span class="b bb">DENTRO</span>';
+  if(st.includes('ABAIXO'))return'<span class="b bg">ABAIXO</span>';
+  return'<span class="b bgy">'+st+'</span>';
+}
+function occBar(v){
+  let pct=Math.min(v*100,100),c=v>1?'#e74c3c':v<0.5?'#f39c12':'#27ae60';
+  return'<div class="occ-wrap"><div class="occ-t"><div class="occ-f" style="width:'+pct.toFixed(0)+'%;background:'+c+'"></div></div><span style="font-size:10px">'+(v*100).toFixed(1)+'%</span></div>';
+}
+const rb=document.getElementById('resBody');
+const frac_ops=ops.filter(o=>o.tipo.includes('FRAC')),ded_ops=ops.filter(o=>!o.tipo.includes('FRAC'));
+function addOpsRows(arr,trClass){
+  arr.forEach(o=>{
+    const tr=document.createElement('tr');tr.className=trClass;
+    const tb=o.tipo.includes('FRAC')?'<span class="b bb">FRAC.</span>':'<span class="b bo">DED.</span>';
+    const dh=o.dif<0?`<span class="neg">R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`:`<span class="pos">R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;
+    tr.innerHTML=`<td>${tb}</td><td class="l">${o.nome}</td><td>${o.ctes}</td><td>${BR(o.fat)}</td><td>${BR(o.ct)}</td><td>${BR(o.ce)}</td><td>${BR(o.ctot)}</td><td>${BR(o.co)}</td><td class="${cls(o.res)}">${BR(o.res)}</td><td class="${cls(o.mg)}">${PCT(o.mg)}</td><td>${o.vei}</td><td>${occBar(o.ocup)}</td><td class="l wrap2" style="max-width:180px">${o.trecho}</td><td>${BR(o.tgt)}</td><td>${dh}</td><td>${stBadge(o.st)}</td><td class="l wrap2" style="max-width:160px;font-weight:400">${o.cli}</td><td class="l wrap2" style="max-width:160px;font-weight:400">${o.rt}</td><td class="l wrap2" style="max-width:160px;font-weight:400">${o.re}</td><td>${o.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${o.ckg>0?'R$ '+o.ckg.toFixed(3).replace('.',','):'—'}</td>`;
+    rb.appendChild(tr);
+  });
+}
+addOpsRows(frac_ops,'sf');
+if(frac_ops.length){const tf=frac_ops.reduce((a,o)=>{a.fat+=o.fat;a.res+=o.res;a.ctes+=o.ctes;a.ctot+=o.ctot;a.co+=o.co;a.peso+=o.peso;return a;},{fat:0,res:0,ctes:0,ctot:0,co:0,peso:0});const sr=document.createElement('tr');sr.className='sf';sr.innerHTML=`<td><b>FRAC.</b></td><td class="l"><b>SUBTOTAL FRACIONADO</b></td><td><b>${tf.ctes}</b></td><td><b>${BR(tf.fat)}</b></td><td colspan="2"></td><td><b>${BR(tf.ctot)}</b></td><td><b>${BR(tf.co)}</b></td><td class="${cls(tf.res)}"><b>${BR(tf.res)}</b></td><td class="${cls(tf.res/tf.fat)}"><b>${PCT(tf.res/tf.fat)}</b></td><td colspan="10"></td><td><b>${tf.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</b></td><td></td>`;rb.appendChild(sr);}
+addOpsRows(ded_ops,'sd');
+if(ded_ops.length){const td2=ded_ops.reduce((a,o)=>{a.fat+=o.fat;a.res+=o.res;a.ctes+=o.ctes;a.ctot+=o.ctot;a.co+=o.co;a.peso+=o.peso;return a;},{fat:0,res:0,ctes:0,ctot:0,co:0,peso:0});const sr=document.createElement('tr');sr.className='sd';sr.innerHTML=`<td><b>DED.</b></td><td class="l"><b>SUBTOTAL DEDICADO</b></td><td><b>${td2.ctes}</b></td><td><b>${BR(td2.fat)}</b></td><td colspan="2"></td><td><b>${BR(td2.ctot)}</b></td><td><b>${BR(td2.co)}</b></td><td class="${cls(td2.res)}"><b>${BR(td2.res)}</b></td><td class="${cls(td2.res/td2.fat)}"><b>${PCT(td2.res/td2.fat)}</b></td><td colspan="10"></td><td><b>${td2.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</b></td><td></td>`;rb.appendChild(sr);}
+const gt=ops.reduce((a,o)=>{a.fat+=o.fat;a.res+=o.res;a.ctes+=o.ctes;a.ctot+=o.ctot;a.co+=o.co;a.peso+=o.peso;return a;},{fat:0,res:0,ctes:0,ctot:0,co:0,peso:0});
+const gtr=document.createElement('tr');gtr.className='gt';gtr.innerHTML=`<td>TOTAL</td><td class="l">CONSOLIDADO GERAL</td><td>${gt.ctes}</td><td>${BR(gt.fat)}</td><td colspan="2"></td><td>${BR(gt.ctot)}</td><td>${BR(gt.co)}</td><td>${BR(gt.res)}</td><td>${PCT(gt.res/gt.fat)}</td><td colspan="10"></td><td>${gt.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td></td>`;rb.appendChild(gtr);
+const cb=document.getElementById('cliBody');
+clientes.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';const rb2=c.ren==='P'?'<span class="b bg">🟢 Positiva</span>':c.ren==='N'?'<span class="b br">🔴 Negativa</span>':'<span class="b bo">🟡 Baixa</span>';tr.innerHTML=`<td class="l">${i+1}</td><td class="l">${c.cli}</td><td>${c.ctes}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td><td>${c.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${BR(c.out)}</td><td>${rb2}</td>`;cb.appendChild(tr);});
+function fillRank(id,data){const tb=document.getElementById(id);data.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';tr.innerHTML=`<td>${i+1}</td><td class="l">${c.op}</td><td class="l">${c.cli}</td><td class="l">${c.dest}</td><td class="l">${c.serv}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td>`;tb.appendChild(tr);});}
+fillRank('top5',top5cte);fillRank('bot5',bot5cte);
+const ab=document.getElementById('allCTE');
+allCTEs.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';tr.innerHTML=`<td>${i+1}</td><td class="l">${c.op}</td><td class="l">${c.cli}</td><td class="l">${c.dest}</td><td class="l">${c.serv}</td><td>${c.min}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td><td class="l">${c.rt}</td><td class="l">${c.re}</td>`;ab.appendChild(tr);});
+const vb=document.getElementById('veiBody');
+ops.forEach((o,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';const dh=o.dif<0?`<span class="neg">-R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`:`<span class="pos">+R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;tr.innerHTML=`<td class="l">${o.nome}</td><td>${o.vei}</td><td>—</td><td>${o.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${occBar(o.ocup)}</td><td class="l wrap2" style="max-width:200px">${o.trecho}</td><td>${BR(o.ctot)}</td><td>${BR(o.tgt)}</td><td>${dh}</td><td>${stBadge(o.st)}</td><td class="${cls(o.res)}">${BR(o.res)}</td><td class="${cls(o.mg)}">${PCT(o.mg)}</td><td class="l">${o.rt}</td><td class="l">${o.re}</td>`;vb.appendChild(tr);});
+const NAMES=ops.map(o=>o.nome);
+new Chart(document.getElementById('resChart'),{type:'bar',data:{labels:NAMES,datasets:[{label:'Resultado Op. (R$)',data:ops.map(o=>o.res),backgroundColor:ops.map(o=>o.res>0?'rgba(0,97,0,.8)':'rgba(156,0,6,.8)'),borderColor:ops.map(o=>o.res>0?'#006100':'#9C0006'),borderWidth:1}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},scales:{y:{ticks:{callback:v=>BR(v),font:{size:9}}},x:{ticks:{font:{size:10}}}}}
 });
-
-// DONUT STATUS
-new Chart(document.getElementById('chartDonut'), {
-  type: 'doughnut',
-  data: {
-    labels: ['Dentro do Target', 'Abaixo do Target', 'Fora do Target'],
-    datasets: [{ data: [5, 1, 2], backgroundColor: ['#006100','#1D4ED8','#9C0006'], borderWidth: 2, borderColor: '#fff' }]
-  },
-  options: {
-    responsive: true, maintainAspectRatio: true,
-    plugins: { legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.raw} operador(es)` } }
-    },
-    cutout: '65%'
-  }
+new Chart(document.getElementById('mgChart'),{type:'bar',data:{labels:NAMES,datasets:[{label:'Margem %',data:ops.map(o=>+(o.mg*100).toFixed(2)),backgroundColor:ops.map(o=>o.mg<0?'rgba(156,0,6,.75)':'rgba(46,95,170,.75)'),borderColor:ops.map(o=>o.mg<0?'#9C0006':'#2E5FAA'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(2).replace('.',',')+' %'}}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:10}}}}}
 });
-
-// MARGEM HORIZONTAL BAR
-new Chart(document.getElementById('chartMargem'), {
-  type: 'bar',
-  data: {
-    labels: operadores,
-    datasets: [{ label: 'Margem (%)', data: mg, backgroundColor: mgColors, borderColor: mgColors, borderWidth: 1, borderRadius: 4 }]
-  },
-  options: {
-    indexAxis: 'y', responsive: true, maintainAspectRatio: true,
-    plugins: { legend: { display: false },
-      tooltip: { callbacks: { label: ctx => `Margem: ${ctx.raw.toFixed(2)}%` } }
-    },
-    scales: {
-      x: { ticks: { callback: v => `${v}%` }, grid: { color: '#EEF2F7' } },
-      y: { grid: { display: false } }
-    }
-  }
+new Chart(document.getElementById('targetChart'),{type:'doughnut',data:{labels:['Dentro do Target','Abaixo do Target','Fora do Target'],datasets:[{data:[2,1,3],backgroundColor:['#BDD7EE','#C6EFCE','#FFC7CE'],borderColor:['#2E5FAA','#006100','#9C0006'],borderWidth:2}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw+' op.'}}}}
 });
-</script>
-</body>
-</html>
+new Chart(document.getElementById('cliChart'),{type:'bar',data:{labels:top10cli.map(c=>c.cli),datasets:[{label:'Lucro Líq. (R$)',data:top10cli.map(c=>c.ll),backgroundColor:top10cli.map(c=>c.ll>0?'rgba(0,97,0,.75)':'rgba(156,0,6,.75)'),borderColor:top10cli.map(c=>c.ll>0?'#006100':'#9C0006'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},scales:{x:{ticks:{callback:v=>BR(v),font:{size:9}}},y:{ticks:{font:{size:9}}}}}
+});
+new Chart(document.getElementById('occChart'),{type:'bar',data:{labels:ops.map(o=>o.nome+' ('+o.vei+')'),datasets:[{label:'Taxa Ocupação %',data:ops.map(o=>+(o.ocup*100).toFixed(1)),backgroundColor:ops.map(o=>o.ocup>1?'rgba(156,0,6,.7)':o.ocup<0.5?'rgba(230,126,34,.7)':'rgba(0,97,0,.7)'),borderColor:ops.map(o=>o.ocup>1?'#9C0006':o.ocup<0.5?'#e67e22':'#006100'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(1).replace('.',',')+' %'}}},scales:{x:{max:110,ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:9}}}}}
+});
+</script></body></html>
