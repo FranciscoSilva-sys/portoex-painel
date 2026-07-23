@@ -51,12 +51,12 @@
   </div>
 </header>
 <div class="kpi-strip">
-  <div class="kpi k0"><div class="kl">Faturamento Total</div><div class="kv">R$ 63.474,14</div><div class="ks">6 viagens · 117 CTEs</div></div>
-  <div class="kpi k1"><div class="kl">Resultado Operacional</div><div class="kv" style="color:#006100">R$ 8.119,59</div><div class="ks">Margem geral: 12,79%</div></div>
-  <div class="kpi k2"><div class="kl">Fracionado (3 viagens)</div><div class="kv">R$ 46.821,89</div><div class="ks">Res R$ 7.377,15 · 15,76%</div></div>
+  <div class="kpi k0"><div class="kl">Faturamento Total</div><div class="kv">R$ 67.463,22</div><div class="ks">6 viagens · 132 CTEs</div></div>
+  <div class="kpi k1"><div class="kl">Resultado Operacional</div><div class="kv" style="color:#006100">R$ 7.512,20</div><div class="ks">Margem geral: 11,14%</div></div>
+  <div class="kpi k2"><div class="kl">Fracionado (3 viagens)</div><div class="kv">R$ 50.810,97</div><div class="ks">Res R$ 6.769,76 · 13,32%</div></div>
   <div class="kpi k3"><div class="kl">Dedicado (3 viagens)</div><div class="kv">R$ 16.652,25</div><div class="ks">Res R$ 742,44 · 4,46%</div></div>
   <div class="kpi k4"><div class="kl">Status Target</div><div class="kv">3✔ / 3✘</div><div class="ks">Dentro/Abaixo · Fora do target</div></div>
-  <div class="kpi k5"><div class="kl">C.Transf+Entrega Total</div><div class="kv">R$ 33.382,82</div><div class="ks">Peso: 50.872,00 kg</div></div>
+  <div class="kpi k5"><div class="kl">C.Transf+Entrega Total</div><div class="kv">R$ 33.382,82</div><div class="ks">Peso: 54.107,62 kg</div></div>
 </div>
 <div class="wrap">
   <div class="sh">📊 Visão Geral por Operador</div>
@@ -75,7 +75,7 @@
     <thead><tr><th>Tipo</th><th class="l">Operador</th><th>CTEs</th><th>Faturamento</th><th>C.Transf.</th><th>C.Entrega</th><th>C.Transf+Entrega</th><th>C.Outros</th><th>Resultado Op.</th><th>Margem</th><th>Veículo</th><th>Taxa Ocup.</th><th class="l">Trecho</th><th>Target</th><th>Diferença</th><th>Status</th><th class="l">Clientes</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th><th>Peso (kg)</th><th>Custo/kg</th></tr></thead>
     <tbody id="resBody"></tbody>
   </table></div>
-  <div class="sh">👥 Rentabilidade por Cliente (31 clientes)</div>
+  <div class="sh">👥 Rentabilidade por Cliente (32 clientes)</div>
   <div class="tw"><table>
     <thead><tr><th class="l">#</th><th class="l">Cliente</th><th>CTEs</th><th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th><th>Peso (kg)</th><th>C.Outros</th><th>Rentabilidade</th></tr></thead>
     <tbody id="cliBody"></tbody>
@@ -93,7 +93,7 @@
       </thead><tbody id="bot5"></tbody>
     </table></div>
   </div>
-  <div class="sh">📋 Todos os CTEs — Ordenados por Lucro Líquido (117 CTEs)</div>
+  <div class="sh">📋 Todos os CTEs — Ordenados por Lucro Líquido (132 CTEs)</div>
   <div class="tw" style="max-height:460px;overflow-y:auto"><table>
     <thead><tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Minuta</th><th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th><th class="l">Resp. Transf.</th><th class="l">Resp. Entrega</th></tr></thead>
     <tbody id="allCTE"></tbody>
@@ -111,7 +111,7 @@ const ops=[
   {tipo:"FECHADO",nome:"Rafael",ctes:1,fat:8700.00,ct:0.00,ce:6000.00,ctot:6000.00,co:0.00,res:-94.5300,mg:-0.010866,vei:"Carreta",ocup:1.000000,trecho:"Itajai-Sc X Guarulhos-Spcarreta",tgt:5500.00,dif:-500.00,st:"FORA DO TARGET",cli:"MAC FER INDUSTR",rt:"INDEFINIDO",re:"ALEMAOZINHO EXPRESS TRANS",peso:30001.90,ckg:0.0000},
   {tipo:"FECHADO",nome:"William",ctes:1,fat:6000.00,ct:0.00,ce:1500.00,ctot:1500.00,co:858.00,res:-58.6700,mg:-0.009778,vei:"Van",ocup:1.000000,trecho:"Itajai-Sc X Colombo-Prvan",tgt:1400.00,dif:-100.00,st:"FORA DO TARGET",cli:"WEB NORDESTE LT",rt:"ELZINHA DE MORAIS SENA",re:"WILLIAM LUIZ WEEGE",peso:1344.00,ckg:0.0000},
   {tipo:"FECHADO",nome:"Jefferson",ctes:1,fat:1952.25,ct:0.00,ce:400.00,ctot:400.00,co:0.00,res:895.6400,mg:0.458773,vei:"Van",ocup:0.133333,trecho:"S\u00e3o Paulo-Sp X S\u00e3o Paulo-Spfiorino",tgt:400.00,dif:0.00,st:"DENTRO DO TARGET",cli:"FORTE TRANSPORT",rt:"INDEFINIDO",re:"JEFFERSON VILELA DOS SANT",peso:160.00,ckg:0.0000},
-  {tipo:"FRACIONADO",nome:"Jean",ctes:2,fat:12800.00,ct:0.00,ce:11200.00,ctot:11200.00,co:0.00,res:757.6600,mg:0.059192,vei:"Truck",ocup:0.341393,trecho:"Itajai-Sc X Mantena-Mgtruck",tgt:10800.00,dif:-400.00,st:"FORA DO TARGET",cli:"TRUE MEN INDUST",rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA",peso:3755.32,ckg:0.0000},
+  {tipo:"FRACIONADO",nome:"Jean",ctes:17,fat:16789.08,ct:0.00,ce:11200.00,ctot:11200.00,co:12.71,res:150.2700,mg:0.008950,vei:"Truck",ocup:0.635540,trecho:"Itajai-Sc X Mantena-Mgtruck",tgt:10800.00,dif:-400.00,st:"FORA DO TARGET",cli:"TRUE MEN INDUST, BRAFT DO BRASIL",rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA",peso:6990.94,ckg:0.0000},
   {tipo:"FRACIONADO",nome:"Ederson",ctes:94,fat:29601.08,ct:5500.00,ce:7182.82,ctot:12682.82,co:103.74,res:5408.5800,mg:0.182716,vei:"Carreta",ocup:0.605056,trecho:"Itajai-Sc X S\u00e3o Paulo-Spcarreta",tgt:5500.00,dif:0.00,st:"DENTRO DO TARGET",cli:"SKO COMERCIO, I, HERCULES EQUIPA, ITACORDA INDUST",rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES, LUCAS ROBERTO XAVIER DE O",peso:13311.24,ckg:0.4132}
 ];
 const clientes=[
@@ -145,7 +145,8 @@ const clientes=[
   {cli:"62.878.450 ANDR",ctes:1,fat:255.90,res:-32.61,ll:-32.61,mg:-0.1274,peso:55.00,out:0.00,ren:"N"},
   {cli:"WEB NORDESTE LT",ctes:1,fat:6000.00,res:-58.67,ll:-58.67,mg:-0.0098,peso:1344.00,out:858.00,ren:"N"},
   {cli:"ASTERI DISTRIBU",ctes:1,fat:386.23,res:-76.91,ll:-76.91,mg:-0.1991,peso:300.00,out:0.00,ren:"N"},
-  {cli:"CLICK HOME COME",ctes:3,fat:935.37,res:-143.64,ll:-165.56,mg:-0.1770,peso:1151.60,out:0.00,ren:"N"}
+  {cli:"CLICK HOME COME",ctes:3,fat:935.37,res:-143.64,ll:-165.56,mg:-0.1770,peso:1151.60,out:0.00,ren:"N"},
+  {cli:"BRAFT DO BRASIL",ctes:15,fat:3989.08,res:-607.39,ll:-628.04,mg:-0.1574,peso:3235.62,out:12.71,ren:"N"}
 ];
 const top10cli=[
   {cli:"FORTE TRANSPORT",ctes:9,fat:4619.73,res:1584.24,ll:1584.24,mg:0.3429,peso:1377.10,out:0.00,ren:"P"},
@@ -195,6 +196,7 @@ const allCTEs=[
   {op:"Robson",cli:"ANSELL BRAZIL L",dest:"GARUVA - SC",serv:"EXPRESSO_250",min:"292194",fat:115.39,res:60.79,ll:60.7900,mg:0.5268,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
   {op:"Ederson",cli:"FORTE TRANSPORT",dest:"BELO HORIZONTE - MG",serv:"SUBCONTRATO_ECO",min:"292415",fat:124.26,res:59.03,ll:59.0300,mg:0.4751,rt:"DFL TRANSPORTES EIRELI",re:"AEROMINAS CARGAS EXPRESSA"},
   {op:"Ederson",cli:"STRATUS COMERCI",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1884",fat:178.01,res:58.68,ll:58.6800,mg:0.3296,rt:"R5 TRANSPORTADORA LTDA",re:""},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1898",fat:111.40,res:59.87,ll:57.9100,mg:0.5198,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"BATIKI COM IMPO",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292364",fat:268.03,res:64.90,ll:57.8200,mg:0.2157,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
   {op:"Ederson",cli:"IMAGINE DECOR I",dest:"AMERICANA - SP",serv:"ECONOMICO_250",min:"292337",fat:1233.98,res:90.01,ll:57.4300,mg:0.0465,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"SAO BERNARDO DO CAMPO - SP",serv:"ECONOMICO_250",min:"292388",fat:270.05,res:63.91,ll:56.7800,mg:0.2103,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
@@ -203,8 +205,11 @@ const allCTEs=[
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"ASSIS - SP",serv:"ECONOMICO_250",min:"292386",fat:250.36,res:58.59,ll:51.9800,mg:0.2076,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"933",fat:100.47,res:52.27,ll:51.2700,mg:0.5103,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"MOCOCA - SP",serv:"ECONOMICO_250",min:"292146",fat:256.95,res:56.02,ll:49.2400,mg:0.1916,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1907",fat:111.40,res:50.55,ll:48.5900,mg:0.4362,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292270",fat:219.89,res:49.97,ll:48.0300,mg:0.2184,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
   {op:"Ederson",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292313",fat:241.49,res:50.02,ll:47.8900,mg:0.1983,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1894",fat:145.16,res:50.25,ll:47.7000,mg:0.3286,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1906",fat:145.16,res:48.36,ll:45.8100,mg:0.3156,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"FARTURA - SP",serv:"ECONOMICO_250",min:"292382",fat:264.56,res:52.52,ll:45.5400,mg:0.1721,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"TAUBATE - SP",serv:"ECONOMICO_250",min:"292380",fat:265.68,res:51.85,ll:44.8400,mg:0.1688,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
   {op:"Robson",cli:"ANSELL BRAZIL L",dest:"GUARAMIRIM - SC",serv:"EXPRESSO_250",min:"292207",fat:156.59,res:43.51,ll:43.5100,mg:0.2779,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
@@ -235,11 +240,13 @@ const allCTEs=[
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"AMERICANA - SP",serv:"ECONOMICO_250",min:"292377",fat:160.27,res:25.75,ll:21.5200,mg:0.1343,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292381",fat:160.26,res:24.44,ll:20.2100,mg:0.1261,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
   {op:"Ederson",cli:"SAINT PAULS IMP",dest:"MOGI DAS CRUZES - SP",serv:"ECONOMICO_250",min:"292351",fat:120.81,res:23.23,ll:20.0400,mg:0.1659,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1895",fat:157.66,res:22.50,ll:19.7300,mg:0.1251,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292375",fat:168.05,res:22.75,ll:18.3100,mg:0.1090,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
   {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1888",fat:101.90,res:20.83,ll:18.1300,mg:0.1779,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292373",fat:166.95,res:20.40,ll:15.9900,mg:0.0958,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"915",fat:28.95,res:16.25,ll:15.9600,mg:0.5513,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
   {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1873",fat:94.03,res:18.14,ll:15.6600,mg:0.1665,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1896",fat:157.66,res:17.70,ll:14.9300,mg:0.0947,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292385",fat:168.72,res:19.25,ll:14.8000,mg:0.0877,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
   {op:"Ederson",cli:"LEE TRADING IMP",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292223",fat:395.56,res:25.22,ll:14.7800,mg:0.0374,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"930",fat:63.68,res:15.13,ll:14.4900,mg:0.2275,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
@@ -253,30 +260,39 @@ const allCTEs=[
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"920",fat:11.66,res:7.22,ll:7.1000,mg:0.6089,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"918",fat:11.66,res:7.13,ll:7.0100,mg:0.6012,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"925",fat:54.19,res:6.01,ll:5.4700,mg:0.1009,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1897",fat:172.28,res:7.59,ll:4.5600,mg:0.0265,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"932",fat:10.47,res:4.15,ll:4.0500,mg:0.3868,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292374",fat:257.93,res:9.14,ll:2.3300,mg:0.0090,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1900",fat:174.13,res:4.61,ll:1.5500,mg:0.0089,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"1823-1",dest:"CTE NORMAL",serv:"6738.98",min:"1871",fat:0.00,res:56.14,ll:0.0000,mg:-0.5635,rt:"123.51",re:"60.33"},
   {op:"Ederson",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292262",fat:114.59,res:-0.41,ll:-0.4100,mg:-0.0036,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"914",fat:1.96,res:-2.09,ll:-2.0900,mg:-1.0663,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
   {op:"Ederson",cli:"SKO COMERCIO, I",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292383",fat:330.41,res:-10.36,ll:-10.3600,mg:-0.0314,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
   {op:"Ederson",cli:"CLICK HOME COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292438",fat:104.93,res:-10.79,ll:-10.7900,mg:-0.1028,rt:"R5 TRANSPORTADORA LTDA",re:"EDSON SANTOS DA SILVA"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1904",fat:194.28,res:-12.89,ll:-12.8900,mg:-0.0663,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Robson",cli:"FRETE CLICK",dest:"FLORIANOPOLIS - SC",serv:"ECONOMICO_250",min:"292367",fat:161.14,res:-13.57,ll:-13.5700,mg:-0.0842,rt:"ROBSON APARECIDO GOUVEA",re:"GILBERTO DE OLIVEIRA"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"923",fat:91.59,res:-16.19,ll:-16.1900,mg:-0.1768,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
   {op:"Robson",cli:"NEOPAN DO BRASI",dest:"BLUMENAU - SC",serv:"PERSONALIZADO",min:"292389",fat:409.53,res:-23.57,ll:-23.5700,mg:-0.0576,rt:"ROBSON APARECIDO GOUVEA",re:"RAFAEL DE FREITAS"},
   {op:"Ederson",cli:"CLICK HOME COME",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292441",fat:192.83,res:-19.84,ll:-24.9300,mg:-0.1293,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1901",fat:215.07,res:-28.93,ll:-28.9300,mg:-0.1345,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1872",fat:396.83,res:-30.66,ll:-30.6600,mg:-0.0773,rt:"R5 TRANSPORTADORA LTDA",re:"ERIC LUIZ NASCIMENTO DOMI"},
   {op:"Ederson",cli:"BLUE BAY COMERC",dest:"CAIEIRAS - SP",serv:"ECONOMICO_250",min:"292339",fat:198.92,res:-31.20,ll:-31.2000,mg:-0.1568,rt:"R5 TRANSPORTADORA LTDA",re:"JURACI FERREIRA DOS SANTO"},
   {op:"Ederson",cli:"62.878.450 ANDR",dest:"MOCOCA - SP",serv:"ECONOMICO_250",min:"292279",fat:255.90,res:-32.61,ll:-32.6100,mg:-0.1274,rt:"R5 TRANSPORTADORA LTDA",re:"RISSO TRANSPORTES"},
   {op:"Ederson",cli:"ITACORDA INDUST",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292209",fat:427.41,res:-39.77,ll:-39.7700,mg:-0.0930,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
   {op:"Ederson",cli:"HERCULES EQUIPA",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292165",fat:109.31,res:-43.65,ll:-43.6500,mg:-0.3993,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
   {op:"Ederson",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"921",fat:53.32,res:-46.44,ll:-46.4400,mg:-0.8710,rt:"R5 TRANSPORTADORA LTDA",re:"N/D"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1909",fat:274.61,res:-54.38,ll:-54.3800,mg:-0.1980,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"William",cli:"WEB NORDESTE LT",dest:"COLOMBO - PR",serv:"PERSONALIZADO_V",min:"292150",fat:6000.00,res:-58.67,ll:-58.6700,mg:-0.0098,rt:"ELZINHA DE MORAIS SENA",re:"WILLIAM LUIZ WEEGE"},
   {op:"Ederson",cli:"ASTERI DISTRIBU",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292340",fat:386.23,res:-76.91,ll:-76.9100,mg:-0.1991,rt:"R5 TRANSPORTADORA LTDA",re:"JOSE EMILTON DA COSTA - O"},
   {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"910",fat:199.94,res:-83.86,ll:-83.8600,mg:-0.4194,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
   {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"911",fat:35.20,res:-84.13,ll:-84.1300,mg:-2.3901,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1899",fat:336.60,res:-86.53,ll:-86.5300,mg:-0.2571,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Rafael",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"PERSONALIZADO_L",min:"1908",fat:8700.00,res:-94.53,ll:-94.5300,mg:-0.0109,rt:"INDEFINIDO",re:"ALEMAOZINHO EXPRESS TRANS"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1905",fat:356.06,res:-95.52,ll:-95.5200,mg:-0.2683,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"ITACORDA INDUST",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292210",fat:794.80,res:-104.31,ll:-104.3100,mg:-0.1312,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
-  {op:"Ederson",cli:"CLICK HOME COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292439",fat:637.61,res:-113.01,ll:-129.8400,mg:-0.2036,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"}
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1903",fat:417.22,res:-128.70,ll:-128.7000,mg:-0.3085,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
+  {op:"Ederson",cli:"CLICK HOME COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292439",fat:637.61,res:-113.01,ll:-129.8400,mg:-0.2036,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1902",fat:1020.39,res:-461.87,ll:-461.8700,mg:-0.4526,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"}
 ];
 const top5cte=[
   {op:"Jefferson",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_PER",min:"292331",fat:1952.25,res:895.64,ll:895.6400,mg:0.4588,rt:"INDEFINIDO",re:"JEFFERSON VILELA DOS SANT"},
@@ -286,11 +302,11 @@ const top5cte=[
   {op:"Jean",cli:"TRUE MEN INDUST",dest:"MANTENA - MG",serv:"PERSONALIZADO_L",min:"292399",fat:6400.00,res:378.83,ll:378.8300,mg:-0.0408,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"}
 ];
 const bot5cte=[
-  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"910",fat:199.94,res:-83.86,ll:-83.8600,mg:-0.4194,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
-  {op:"Robson",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"911",fat:35.20,res:-84.13,ll:-84.1300,mg:-2.3901,rt:"ROBSON APARECIDO GOUVEA",re:"N/D"},
-  {op:"Rafael",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"PERSONALIZADO_L",min:"1908",fat:8700.00,res:-94.53,ll:-94.5300,mg:-0.0109,rt:"INDEFINIDO",re:"ALEMAOZINHO EXPRESS TRANS"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1905",fat:356.06,res:-95.52,ll:-95.5200,mg:-0.2683,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
   {op:"Ederson",cli:"ITACORDA INDUST",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292210",fat:794.80,res:-104.31,ll:-104.3100,mg:-0.1312,rt:"R5 TRANSPORTADORA LTDA",re:"LUCAS ROBERTO XAVIER DE O"},
-  {op:"Ederson",cli:"CLICK HOME COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292439",fat:637.61,res:-113.01,ll:-129.8400,mg:-0.2036,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"}
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1903",fat:417.22,res:-128.70,ll:-128.7000,mg:-0.3085,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"},
+  {op:"Ederson",cli:"CLICK HOME COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292439",fat:637.61,res:-113.01,ll:-129.8400,mg:-0.2036,rt:"R5 TRANSPORTADORA LTDA",re:"PORTOEX SP"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1902",fat:1020.39,res:-461.87,ll:-461.8700,mg:-0.4526,rt:"INDEFINIDO",re:"SIQUEIREX LOGISTICA E TRA"}
 ];
 function BR(v){return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
 function PCT(v){return (v*100).toFixed(2).replace('.',',')+'%'}
