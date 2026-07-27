@@ -1,83 +1,547 @@
-<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>Análise de Terceiros — 24/07/2026 | Portoex</title><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script><style>:root{--navy:#1F3864;--blue:#2E5FAA;--lbl:#BDD7EE;--pale:#E9F0F7;--green:#006100;--gbg:#C6EFCE;--red:#9C0006;--rbg:#FFC7CE;--orf:#7D4700;--obg:#FFE699;--wht:#fff;--gry:#f5f7fb;--bdr:#d0d9e8;--txt:#1a2940}*{box-sizing:border-box;margin:0;padding:0}body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:var(--txt)}header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(31,56,100,.3)}.logo{font-size:19px;font-weight:700;letter-spacing:1px}.sub{font-size:11px;opacity:.8;margin-top:3px}.hdr-dates{display:flex;flex-direction:column;align-items:flex-end;gap:5px}.dtbadge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:5px 14px;font-size:12px;font-weight:600;white-space:nowrap}.dtbadge span.lbl{opacity:.8;font-weight:400;margin-right:5px}.kpi-strip{display:flex;gap:12px;padding:16px 24px;background:#fff;border-bottom:1px solid var(--bdr);flex-wrap:wrap}.kpi{flex:1;min-width:130px;padding:12px 16px;background:var(--gry);border-radius:9px;border-left:4px solid var(--blue)}.kpi.k0{border-left-color:var(--navy)}.kpi.k1{border-left-color:#27ae60}.kpi.k2{border-left-color:#2E5FAA}.kpi.k3{border-left-color:#e67e22}.kpi.k4{border-left-color:#8e44ad}.kpi.k5{border-left-color:#16a085}.kl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#888;font-weight:600}.kv{font-size:20px;font-weight:700;color:var(--navy);margin-top:3px;line-height:1.1}.ks{font-size:11px;color:#999;margin-top:2px}.wrap{max-width:1380px;margin:0 auto;padding:20px 22px}.sh{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:var(--navy);margin:20px 0 12px;text-transform:uppercase;letter-spacing:.5px}.sh::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--lbl),transparent)}.g2{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:18px}.g3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:15px;margin-bottom:18px}.card{background:#fff;border-radius:10px;padding:16px 18px;box-shadow:0 2px 8px rgba(31,56,100,.07)}.ctitle{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px}.tw{overflow-x:auto;border-radius:10px;box-shadow:0 2px 8px rgba(31,56,100,.07);margin-bottom:20px}table{width:100%;border-collapse:collapse;background:#fff;font-size:11.5px}thead th{background:var(--navy);color:#fff;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.4px;text-align:center;white-space:nowrap;position:sticky;top:0;z-index:2}th.l{text-align:left}tbody tr{border-bottom:1px solid #eef1f7}tbody tr:hover{background:var(--pale)}tbody tr:last-child{border-bottom:none}td{padding:7px 10px;text-align:center;white-space:nowrap}td.l{text-align:left;font-weight:600;color:var(--navy)}td.wrap2{text-align:left;white-space:normal;max-width:200px;font-size:10.5px}tr.sf td{background:#DEEBF7;font-weight:700;color:#00376E}tr.sd td{background:#FFF2CC;font-weight:700;color:var(--orf)}tr.gt td{background:var(--navy);color:#fff;font-weight:700}tr.ev td{background:#f9fbfd}.b{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}.bg{background:var(--gbg);color:var(--green)}.br{background:var(--rbg);color:var(--red)}.bo{background:var(--obg);color:var(--orf)}.bb{background:var(--lbl);color:var(--navy)}.bgy{background:#e8e8e8;color:#555}.pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}.occ-wrap{display:flex;align-items:center;gap:5px;justify-content:center}.occ-t{width:52px;height:6px;background:#e0e0e0;border-radius:4px;overflow:hidden}.occ-f{height:100%;border-radius:4px}@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}.kpi-strip{gap:8px}}</style></head><body>
-<header><div><div class="logo">PORTOEX LOGÍSTICA</div><div class="sub">Painel de Análise de Terceiros</div></div><div class="hdr-dates"><div class="dtbadge"><span class="lbl">DATA DA OPERAÇÃO</span>24/07/2026</div><div class="dtbadge"><span class="lbl">DATA DA ANÁLISE</span>27/07/2026</div></div></header>
-<div class="kpi-strip"><div class="kpi k0"><div class="kl">Faturamento Total</div><div class="kv">R$ 31.049,06</div><div class="ks">3 viagens · 6 CTEs</div></div><div class="kpi k1"><div class="kl">Resultado Operacional</div><div class="kv" style="color:#006100">R$ 4.494,15</div><div class="ks">Margem: 14,47%</div></div><div class="kpi k2"><div class="kl">Fracionado (2 viagens)</div><div class="kv">R$ 25.259,06</div><div class="ks">Res R$ 4.244,69 · 16,80%</div></div><div class="kpi k3"><div class="kl">Dedicado (1 viagens)</div><div class="kv">R$ 5.790,00</div><div class="ks">Res R$ 249,46 · 4,31%</div></div><div class="kpi k4"><div class="kl">Status Target</div><div class="kv">2✔ / 1✘</div><div class="ks">Dentro/Abaixo · Fora</div></div><div class="kpi k5"><div class="kl">C.Transf+Entrega</div><div class="kv">R$ 15.300,00</div><div class="ks">Peso: 10.927,75 kg</div></div></div>
-<div class="wrap"><div class="sh">📊 Visão Geral por Operador</div><div class="g3"><div class="card"><div class="ctitle">Resultado Op. (R$)</div><canvas id="resChart" height="160"></canvas></div><div class="card"><div class="ctitle">Margem (%)</div><canvas id="mgChart" height="160"></canvas></div><div class="card"><div class="ctitle">Status do Target</div><canvas id="targetChart" height="160"></canvas></div></div><div class="sh">👥 Por Cliente · 🚚 Ocupação</div><div class="g2"><div class="card"><div class="ctitle">Top 10 Clientes — Lucro Líquido (R$)</div><canvas id="cliChart" height="160"></canvas></div><div class="card"><div class="ctitle">Taxa de Ocupação (%)</div><canvas id="occChart" height="160"></canvas></div></div>
-<div class="sh">📋 Resumo por Viagem</div><div class="tw"><table><thead><tr><th>Tipo</th><th class="l">Operador</th><th>CTEs</th><th>Faturamento</th><th>C.Transf.</th><th>C.Entrega</th><th>C.T+E</th><th>C.Outros</th><th>Resultado Op.</th><th>Margem</th><th>Veículo</th><th>Ocup.</th><th class="l">Trecho</th><th>Target</th><th>Diferença</th><th>Status</th><th class="l">Clientes</th><th class="l">Resp.Transf.</th><th class="l">Resp.Entrega</th><th>Peso(kg)</th><th>R$/kg</th></tr></thead><tbody id="resBody"></tbody></table></div>
-<div class="sh">👥 Clientes (6)</div><div class="tw"><table><thead><tr><th>#</th><th class="l">Cliente</th><th>CTEs</th><th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th><th>Peso(kg)</th><th>C.Outros</th><th>Rentabilidade</th></tr></thead><tbody id="cliBody"></tbody></table></div>
-<div class="sh">🏆 Top/Bottom 5</div><div class="g2"><div class="tw" style="margin-bottom:0"><table><thead><tr><th colspan="9" style="background:#27ae60;text-align:left;padding:8px 12px">✅ TOP 5</th></tr><tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th></tr></thead><tbody id="top5"></tbody></table></div><div class="tw" style="margin-bottom:0"><table><thead><tr><th colspan="9" style="background:#c0392b;text-align:left;padding:8px 12px">❌ BOTTOM 5</th></tr><tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th></tr></thead><tbody id="bot5"></tbody></table></div></div>
-<div class="sh">📋 Todos os CTEs (6)</div><div class="tw" style="max-height:460px;overflow-y:auto"><table><thead><tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Minuta</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th><th class="l">Resp.Transf.</th><th class="l">Resp.Entrega</th></tr></thead><tbody id="allCTE"></tbody></table></div>
-<div class="sh">🚚 Veículos & Target</div><div class="tw"><table><thead><tr><th class="l">Operador</th><th>Veículo</th><th>Peso Fat.</th><th>Ocup.</th><th class="l">Trecho</th><th>C.T+E</th><th>Target</th><th>Diferença</th><th>Status</th><th>Resultado Op.</th><th>Margem</th><th class="l">Resp.Transf.</th><th class="l">Resp.Entrega</th></tr></thead><tbody id="veiBody"></tbody></table></div></div>
-<footer style="text-align:center;font-size:11px;color:#aaa;padding:16px">Portoex Logística · Análise de Terceiros 24/07/2026 · Gerado automaticamente</footer>
+<!DOCTYPE html><html lang="pt-BR"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Análise de Terceiros — 22 a 24/07/2026 | Portoex</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+:root{--navy:#1F3864;--blue:#2E5FAA;--lbl:#BDD7EE;--pale:#E9F0F7;--green:#006100;--gbg:#C6EFCE;--red:#9C0006;--rbg:#FFC7CE;--orf:#7D4700;--obg:#FFE699;--wht:#fff;--gry:#f5f7fb;--bdr:#d0d9e8;--txt:#1a2940}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Segoe UI',Arial,sans-serif;background:#eef2f7;color:var(--txt)}
+header{background:linear-gradient(135deg,var(--navy),var(--blue));color:#fff;padding:18px 28px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 4px 16px rgba(31,56,100,.3)}
+.logo{font-size:19px;font-weight:700;letter-spacing:1px}.sub{font-size:11px;opacity:.8;margin-top:3px}
+.hdr-dates{display:flex;flex-direction:column;align-items:flex-end;gap:5px}
+.dtbadge{background:rgba(255,255,255,.18);border:1px solid rgba(255,255,255,.3);border-radius:8px;padding:5px 14px;font-size:12px;font-weight:600;white-space:nowrap}
+.dtbadge span.lbl{opacity:.8;font-weight:400;margin-right:5px}
+.kpi-strip{display:flex;gap:12px;padding:16px 24px;background:#fff;border-bottom:1px solid var(--bdr);flex-wrap:wrap}
+.kpi{flex:1;min-width:130px;padding:12px 16px;background:var(--gry);border-radius:9px;border-left:4px solid var(--blue)}
+.kpi.k0{border-left-color:var(--navy)}.kpi.k1{border-left-color:#27ae60}.kpi.k2{border-left-color:#2E5FAA}.kpi.k3{border-left-color:#e67e22}.kpi.k4{border-left-color:#8e44ad}.kpi.k5{border-left-color:#16a085}
+.kl{font-size:10px;text-transform:uppercase;letter-spacing:.6px;color:#888;font-weight:600}
+.kv{font-size:20px;font-weight:700;color:var(--navy);margin-top:3px;line-height:1.1}
+.ks{font-size:11px;color:#999;margin-top:2px}
+/* TABS */
+.tab-bar{display:flex;gap:0;background:#fff;border-bottom:2px solid var(--bdr);padding:0 24px;overflow-x:auto}
+.tab-btn{padding:12px 22px;font-size:12px;font-weight:700;border:none;background:none;cursor:pointer;color:#888;border-bottom:3px solid transparent;margin-bottom:-2px;white-space:nowrap;transition:all .2s}
+.tab-btn:hover{color:var(--navy)}
+.tab-btn.active{color:var(--navy);border-bottom-color:var(--blue)}
+.tab-pane{display:none}.tab-pane.active{display:block}
+.wrap{max-width:1380px;margin:0 auto;padding:20px 22px}
+.sh{display:flex;align-items:center;gap:9px;font-size:12px;font-weight:700;color:var(--navy);margin:20px 0 12px;text-transform:uppercase;letter-spacing:.5px}
+.sh::after{content:'';flex:1;height:2px;background:linear-gradient(to right,var(--lbl),transparent)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:15px;margin-bottom:18px}
+.g3{display:grid;grid-template-columns:2fr 1fr 1fr;gap:15px;margin-bottom:18px}
+.card{background:#fff;border-radius:10px;padding:16px 18px;box-shadow:0 2px 8px rgba(31,56,100,.07)}
+.ctitle{font-size:11px;font-weight:700;color:var(--navy);margin-bottom:12px;text-transform:uppercase;letter-spacing:.4px}
+.tw{overflow-x:auto;border-radius:10px;box-shadow:0 2px 8px rgba(31,56,100,.07);margin-bottom:20px}
+table{width:100%;border-collapse:collapse;background:#fff;font-size:11.5px}
+thead th{background:var(--navy);color:#fff;padding:8px 10px;font-size:10px;text-transform:uppercase;letter-spacing:.4px;text-align:center;white-space:nowrap;position:sticky;top:0;z-index:2}
+th.l{text-align:left}
+tbody tr{border-bottom:1px solid #eef1f7}tbody tr:hover{background:var(--pale)}tbody tr:last-child{border-bottom:none}
+td{padding:7px 10px;text-align:center;white-space:nowrap}td.l{text-align:left;font-weight:600;color:var(--navy)}td.wrap2{text-align:left;white-space:normal;max-width:200px;font-size:10.5px}
+tr.sf td{background:#DEEBF7;font-weight:700;color:#00376E}tr.sd td{background:#FFF2CC;font-weight:700;color:var(--orf)}tr.gt td{background:var(--navy);color:#fff;font-weight:700}tr.ev td{background:#f9fbfd}
+/* Totalizador por dia na aba CONSOLIDADO */
+tr.day-hdr td{background:#2E5FAA;color:#fff;font-weight:700;font-size:11px;letter-spacing:.3px}
+.b{display:inline-block;padding:2px 8px;border-radius:20px;font-size:10px;font-weight:700;white-space:nowrap}
+.bg{background:var(--gbg);color:var(--green)}.br{background:var(--rbg);color:var(--red)}.bo{background:var(--obg);color:var(--orf)}.bb{background:var(--lbl);color:var(--navy)}.bgy{background:#e8e8e8;color:#555}
+.pos{color:var(--green);font-weight:700}.neg{color:var(--red);font-weight:700}
+.occ-wrap{display:flex;align-items:center;gap:5px;justify-content:center}.occ-t{width:52px;height:6px;background:#e0e0e0;border-radius:4px;overflow:hidden}.occ-f{height:100%;border-radius:4px}
+/* Resumo dias */
+.day-summary{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:20px}
+.day-card{background:#fff;border-radius:10px;padding:14px 16px;box-shadow:0 2px 8px rgba(31,56,100,.07);border-top:4px solid var(--blue);cursor:pointer;transition:transform .15s,box-shadow .15s}
+.day-card:hover{transform:translateY(-2px);box-shadow:0 4px 16px rgba(31,56,100,.15)}
+.day-card.dc0{border-top-color:#2E5FAA}.day-card.dc1{border-top-color:#27ae60}.day-card.dc2{border-top-color:#e67e22}
+.dc-date{font-size:11px;font-weight:700;color:#888;margin-bottom:6px}
+.dc-fat{font-size:16px;font-weight:700;color:var(--navy)}
+.dc-res{font-size:13px;margin-top:3px}
+.dc-meta{font-size:10px;color:#aaa;margin-top:4px}
+@media(max-width:700px){.g2,.g3,.day-summary{grid-template-columns:1fr}.kpi-strip{gap:8px}.tab-btn{padding:10px 14px;font-size:11px}}
+</style></head><body>
+<header>
+  <div><div class="logo">PORTOEX LOGÍSTICA</div><div class="sub">Painel de Análise de Terceiros — Consolidado 22 a 24/07/2026</div></div>
+  <div class="hdr-dates">
+    <div class="dtbadge"><span class="lbl">PERÍODO</span>22/07 a 24/07/2026</div>
+    <div class="dtbadge"><span class="lbl">DATA DA ANÁLISE</span>27/07/2026</div>
+  </div>
+</header>
+
+<!-- KPIs CONSOLIDADOS -->
+<div class="kpi-strip">
+  <div class="kpi k0"><div class="kl">Faturamento Total (3 dias)</div><div class="kv">R$ 122.614,90</div><div class="ks">8 viagens · 137 CTEs</div></div>
+  <div class="kpi k1"><div class="kl">Resultado Consolidado</div><div class="kv" style="color:#006100">R$ 24.945,03</div><div class="ks">Margem: 20,34%</div></div>
+  <div class="kpi k2"><div class="kl">22/07 (3 viagens)</div><div class="kv">R$ 51.750,43</div><div class="ks">Res R$ 7.710,93 · 14,90%</div></div>
+  <div class="kpi k3"><div class="kl">23/07 (2 viagens)</div><div class="kv">R$ 39.815,41</div><div class="ks">Res R$ 12.739,95 · 32,00%</div></div>
+  <div class="kpi k4"><div class="kl">24/07 (3 viagens)</div><div class="kv">R$ 31.049,06</div><div class="ks">Res R$ 4.494,15 · 14,47%</div></div>
+  <div class="kpi k5"><div class="kl">Total CTEs</div><div class="kv">137</div><div class="ks">8 viagens nos 3 dias</div></div>
+</div>
+
+<!-- TABS -->
+<div class="tab-bar">
+  <button class="tab-btn active" onclick="switchTab('consolidado')">📊 Consolidado</button>
+  <button class="tab-btn" onclick="switchTab('22/07/2026')">📅 22/07/2026</button>
+  <button class="tab-btn" onclick="switchTab('23/07/2026')">📅 23/07/2026</button>
+  <button class="tab-btn" onclick="switchTab('24/07/2026')">📅 24/07/2026</button>
+</div>
+
+<!-- ABA CONSOLIDADO -->
+<div id="tab-consolidado" class="tab-pane active">
+  <div class="wrap">
+    <div class="sh">📋 Resumo por Dia</div>
+    <div class="day-summary">
+      <div class="day-card dc0" onclick="switchTab('22/07/2026')">
+        <div class="dc-date">📅 22/07/2026</div>
+        <div class="dc-fat">R$ 51.750,43</div>
+        <div class="dc-res pos">R$ 7.710,93 · 14,90%</div>
+        <div class="dc-meta">3 viagens · 103 CTEs</div>
+      </div>
+      <div class="day-card dc1" onclick="switchTab('23/07/2026')">
+        <div class="dc-date">📅 23/07/2026</div>
+        <div class="dc-fat">R$ 39.815,41</div>
+        <div class="dc-res pos">R$ 12.739,95 · 32,00%</div>
+        <div class="dc-meta">2 viagens · 28 CTEs</div>
+      </div>
+      <div class="day-card dc2" onclick="switchTab('24/07/2026')">
+        <div class="dc-date">📅 24/07/2026</div>
+        <div class="dc-fat">R$ 31.049,06</div>
+        <div class="dc-res pos">R$ 4.494,15 · 14,47%</div>
+        <div class="dc-meta">3 viagens · 6 CTEs</div>
+      </div>
+    </div>
+    <div class="sh">📊 Faturamento & Resultado por Dia</div>
+    <div class="g2">
+      <div class="card"><div class="ctitle">Faturamento por Dia (R$)</div><canvas id="fatChart" height="160"></canvas></div>
+      <div class="card"><div class="ctitle">Resultado & Margem por Dia</div><canvas id="resChart" height="160"></canvas></div>
+    </div>
+    <div class="sh">📋 Todas as 8 Viagens</div>
+    <div class="tw"><table><thead><tr><th>Dia</th><th>Tipo</th><th class="l">Operador</th><th>CTEs</th><th>Faturamento</th><th>C.T+E</th><th>C.Outros</th><th>Resultado Op.</th><th>Margem</th><th>Veículo</th><th class="l">Trecho</th><th>Target</th><th>Diferença</th><th>Status</th><th class="l">Resp.Transf.</th></tr></thead><tbody id="allOpsBody"></tbody></table></div>
+  </div>
+</div>
+
+<!-- ABAS POR DIA (geradas dinamicamente) -->
+<div id="tab-22/07/2026" class="tab-pane"><div class="wrap"><div id="content-22/07/2026"></div></div></div>
+<div id="tab-23/07/2026" class="tab-pane"><div class="wrap"><div id="content-23/07/2026"></div></div></div>
+<div id="tab-24/07/2026" class="tab-pane"><div class="wrap"><div id="content-24/07/2026"></div></div></div>
+
+<footer style="text-align:center;font-size:11px;color:#aaa;padding:16px">Portoex Logística · Análise de Terceiros 22 a 24/07/2026 · Gerado automaticamente</footer>
+
 <script>
-const ops=[
+const DIAS={};
+DIAS["22/07/2026"]={
+  ops:[
+  {tipo:"FRACIONADO",nome:"Maike",ctes:16,fat:3055.85,ct:1850.00,ce:0.00,ctot:1850.00,co:27.86,res:25.1400,mg:0.008227,vei:"Carreta",ocup:0.159254,trecho:"S\u00e3o Paulo-Sp X Itajai-Sccarreta",tgt:1850.00,dif:0.00,st:"DENTRO DO TARGET",cli:"SAMSONITE BRASI, WIK S PERSONALI, SOLUCOES EM ACE",rt:"G.S CITRUS COMERCIO ATACA",re:"GILBERTO DE OLIVEIRA, DULCINELSON PEREIRA DOS S",peso:3503.58,ckg:0.5280},
+  {tipo:"FRACIONADO",nome:"Jean",ctes:84,fat:39515.56,ct:5500.00,ce:8624.97,ctot:14124.97,co:453.81,res:8861.4744,mg:0.224253,vei:"Carreta",ocup:0.966810,trecho:"Itajai-Sc X S\u00e3o Paulo-Spcarreta",tgt:5500.00,dif:0.00,st:"DENTRO DO TARGET",cli:"MATTEL DO BRASI, ASIA SHIPPING T, ITACORDA INDUST",rt:"CONCEPT CARGO",re:"AEROMINAS CARGAS EXPRESSA, LUCAS ROBERTO XAVIER DE O",peso:21269.81,ckg:0.2586},
+  {tipo:"FRACIONADO",nome:"Welington",ctes:3,fat:9179.02,ct:0.00,ce:6699.99,ctot:6699.99,co:55.35,res:-1175.6800,mg:-0.128083,vei:"Toco",ocup:0.666833,trecho:"Serra-Sc X Garuva-ScToco",tgt:7500.00,dif:800.01,st:"ABAIXO DO TARGET",cli:"TECADI ARMAZENS, SAMSUNG ELETRON",rt:"INDEFINIDO",re:"TRANSPORTADORA ORTIZ LTDA",peso:4001.00,ckg:0.0000}
+],
+  ctes:[
+  {op:"Jean",cli:"MATTEL DO BRASI",dest:"RIBEIRAO DAS NEVES - MG",serv:"EXPRESSO_250",min:"292099",fat:5514.61,res:2278.87,ll:2278.8700,mg:0.4132,rt:"CONCEPT CARGO",re:"AEROMINAS CARGAS EXPRESSA"},
+  {op:"Jean",cli:"SAINT PAULS IMP",dest:"SAO PAULO - SP",serv:"PERSONALIZADO_L",min:"292831",fat:1962.41,res:839.02,ll:787.2144,mg:0.3011,rt:"TRANSPORTE WAY EIRELI",re:"EDSON SANTOS DA SILVA"},
+  {op:"Jean",cli:"MATTEL DO BRASI",dest:"BETIM - MG",serv:"EXPRESSO_250",min:"292098",fat:2229.95,res:751.49,ll:751.4900,mg:0.3370,rt:"CONCEPT CARGO",re:"AEROMINAS CARGAS EXPRESSA"},
+  {op:"Jean",cli:"LEE TRADING IMP",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292833",fat:1880.00,res:572.57,ll:522.9400,mg:0.2782,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"ASIA SHIPPING T",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292272",fat:955.20,res:371.15,ll:371.1500,mg:0.3886,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292774",fat:1065.46,res:330.54,ll:330.5400,mg:0.3102,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292587",fat:1566.70,res:315.63,ll:315.6300,mg:0.2015,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"RIBEIRAO PRETO - SP",serv:"SUBCONTRATO_EXP",min:"292776",fat:553.93,res:270.66,ll:270.6600,mg:0.4886,rt:"DFL TRANSPORTES EIRELI",re:"GATTO LOG"},
+  {op:"Jean",cli:"NEWFIX INDUSTRI",dest:"FERRAZ DE VASCONCELOS - SP",serv:"ECONOMICO_250",min:"292856",fat:1803.76,res:247.60,ll:231.7300,mg:0.1285,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1029",fat:284.90,res:199.97,ll:197.1200,mg:0.6919,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292582",fat:1530.09,res:179.73,ll:179.7300,mg:0.1175,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1030",fat:271.05,res:176.48,ll:173.7700,mg:0.6411,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292763",fat:373.89,res:139.97,ll:139.9700,mg:0.3744,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1039",fat:203.67,res:138.18,ll:136.1400,mg:0.6684,rt:"TRANSPORTE WAY EIRELI",re:"PORTOEX SP"},
+  {op:"Jean",cli:"VINIK IMPORTADO",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292854",fat:1392.41,res:167.25,ll:130.4900,mg:0.0937,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"BELO HORIZONTE - MG",serv:"SUBCONTRATO_ECO",min:"292767",fat:228.42,res:105.52,ll:105.5200,mg:0.4620,rt:"CONCEPT CARGO",re:"AEROMINAS CARGAS EXPRESSA"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1031",fat:159.58,res:97.41,ll:95.8100,mg:0.6004,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1019",fat:480.26,res:92.78,ll:87.9800,mg:0.1832,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1044",fat:130.97,res:88.77,ll:87.4600,mg:0.6678,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"AUTEL BRASIL TE",dest:"GUARATINGUETA - SP",serv:"ECONOMICO_250",min:"292519",fat:274.35,res:85.91,ll:85.9100,mg:0.3131,rt:"TRANSPORTE WAY EIRELI",re:"RISSO TRANSPORTES"},
+  {op:"Jean",cli:"VENTAPEL BRASIL",dest:"VINHEDO - SP",serv:"ECONOMICO_250",min:"1979",fat:1100.00,res:114.43,ll:85.3900,mg:0.0776,rt:"TRANSPORTE WAY EIRELI",re:"PORTOEX SP"},
+  {op:"Jean",cli:"BSG BIJOU BRASI",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292862",fat:443.31,res:87.08,ll:83.1800,mg:0.1876,rt:"TRANSPORTE WAY EIRELI",re:"PORTOEX SP"},
+  {op:"Jean",cli:"BSG BIJOU BRASI",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292863",fat:431.23,res:85.37,ll:81.5800,mg:0.1892,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292777",fat:208.75,res:80.48,ll:80.4800,mg:0.3855,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"LINCOLN - HARRI",dest:"MAUA - SP",serv:"PERSONALIZADO",min:"292526",fat:1927.94,res:77.96,ll:77.9600,mg:0.0404,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"STRATUS COMERCI",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1912",fat:144.81,res:77.44,ll:77.4400,mg:0.5348,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"BSG BIJOU BRASI",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"292866",fat:372.11,res:75.25,ll:71.9800,mg:0.1934,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1036",fat:96.04,res:70.69,ll:69.7300,mg:0.7261,rt:"TRANSPORTE WAY EIRELI",re:"PORTOEX SP"},
+  {op:"Welington",cli:"SAMSUNG ELETRON",dest:"GARUVA - SC",serv:"ECONOMICO_250",min:"292682",fat:100.00,res:59.83,ll:59.8300,mg:0.5983,rt:"INDEFINIDO",re:"TRANSPORTADORA ORTIZ LTDA"},
+  {op:"Welington",cli:"SAMSUNG ELETRON",dest:"GARUVA - SC",serv:"ECONOMICO_250",min:"292698",fat:100.00,res:59.83,ll:59.8300,mg:0.5983,rt:"INDEFINIDO",re:"TRANSPORTADORA ORTIZ LTDA"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1939",fat:95.23,res:60.63,ll:58.1100,mg:0.6102,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"LEE TRADING IMP",dest:"RIBEIRAO PRETO - SP",serv:"ECONOMICO_250",min:"292819",fat:265.52,res:63.92,ll:56.9100,mg:0.2143,rt:"TRANSPORTE WAY EIRELI",re:"RISSO TRANSPORTES"},
+  {op:"Jean",cli:"STRATUS COMERCI",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1913",fat:142.24,res:56.01,ll:56.0100,mg:0.3938,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1025",fat:256.59,res:49.57,ll:49.5700,mg:0.1932,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292704",fat:195.38,res:48.16,ll:48.1600,mg:0.2465,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1016",fat:247.93,res:47.90,ll:47.9000,mg:0.1932,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1041",fat:74.13,res:47.13,ll:46.3900,mg:0.6258,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292778",fat:123.40,res:43.09,ll:43.0900,mg:0.3492,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1042",fat:63.01,res:41.82,ll:41.1900,mg:0.6537,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"ITACORDA INDUST",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292484",fat:274.05,res:40.87,ll:38.4600,mg:0.1403,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"BAURU - SP",serv:"EXPRESSO_200",min:"292585",fat:218.55,res:36.66,ll:36.6600,mg:0.1677,rt:"TRANSPORTE WAY EIRELI",re:"RISSO TRANSPORTES"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1037",fat:56.01,res:36.30,ll:35.7400,mg:0.6381,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"WINEOCLOCK COME",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292830",fat:432.45,res:39.50,ll:35.1800,mg:0.0814,rt:"TRANSPORTE WAY EIRELI",re:"PORTOEX SP"},
+  {op:"Maike",cli:"SOLUCOES EM ACE",dest:"TUBARAO - SC",serv:"ECONOMICO_250",min:"292828",fat:108.99,res:37.10,ll:34.2200,mg:0.3140,rt:"G.S CITRUS COMERCIO ATACA",re:"GILBERTO DE OLIVEIRA"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1046",fat:51.68,res:34.69,ll:34.1700,mg:0.6612,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1043",fat:49.49,res:31.48,ll:30.9900,mg:0.6262,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1982",fat:194.97,res:33.98,ll:30.5500,mg:0.1567,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292448",fat:177.26,res:31.64,ll:30.0800,mg:0.1697,rt:"TRANSPORTE WAY EIRELI",re:"EDSON SANTOS DA SILVA"},
+  {op:"Jean",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292443",fat:208.16,res:30.50,ll:28.6700,mg:0.1377,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292775",fat:95.70,res:27.21,ll:27.2100,mg:0.2843,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Maike",cli:"CORAX INDUSTRIA",dest:"SAO BENTO DO SUL - SC",serv:"ECONOMICO_250",min:"292858",fat:127.40,res:30.38,ll:27.0200,mg:0.2121,rt:"G.S CITRUS COMERCIO ATACA",re:"DULCINELSON PEREIRA DOS S"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1983",fat:443.74,res:34.30,ll:26.4900,mg:0.0597,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"BRAFT DO BRASIL",dest:"GUARULHOS - SP",serv:"PERSONALIZADO",min:"1981",fat:518.57,res:34.86,ll:25.7300,mg:0.0496,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1937",fat:141.91,res:28.30,ll:24.5500,mg:0.1730,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"WINWIN TEXTILCO",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292822",fat:490.00,res:24.54,ll:24.5400,mg:0.0501,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"AUTEL BRASIL TE",dest:"CAMPINAS - SP",serv:"ECONOMICO_250",min:"292533",fat:120.81,res:23.29,ll:23.2900,mg:0.1928,rt:"TRANSPORTE WAY EIRELI",re:"PORTOEX SP"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1022",fat:122.67,res:23.70,ll:22.4700,mg:0.1832,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1934",fat:181.03,res:25.60,ll:20.8200,mg:0.1150,rt:"TRANSPORTE WAY EIRELI",re:"EDSON SANTOS DA SILVA"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292768",fat:82.73,res:20.71,ll:20.7100,mg:0.2503,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1020",fat:109.75,res:21.20,ll:20.1000,mg:0.1831,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"FORTE TRANSPORT",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292769",fat:83.83,res:20.07,ll:20.0700,mg:0.2394,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1045",fat:31.98,res:20.19,ll:19.8700,mg:0.6213,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292444",fat:130.26,res:18.77,ll:17.6200,mg:0.1353,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1938",fat:101.86,res:19.91,ll:17.2200,mg:0.1691,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1018",fat:88.60,res:17.11,ll:16.2200,mg:0.1831,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1936",fat:262.75,res:21.45,ll:14.5200,mg:0.0553,rt:"TRANSPORTE WAY EIRELI",re:"GUILHERME DA SILVA"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1024",fat:68.83,res:13.29,ll:13.2900,mg:0.1931,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"ITACORDA INDUST",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292442",fat:88.92,res:13.92,ll:13.1400,mg:0.1478,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"STRATUS COMERCI",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1914",fat:147.33,res:11.12,ll:11.1200,mg:0.0755,rt:"TRANSPORTE WAY EIRELI",re:"EDSON SANTOS DA SILVA"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1940",fat:116.53,res:14.17,ll:11.0900,mg:0.0952,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1021",fat:57.93,res:11.19,ll:10.6100,mg:0.1832,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"ARUJA - SP",serv:"ECONOMICO_250",min:"1929",fat:90.85,res:12.12,ll:9.7200,mg:0.1070,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"1992",fat:345.77,res:18.03,ll:8.9000,mg:0.0257,rt:"TRANSPORTE WAY EIRELI",re:"OFICINA M Z"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1017",fat:46.07,res:8.90,ll:8.4400,mg:0.1832,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1023",fat:44.68,res:8.63,ll:8.1800,mg:0.1831,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"ITACORDA INDUST",dest:"GUARULHOS - SP",serv:"EXPRESSO_250",min:"292287",fat:98.32,res:8.88,ll:8.0100,mg:0.0815,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292638",fat:93.13,res:7.94,ll:7.9400,mg:0.0853,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1040",fat:20.56,res:7.41,ll:7.2000,mg:0.3502,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292699",fat:119.10,res:6.97,ll:6.9700,mg:0.0585,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"ARUJA - SP",serv:"ECONOMICO_250",min:"1928",fat:91.98,res:8.89,ll:6.4600,mg:0.0702,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"ARUJA - SP",serv:"ECONOMICO_250",min:"1971",fat:91.98,res:8.89,ll:6.4600,mg:0.0702,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1026",fat:21.76,res:4.20,ll:4.2000,mg:0.1930,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"1931",fat:353.74,res:12.14,ll:2.8000,mg:0.0079,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"LIGHT ENGINE IL",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"292521",fat:88.20,res:4.85,ll:2.5200,mg:0.0286,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1933",fat:355.39,res:11.23,ll:1.8500,mg:0.0052,rt:"TRANSPORTE WAY EIRELI",re:"EDSON SANTOS DA SILVA"},
+  {op:"Maike",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1027",fat:9.41,res:1.81,ll:1.7200,mg:0.1828,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Jean",cli:"STRATUS COMERCI",dest:"SANTA BARBARA D OESTE - SP",serv:"ECONOMICO_250",min:"1915",fat:179.64,res:0.48,ll:0.4800,mg:0.0027,rt:"TRANSPORTE WAY EIRELI",re:"PORTOEX SP"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1034",fat:15.68,res:0.53,ll:0.3700,mg:0.0236,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1035",fat:0.17,res:-0.45,ll:-0.4500,mg:-2.6471,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1925",fat:437.20,res:-2.16,ll:-2.1600,mg:-0.0049,rt:"TRANSPORTE WAY EIRELI",re:"EDSON SANTOS DA SILVA"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1033",fat:27.47,res:-4.73,ll:-4.7300,mg:-0.1722,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1032",fat:25.42,res:-5.68,ll:-5.6800,mg:-0.2234,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"SAO PAULO - SP",serv:"ECONOMICO_250",min:"1935",fat:441.84,res:-6.22,ll:-6.2200,mg:-0.0141,rt:"TRANSPORTE WAY EIRELI",re:"EDSON SANTOS DA SILVA"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292702",fat:509.85,res:-21.78,ll:-21.7800,mg:-0.0427,rt:"TRANSPORTE WAY EIRELI",re:"ALMIR ANTONIO DOS SANTOS"},
+  {op:"Jean",cli:"STRATUS COMERCI",dest:"NOVA ODESSA - SP",serv:"ECONOMICO_250",min:"1916",fat:293.99,res:-27.35,ll:-27.3500,mg:-0.0930,rt:"TRANSPORTE WAY EIRELI",re:"PORTOEX SP"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"ARUJA - SP",serv:"ECONOMICO_250",min:"1930",fat:353.74,res:-28.33,ll:-28.3300,mg:-0.0801,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"MAC FER INDUSTR",dest:"ARUJA - SP",serv:"ECONOMICO_250",min:"1932",fat:364.95,res:-30.57,ll:-30.5700,mg:-0.0838,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292701",fat:679.75,res:-33.91,ll:-33.9100,mg:-0.0499,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Maike",cli:"WIK S PERSONALI",dest:"ITAJAI - SC",serv:"ECONOMICO_250",min:"292735",fat:124.92,res:-37.78,ll:-37.7800,mg:-0.3024,rt:"G.S CITRUS COMERCIO ATACA",re:"GILBERTO DE OLIVEIRA"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292703",fat:1206.00,res:-61.02,ll:-61.0200,mg:-0.0506,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1038",fat:465.82,res:-84.90,ll:-84.9000,mg:-0.1823,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Maike",cli:"SAMSONITE BRASI",dest:"GUARULHOS - SP",serv:"EXPRESSO_200",min:"291437",fat:1140.06,res:-304.84,ll:-304.8400,mg:-0.2674,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Welington",cli:"TECADI ARMAZENS",dest:"GARUVA - SC",serv:"SUBCONTRATO_EXP",min:"292641",fat:8979.02,res:-1295.34,ll:-1295.3400,mg:-0.1443,rt:"INDEFINIDO",re:"TRANSPORTADORA ORTIZ LTDA"}
+],
+  cli:[
+  {cli:"MATTEL DO BRASI",ctes:2,fat:7744.56,res:3030.36,ll:3030.36,mg:0.3913,peso:979.02,out:182.07,ren:"P"},
+  {cli:"IND.E COM.LEAL",ctes:30,fat:3582.11,res:1195.57,ll:1170.87,mg:0.3269,peso:3120.14,out:0.00,ren:"P"},
+  {cli:"FORTE TRANSPORT",ctes:9,fat:2816.11,res:1038.25,ll:1038.25,mg:0.3687,peso:1077.30,out:0.00,ren:"P"},
+  {cli:"SAINT PAULS IMP",ctes:1,fat:1962.41,res:839.02,ll:787.21,mg:0.4011,peso:77.36,out:0.00,ren:"P"},
+  {cli:"LEE TRADING IMP",ctes:2,fat:2145.52,res:636.49,ll:579.85,mg:0.2703,peso:136.40,out:0.00,ren:"P"},
+  {cli:"ASIA SHIPPING T",ctes:1,fat:955.20,res:371.15,ll:371.15,mg:0.3886,peso:287.10,out:3.58,ren:"P"},
+  {cli:"BSG BIJOU BRASI",ctes:3,fat:1246.65,res:247.70,ll:236.74,mg:0.1899,peso:960.00,out:0.00,ren:"P"},
+  {cli:"NEWFIX INDUSTRI",ctes:1,fat:1803.76,res:247.60,ll:231.73,mg:0.1285,peso:1705.00,out:0.00,ren:"P"},
+  {cli:"SAMSONITE BRASI",ctes:10,fat:7258.61,res:173.54,ll:173.54,mg:0.0239,peso:6625.62,out:69.20,ren:"B"},
+  {cli:"ITACORDA INDUST",ctes:6,fat:976.97,res:144.58,ll:135.98,mg:0.1392,peso:702.29,out:9.91,ren:"P"},
+  {cli:"VINIK IMPORTADO",ctes:1,fat:1392.41,res:167.25,ll:130.49,mg:0.0937,peso:1237.82,out:59.73,ren:"P"},
+  {cli:"SAMSUNG ELETRON",ctes:2,fat:200.00,res:119.66,ll:119.66,mg:0.5983,peso:1.00,out:0.00,ren:"P"},
+  {cli:"STRATUS COMERCI",ctes:5,fat:908.01,res:117.70,ll:117.70,mg:0.1296,peso:693.05,out:27.58,ren:"P"},
+  {cli:"MAC FER INDUSTR",ctes:16,fat:3826.75,res:174.08,ll:115.22,mg:0.0301,peso:2817.45,out:113.85,ren:"B"},
+  {cli:"AUTEL BRASIL TE",ctes:2,fat:395.16,res:109.20,ll:109.20,mg:0.2763,peso:25.83,out:0.36,ren:"P"},
+  {cli:"VENTAPEL BRASIL",ctes:1,fat:1100.00,res:114.43,ll:85.39,mg:0.0776,peso:720.00,out:0.00,ren:"P"},
+  {cli:"BRAFT DO BRASIL",ctes:3,fat:1157.28,res:103.14,ll:82.77,mg:0.0715,peso:1097.11,out:0.00,ren:"P"},
+  {cli:"LINCOLN - HARRI",ctes:1,fat:1927.94,res:77.96,ll:77.96,mg:0.0404,peso:1112.00,out:15.39,ren:"B"},
+  {cli:"WINEOCLOCK COME",ctes:1,fat:432.45,res:39.50,ll:35.18,mg:0.0814,peso:864.90,out:0.00,ren:"P"},
+  {cli:"SOLUCOES EM ACE",ctes:1,fat:108.99,res:37.10,ll:34.22,mg:0.3140,peso:23.87,out:0.00,ren:"P"},
+  {cli:"CORAX INDUSTRIA",ctes:1,fat:127.40,res:30.38,ll:27.02,mg:0.2121,peso:38.69,out:0.00,ren:"P"},
+  {cli:"WINWIN TEXTILCO",ctes:1,fat:490.00,res:24.54,ll:24.54,mg:0.0501,peso:362.00,out:0.00,ren:"P"},
+  {cli:"LIGHT ENGINE IL",ctes:1,fat:88.20,res:4.85,ll:2.52,mg:0.0286,peso:16.69,out:0.00,ren:"B"},
+  {cli:"WIK S PERSONALI",ctes:1,fat:124.92,res:-37.78,ll:-37.78,mg:-0.3024,peso:93.75,out:0.00,ren:"N"},
+  {cli:"TECADI ARMAZENS",ctes:1,fat:8979.02,res:-1295.34,ll:-1295.34,mg:-0.1443,peso:4000.00,out:55.35,ren:"N"}
+],
+  top10cli:[
+  {cli:"MATTEL DO BRASI",ctes:2,fat:7744.56,res:3030.36,ll:3030.36,mg:0.3913,peso:979.02,out:182.07,ren:"P"},
+  {cli:"IND.E COM.LEAL",ctes:30,fat:3582.11,res:1195.57,ll:1170.87,mg:0.3269,peso:3120.14,out:0.00,ren:"P"},
+  {cli:"FORTE TRANSPORT",ctes:9,fat:2816.11,res:1038.25,ll:1038.25,mg:0.3687,peso:1077.30,out:0.00,ren:"P"},
+  {cli:"SAINT PAULS IMP",ctes:1,fat:1962.41,res:839.02,ll:787.21,mg:0.4011,peso:77.36,out:0.00,ren:"P"},
+  {cli:"LEE TRADING IMP",ctes:2,fat:2145.52,res:636.49,ll:579.85,mg:0.2703,peso:136.40,out:0.00,ren:"P"},
+  {cli:"ASIA SHIPPING T",ctes:1,fat:955.20,res:371.15,ll:371.15,mg:0.3886,peso:287.10,out:3.58,ren:"P"},
+  {cli:"BSG BIJOU BRASI",ctes:3,fat:1246.65,res:247.70,ll:236.74,mg:0.1899,peso:960.00,out:0.00,ren:"P"},
+  {cli:"NEWFIX INDUSTRI",ctes:1,fat:1803.76,res:247.60,ll:231.73,mg:0.1285,peso:1705.00,out:0.00,ren:"P"},
+  {cli:"SAMSONITE BRASI",ctes:10,fat:7258.61,res:173.54,ll:173.54,mg:0.0239,peso:6625.62,out:69.20,ren:"B"},
+  {cli:"ITACORDA INDUST",ctes:6,fat:976.97,res:144.58,ll:135.98,mg:0.1392,peso:702.29,out:9.91,ren:"P"}
+],
+  top5:[
+  {op:"Jean",cli:"MATTEL DO BRASI",dest:"RIBEIRAO DAS NEVES - MG",serv:"EXPRESSO_250",min:"292099",fat:5514.61,res:2278.87,ll:2278.8700,mg:0.4132,rt:"CONCEPT CARGO",re:"AEROMINAS CARGAS EXPRESSA"},
+  {op:"Jean",cli:"SAINT PAULS IMP",dest:"SAO PAULO - SP",serv:"PERSONALIZADO_L",min:"292831",fat:1962.41,res:839.02,ll:787.2144,mg:0.3011,rt:"TRANSPORTE WAY EIRELI",re:"EDSON SANTOS DA SILVA"},
+  {op:"Jean",cli:"MATTEL DO BRASI",dest:"BETIM - MG",serv:"EXPRESSO_250",min:"292098",fat:2229.95,res:751.49,ll:751.4900,mg:0.3370,rt:"CONCEPT CARGO",re:"AEROMINAS CARGAS EXPRESSA"},
+  {op:"Jean",cli:"LEE TRADING IMP",dest:"SAO PAULO - SP",serv:"EXPRESSO_250",min:"292833",fat:1880.00,res:572.57,ll:522.9400,mg:0.2782,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"ASIA SHIPPING T",dest:"SAO PAULO - SP",serv:"SUBCONTRATO_EXP",min:"292272",fat:955.20,res:371.15,ll:371.1500,mg:0.3886,rt:"TRANSPORTE WAY EIRELI",re:"LUCAS ROBERTO XAVIER DE O"}
+],
+  bot5:[
+  {op:"Maike",cli:"WIK S PERSONALI",dest:"ITAJAI - SC",serv:"ECONOMICO_250",min:"292735",fat:124.92,res:-37.78,ll:-37.7800,mg:-0.3024,rt:"G.S CITRUS COMERCIO ATACA",re:"GILBERTO DE OLIVEIRA"},
+  {op:"Jean",cli:"SAMSONITE BRASI",dest:"SAO PAULO - SP",serv:"EXPRESSO_200",min:"292703",fat:1206.00,res:-61.02,ll:-61.0200,mg:-0.0506,rt:"TRANSPORTE WAY EIRELI",re:"JOSE EMILTON DA COSTA - O"},
+  {op:"Jean",cli:"IND.E COM.LEAL",dest:"SAO PAULO - SP",serv:"LEAL SC X SP",min:"1038",fat:465.82,res:-84.90,ll:-84.9000,mg:-0.1823,rt:"TRANSPORTE WAY EIRELI",re:"N/D"},
+  {op:"Maike",cli:"SAMSONITE BRASI",dest:"GUARULHOS - SP",serv:"EXPRESSO_200",min:"291437",fat:1140.06,res:-304.84,ll:-304.8400,mg:-0.2674,rt:"G.S CITRUS COMERCIO ATACA",re:"N/D"},
+  {op:"Welington",cli:"TECADI ARMAZENS",dest:"GARUVA - SC",serv:"SUBCONTRATO_EXP",min:"292641",fat:8979.02,res:-1295.34,ll:-1295.3400,mg:-0.1443,rt:"INDEFINIDO",re:"TRANSPORTADORA ORTIZ LTDA"}
+],
+  fat:51750.43,res:7710.93,mg:0.149002,n_ctes:103,
+  frac:3,ded:0,
+  fat_frac:51750.43,res_frac:7710.93,
+  fat_ded:0.00,res_ded:0.00,
+  ctot_total:22674.96,
+  peso_total:28774.39,
+  fora:0,dentro:2,abaixo:1
+};
+DIAS["23/07/2026"]={
+  ops:[
+  {tipo:"FRACIONADO",nome:"Jose Carlos",ctes:7,fat:36290.63,ct:11000.00,ce:371.50,ctot:11371.50,co:472.61,res:12227.9300,mg:0.336945,vei:"Carreta",ocup:0.120781,trecho:"Itajai-Sc X Cuiab\u00e1-Mtcarreta",tgt:11500.00,dif:500.00,st:"ABAIXO DO TARGET",cli:"MATTEL DO BRASI, SAMSONITE BRASI",rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO, ITAUAN GONZAGA DA SILVA",peso:2657.19,ckg:4.1397},
+  {tipo:"FRACIONADO",nome:"Vinicius",ctes:21,fat:3524.78,ct:1800.00,ce:1.90,ctot:1801.90,co:0.00,res:512.0200,mg:0.145263,vei:"3/4",ocup:0.546317,trecho:"S\u00e3o Paulo-Sp X Itajai-Sc3/4",tgt:1800.00,dif:0.00,st:"DENTRO DO TARGET",cli:"ANSELL BRAZIL L, HERCULES EQUIPA, GOFRETES INTERM",rt:"CARLOS EDUARDO SILVA",re:"HELTON JOHN DA SILVA, LUIZ FELIPE FERNANDES DA",peso:1912.11,ckg:0.9414}
+],
+  ctes:[
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292097",fat:9702.81,res:3397.19,ll:3397.1900,mg:0.3501,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292094",fat:8905.49,res:3114.40,ll:3114.4000,mg:0.3497,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292096",fat:6350.15,res:2188.04,ll:2188.0400,mg:0.3446,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292095",fat:4796.82,res:1501.88,ll:1501.8800,mg:0.3131,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"VARZEA GRANDE - MT",serv:"EXPRESSO_250",min:"292101",fat:4402.28,res:1389.86,ll:1389.8600,mg:0.3157,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292093",fat:2027.51,res:624.80,ll:624.8000,mg:0.3082,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1076",fat:372.92,res:247.00,ll:247.0000,mg:0.6623,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1080",fat:433.54,res:176.03,ll:176.0300,mg:0.4060,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1081",fat:433.54,res:176.03,ll:176.0300,mg:0.4060,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"KUKA PRODUTOS I",dest:"ICARA - SC",serv:"PERSONALIZADO",min:"293183",fat:609.82,res:161.34,ll:145.2400,mg:0.2382,rt:"UILIAN PRAZITO RODRIGUES.",re:"N/D"},
+  {op:"Vinicius",cli:"FARMA VISION IM",dest:"FLORIANOPOLIS - SC",serv:"ECONOMICO_250",min:"292976",fat:148.36,res:74.55,ll:70.6300,mg:0.4761,rt:"UILIAN PRAZITO RODRIGUES.",re:"LUIZ FELIPE FERNANDES DA"},
+  {op:"Vinicius",cli:"HERCULES EQUIPA",dest:"GARUVA - SC",serv:"EXPRESSO_250",min:"292463",fat:115.39,res:67.63,ll:67.6300,mg:0.5861,rt:"CARLOS EDUARDO SILVA",re:"N/D"},
+  {op:"Vinicius",cli:"HERCULES EQUIPA",dest:"GARUVA - SC",serv:"EXPRESSO_250",min:"292470",fat:119.08,res:64.13,ll:64.1300,mg:0.5385,rt:"CARLOS EDUARDO SILVA",re:"N/D"},
+  {op:"Vinicius",cli:"ANSELL BRAZIL L",dest:"JOINVILLE - SC",serv:"EXPRESSO_250",min:"292445",fat:103.23,res:63.42,ll:63.4200,mg:0.6144,rt:"CARLOS EDUARDO SILVA",re:"N/D"},
+  {op:"Vinicius",cli:"ANSELL BRAZIL L",dest:"JOINVILLE - SC",serv:"EXPRESSO_250",min:"292465",fat:103.23,res:54.45,ll:54.4500,mg:0.5275,rt:"CARLOS EDUARDO SILVA",re:"HELTON JOHN DA SILVA"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1071",fat:58.25,res:36.67,ll:36.0900,mg:0.6196,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1070",fat:43.41,res:26.26,ll:25.8300,mg:0.5950,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1078",fat:50.33,res:13.11,ll:13.1100,mg:0.2605,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Jose Carlos",cli:"SAMSONITE BRASI",dest:"CURITIBA - PR",serv:"EXPRESSO_200",min:"292759",fat:105.57,res:11.76,ll:11.7600,mg:0.1114,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"ITAUAN GONZAGA DA SILVA"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1077",fat:4.73,res:-9.37,ll:-9.3700,mg:-1.9810,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"GOFRETES INTERM",dest:"FLORIANOPOLIS - SC",serv:"ECONOMICO_250",min:"292972",fat:359.22,res:-37.07,ll:-37.0700,mg:-0.1032,rt:"UILIAN PRAZITO RODRIGUES.",re:"LUIZ FELIPE FERNANDES DA"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1073",fat:8.23,res:-42.17,ll:-42.1700,mg:-5.1239,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"INDUSTRIA E COM",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1082",fat:11.77,res:-42.77,ll:-42.7700,mg:-3.6338,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1075",fat:5.18,res:-61.55,ll:-61.5500,mg:-11.8822,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1072",fat:21.95,res:-80.29,ll:-80.2900,mg:-3.6579,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1074",fat:41.07,res:-88.84,ll:-88.8400,mg:-2.1631,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"GOFRETES INTERM",dest:"FLORIANOPOLIS - SC",serv:"ECONOMICO_250",min:"293090",fat:399.41,res:-96.02,ll:-96.0200,mg:-0.2404,rt:"UILIAN PRAZITO RODRIGUES.",re:"LUIZ FELIPE FERNANDES DA"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1079",fat:82.12,res:-190.52,ll:-190.5200,mg:-2.3200,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"}
+],
+  cli:[
+  {cli:"MATTEL DO BRASI",ctes:6,fat:36185.06,res:12216.17,ll:12216.17,mg:0.3376,peso:2541.19,out:472.61,ren:"P"},
+  {cli:"IND.E COM.LEAL",ctes:12,fat:1555.27,res:202.36,ll:201.35,mg:0.1295,peso:499.59,out:0.00,ren:"P"},
+  {cli:"KUKA PRODUTOS I",ctes:1,fat:609.82,res:161.34,ll:145.24,mg:0.2382,peso:360.56,out:0.00,ren:"P"},
+  {cli:"HERCULES EQUIPA",ctes:2,fat:234.47,res:131.76,ll:131.76,mg:0.5619,peso:13.50,out:0.00,ren:"P"},
+  {cli:"ANSELL BRAZIL L",ctes:2,fat:206.46,res:117.87,ll:117.87,mg:0.5709,peso:12.07,out:0.00,ren:"P"},
+  {cli:"FARMA VISION IM",ctes:1,fat:148.36,res:74.55,ll:70.63,mg:0.4761,peso:19.00,out:0.00,ren:"P"},
+  {cli:"SAMSONITE BRASI",ctes:1,fat:105.57,res:11.76,ll:11.76,mg:0.1114,peso:116.00,out:0.00,ren:"P"},
+  {cli:"INDUSTRIA E COM",ctes:1,fat:11.77,res:-42.77,ll:-42.77,mg:-3.6338,peso:32.00,out:0.00,ren:"N"},
+  {cli:"GOFRETES INTERM",ctes:2,fat:758.63,res:-133.09,ll:-133.09,mg:-0.1754,peso:975.39,out:0.00,ren:"N"}
+],
+  top10cli:[
+  {cli:"MATTEL DO BRASI",ctes:6,fat:36185.06,res:12216.17,ll:12216.17,mg:0.3376,peso:2541.19,out:472.61,ren:"P"},
+  {cli:"IND.E COM.LEAL",ctes:12,fat:1555.27,res:202.36,ll:201.35,mg:0.1295,peso:499.59,out:0.00,ren:"P"},
+  {cli:"KUKA PRODUTOS I",ctes:1,fat:609.82,res:161.34,ll:145.24,mg:0.2382,peso:360.56,out:0.00,ren:"P"},
+  {cli:"HERCULES EQUIPA",ctes:2,fat:234.47,res:131.76,ll:131.76,mg:0.5619,peso:13.50,out:0.00,ren:"P"},
+  {cli:"ANSELL BRAZIL L",ctes:2,fat:206.46,res:117.87,ll:117.87,mg:0.5709,peso:12.07,out:0.00,ren:"P"},
+  {cli:"FARMA VISION IM",ctes:1,fat:148.36,res:74.55,ll:70.63,mg:0.4761,peso:19.00,out:0.00,ren:"P"},
+  {cli:"SAMSONITE BRASI",ctes:1,fat:105.57,res:11.76,ll:11.76,mg:0.1114,peso:116.00,out:0.00,ren:"P"},
+  {cli:"INDUSTRIA E COM",ctes:1,fat:11.77,res:-42.77,ll:-42.77,mg:-3.6338,peso:32.00,out:0.00,ren:"N"},
+  {cli:"GOFRETES INTERM",ctes:2,fat:758.63,res:-133.09,ll:-133.09,mg:-0.1754,peso:975.39,out:0.00,ren:"N"}
+],
+  top5:[
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292097",fat:9702.81,res:3397.19,ll:3397.1900,mg:0.3501,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292094",fat:8905.49,res:3114.40,ll:3114.4000,mg:0.3497,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292096",fat:6350.15,res:2188.04,ll:2188.0400,mg:0.3446,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"CUIABA - MT",serv:"EXPRESSO_250",min:"292095",fat:4796.82,res:1501.88,ll:1501.8800,mg:0.3131,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"},
+  {op:"Jose Carlos",cli:"MATTEL DO BRASI",dest:"VARZEA GRANDE - MT",serv:"EXPRESSO_250",min:"292101",fat:4402.28,res:1389.86,ll:1389.8600,mg:0.3157,rt:"FRATUS &AMP; FRATUS TRANSPORT",re:"PHEX TRANSPORTE E TURISMO"}
+],
+  bot5:[
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1075",fat:5.18,res:-61.55,ll:-61.5500,mg:-11.8822,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1072",fat:21.95,res:-80.29,ll:-80.2900,mg:-3.6579,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1074",fat:41.07,res:-88.84,ll:-88.8400,mg:-2.1631,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"},
+  {op:"Vinicius",cli:"GOFRETES INTERM",dest:"FLORIANOPOLIS - SC",serv:"ECONOMICO_250",min:"293090",fat:399.41,res:-96.02,ll:-96.0200,mg:-0.2404,rt:"UILIAN PRAZITO RODRIGUES.",re:"LUIZ FELIPE FERNANDES DA"},
+  {op:"Vinicius",cli:"IND.E COM.LEAL",dest:"NAVEGANTES - SC",serv:"LEAL SP X SC",min:"1079",fat:82.12,res:-190.52,ll:-190.5200,mg:-2.3200,rt:"UILIAN PRAZITO RODRIGUES",re:"N/D"}
+],
+  fat:39815.41,res:12739.95,mg:0.319975,n_ctes:28,
+  frac:2,ded:0,
+  fat_frac:39815.41,res_frac:12739.95,
+  fat_ded:0.00,res_ded:0.00,
+  ctot_total:13173.40,
+  peso_total:4569.30,
+  fora:0,dentro:1,abaixo:1
+};
+DIAS["24/07/2026"]={
+  ops:[
   {tipo:"FRACIONADO",nome:"Carlos Alexandre",ctes:3,fat:19168.39,ct:0.00,ce:9000.00,ctot:9000.00,co:0.00,res:3197.3400,mg:0.166803,vei:"Truck",ocup:0.734914,trecho:"Itajai-Sc X Rio De Janeiro-Rjtruck",tgt:8000.00,dif:-1000.00,st:"FORA DO TARGET",cli:"ESAB INDUSTRIA, CICLO EVO IMPOR, KIKA DIGITAL OR",rt:"REITER TRANSPORTES EIRELI",re:"REITER TRANSPORTES EIRELI",peso:8084.05,ckg:0.0000},
   {tipo:"FRACIONADO",nome:"Paulo Cesar",ctes:2,fat:6090.67,ct:0.00,ce:3300.00,ctot:3300.00,co:0.00,res:1047.3500,mg:0.171960,vei:"Van",ocup:1.000000,trecho:"Itajai-Sc X Extrema-Mgvan",tgt:3300.00,dif:0.00,st:"DENTRO DO TARGET",cli:"MAC FER INDUSTR, SKO COMERCIO, I",rt:"INDEFINIDO",re:"PAULO CESAR BASTOS DE ARA",peso:1423.70,ckg:0.0000},
   {tipo:"FECHADO",nome:"Claudio",ctes:1,fat:5790.00,ct:0.00,ce:3000.00,ctot:3000.00,co:0.00,res:249.4600,mg:0.043085,vei:"3/4",ocup:0.405714,trecho:"S\u00e3o Paulo-Sp X Pirapetinga-Mg3/4",tgt:3000.00,dif:0.00,st:"DENTRO DO TARGET",cli:"ANDRITZ HYDRO L",rt:"G.S CITRUS COMERCIO ATACA",re:"CLAUDIO BORGES GODAS",peso:1420.00,ckg:0.0000}
-];const clientes=[
-  {cli:"ESAB INDUSTRIA",ctes:1,fat:12900.00,res:2519.28,ll:2519.28,mg:0.1953,peso:6693.84,out:0.00,ren:"P"},
-  {cli:"SKO COMERCIO, I",ctes:1,fat:5990.00,res:1029.88,ll:1029.88,mg:0.1719,peso:1392.00,out:0.00,ren:"P"},
-  {cli:"KIKA DIGITAL OR",ctes:1,fat:5998.00,res:567.02,ll:408.67,mg:0.0681,peso:1332.00,out:0.00,ren:"P"},
-  {cli:"ANDRITZ HYDRO L",ctes:1,fat:5790.00,res:249.46,ll:249.46,mg:0.0431,peso:1420.00,out:0.00,ren:"B"},
-  {cli:"CICLO EVO IMPOR",ctes:1,fat:270.39,res:111.04,ll:111.04,mg:0.4107,peso:58.21,out:0.00,ren:"P"},
-  {cli:"MAC FER INDUSTR",ctes:1,fat:100.67,res:17.47,ll:14.81,mg:0.1471,peso:31.70,out:0.00,ren:"P"}
-];const top10cli=[
-  {cli:"ESAB INDUSTRIA",ctes:1,fat:12900.00,res:2519.28,ll:2519.28,mg:0.1953,peso:6693.84,out:0.00,ren:"P"},
-  {cli:"SKO COMERCIO, I",ctes:1,fat:5990.00,res:1029.88,ll:1029.88,mg:0.1719,peso:1392.00,out:0.00,ren:"P"},
-  {cli:"KIKA DIGITAL OR",ctes:1,fat:5998.00,res:567.02,ll:408.67,mg:0.0681,peso:1332.00,out:0.00,ren:"P"},
-  {cli:"ANDRITZ HYDRO L",ctes:1,fat:5790.00,res:249.46,ll:249.46,mg:0.0431,peso:1420.00,out:0.00,ren:"B"},
-  {cli:"CICLO EVO IMPOR",ctes:1,fat:270.39,res:111.04,ll:111.04,mg:0.4107,peso:58.21,out:0.00,ren:"P"},
-  {cli:"MAC FER INDUSTR",ctes:1,fat:100.67,res:17.47,ll:14.81,mg:0.1471,peso:31.70,out:0.00,ren:"P"}
-];const allCTEs=[
+],
+  ctes:[
   {op:"Carlos Alexandre",cli:"ESAB INDUSTRIA",dest:"RIO DE JANEIRO - RJ",serv:"EXPRESSO_250",min:"292835",fat:12900.00,res:2519.28,ll:2519.2800,mg:0.1953,rt:"REITER TRANSPORTES EIRELI",re:"N/D"},
   {op:"Paulo Cesar",cli:"SKO COMERCIO, I",dest:"EXTREMA - MG",serv:"PERSONALIZADO_L",min:"2024",fat:5990.00,res:1029.88,ll:1029.8800,mg:0.1719,rt:"INDEFINIDO",re:"PAULO CESAR BASTOS DE ARA"},
   {op:"Carlos Alexandre",cli:"KIKA DIGITAL OR",dest:"SOROCABA - SP",serv:"PERSONALIZADO_L",min:"2023",fat:5998.00,res:567.02,ll:408.6700,mg:0.0681,rt:"INDEFINIDO",re:"REITER TRANSPORTES EIRELI"},
   {op:"Claudio",cli:"ANDRITZ HYDRO L",dest:"PIRAPETINGA - MG",serv:"PERSONALIZADO_L",min:"292981",fat:5790.00,res:249.46,ll:249.4600,mg:-0.0833,rt:"G.S CITRUS COMERCIO ATACA",re:"CLAUDIO BORGES GODAS"},
   {op:"Carlos Alexandre",cli:"CICLO EVO IMPOR",dest:"FRANCA - SP",serv:"ECONOMICO_250",min:"293282",fat:270.39,res:111.04,ll:111.0400,mg:0.4107,rt:"REITER TRANSPORTES EIRELI",re:"N/D"},
   {op:"Paulo Cesar",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"2017",fat:100.67,res:17.47,ll:14.8100,mg:0.1471,rt:"INDEFINIDO",re:"PAULO CESAR BASTOS DE ARA"}
-];const top5cte=[
+],
+  cli:[
+  {cli:"ESAB INDUSTRIA",ctes:1,fat:12900.00,res:2519.28,ll:2519.28,mg:0.1953,peso:6693.84,out:0.00,ren:"P"},
+  {cli:"SKO COMERCIO, I",ctes:1,fat:5990.00,res:1029.88,ll:1029.88,mg:0.1719,peso:1392.00,out:0.00,ren:"P"},
+  {cli:"KIKA DIGITAL OR",ctes:1,fat:5998.00,res:567.02,ll:408.67,mg:0.0681,peso:1332.00,out:0.00,ren:"P"},
+  {cli:"ANDRITZ HYDRO L",ctes:1,fat:5790.00,res:249.46,ll:249.46,mg:0.0431,peso:1420.00,out:0.00,ren:"B"},
+  {cli:"CICLO EVO IMPOR",ctes:1,fat:270.39,res:111.04,ll:111.04,mg:0.4107,peso:58.21,out:0.00,ren:"P"},
+  {cli:"MAC FER INDUSTR",ctes:1,fat:100.67,res:17.47,ll:14.81,mg:0.1471,peso:31.70,out:0.00,ren:"P"}
+],
+  top10cli:[
+  {cli:"ESAB INDUSTRIA",ctes:1,fat:12900.00,res:2519.28,ll:2519.28,mg:0.1953,peso:6693.84,out:0.00,ren:"P"},
+  {cli:"SKO COMERCIO, I",ctes:1,fat:5990.00,res:1029.88,ll:1029.88,mg:0.1719,peso:1392.00,out:0.00,ren:"P"},
+  {cli:"KIKA DIGITAL OR",ctes:1,fat:5998.00,res:567.02,ll:408.67,mg:0.0681,peso:1332.00,out:0.00,ren:"P"},
+  {cli:"ANDRITZ HYDRO L",ctes:1,fat:5790.00,res:249.46,ll:249.46,mg:0.0431,peso:1420.00,out:0.00,ren:"B"},
+  {cli:"CICLO EVO IMPOR",ctes:1,fat:270.39,res:111.04,ll:111.04,mg:0.4107,peso:58.21,out:0.00,ren:"P"},
+  {cli:"MAC FER INDUSTR",ctes:1,fat:100.67,res:17.47,ll:14.81,mg:0.1471,peso:31.70,out:0.00,ren:"P"}
+],
+  top5:[
   {op:"Carlos Alexandre",cli:"ESAB INDUSTRIA",dest:"RIO DE JANEIRO - RJ",serv:"EXPRESSO_250",min:"292835",fat:12900.00,res:2519.28,ll:2519.2800,mg:0.1953,rt:"REITER TRANSPORTES EIRELI",re:"N/D"},
   {op:"Paulo Cesar",cli:"SKO COMERCIO, I",dest:"EXTREMA - MG",serv:"PERSONALIZADO_L",min:"2024",fat:5990.00,res:1029.88,ll:1029.8800,mg:0.1719,rt:"INDEFINIDO",re:"PAULO CESAR BASTOS DE ARA"},
   {op:"Carlos Alexandre",cli:"KIKA DIGITAL OR",dest:"SOROCABA - SP",serv:"PERSONALIZADO_L",min:"2023",fat:5998.00,res:567.02,ll:408.6700,mg:0.0681,rt:"INDEFINIDO",re:"REITER TRANSPORTES EIRELI"},
   {op:"Claudio",cli:"ANDRITZ HYDRO L",dest:"PIRAPETINGA - MG",serv:"PERSONALIZADO_L",min:"292981",fat:5790.00,res:249.46,ll:249.4600,mg:-0.0833,rt:"G.S CITRUS COMERCIO ATACA",re:"CLAUDIO BORGES GODAS"},
   {op:"Carlos Alexandre",cli:"CICLO EVO IMPOR",dest:"FRANCA - SP",serv:"ECONOMICO_250",min:"293282",fat:270.39,res:111.04,ll:111.0400,mg:0.4107,rt:"REITER TRANSPORTES EIRELI",re:"N/D"}
-];const bot5cte=[
+],
+  bot5:[
   {op:"Paulo Cesar",cli:"SKO COMERCIO, I",dest:"EXTREMA - MG",serv:"PERSONALIZADO_L",min:"2024",fat:5990.00,res:1029.88,ll:1029.8800,mg:0.1719,rt:"INDEFINIDO",re:"PAULO CESAR BASTOS DE ARA"},
   {op:"Carlos Alexandre",cli:"KIKA DIGITAL OR",dest:"SOROCABA - SP",serv:"PERSONALIZADO_L",min:"2023",fat:5998.00,res:567.02,ll:408.6700,mg:0.0681,rt:"INDEFINIDO",re:"REITER TRANSPORTES EIRELI"},
   {op:"Claudio",cli:"ANDRITZ HYDRO L",dest:"PIRAPETINGA - MG",serv:"PERSONALIZADO_L",min:"292981",fat:5790.00,res:249.46,ll:249.4600,mg:-0.0833,rt:"G.S CITRUS COMERCIO ATACA",re:"CLAUDIO BORGES GODAS"},
   {op:"Carlos Alexandre",cli:"CICLO EVO IMPOR",dest:"FRANCA - SP",serv:"ECONOMICO_250",min:"293282",fat:270.39,res:111.04,ll:111.0400,mg:0.4107,rt:"REITER TRANSPORTES EIRELI",re:"N/D"},
   {op:"Paulo Cesar",cli:"MAC FER INDUSTR",dest:"GUARULHOS - SP",serv:"ECONOMICO_250",min:"2017",fat:100.67,res:17.47,ll:14.8100,mg:0.1471,rt:"INDEFINIDO",re:"PAULO CESAR BASTOS DE ARA"}
-];
+],
+  fat:31049.06,res:4494.15,mg:0.144744,n_ctes:6,
+  frac:2,ded:1,
+  fat_frac:25259.06,res_frac:4244.69,
+  fat_ded:5790.00,res_ded:249.46,
+  ctot_total:15300.00,
+  peso_total:10927.75,
+  fora:1,dentro:2,abaixo:0
+};
+const DIAS_KEYS=["22/07/2026", "23/07/2026", "24/07/2026"];
+
 function BR(v){return 'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2})}
-function PCT(v){return (v*100).toFixed(2).replace('.',',')+'%'}
-function cls(v){return v>0?'pos':'neg'}
+function PCT(v){return (v*100).toFixed(2).replace('.',',')+' %'}
+function cls(v){return v>=0?'pos':'neg'}
 function stBadge(st){if(st.includes('FORA'))return'<span class="b br">FORA</span>';if(st.includes('DENTRO'))return'<span class="b bb">DENTRO</span>';if(st.includes('ABAIXO'))return'<span class="b bg">ABAIXO</span>';return'<span class="b bgy">'+st+'</span>';}
+function tbBadge(t){return t>1?'<span class="b bb">FRAC.</span>':'<span class="b bo">DED.</span>';}
 function occBar(v){let pct=Math.min(v*100,100),c=v>1?'#e74c3c':v<0.5?'#f39c12':'#27ae60';return'<div class="occ-wrap"><div class="occ-t"><div class="occ-f" style="width:'+pct.toFixed(0)+'%;background:'+c+'"></div></div><span style="font-size:10px">'+(v*100).toFixed(1)+'%</span></div>';}
-const rb=document.getElementById('resBody');
-const frac_ops=ops.filter(o=>o.ctes>1),ded_ops=ops.filter(o=>o.ctes<=1);
-function addRows(arr,cls2){arr.forEach(o=>{const tr=document.createElement('tr');tr.className=cls2;const tb=o.ctes>1?'<span class="b bb">FRAC.</span>':'<span class="b bo">DED.</span>';const dh=o.dif<0?`<span class="neg">R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`:`<span class="pos">R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;tr.innerHTML=`<td>${tb}</td><td class="l">${o.nome}</td><td>${o.ctes}</td><td>${BR(o.fat)}</td><td>${BR(o.ct)}</td><td>${BR(o.ce)}</td><td>${BR(o.ctot)}</td><td>${BR(o.co)}</td><td class="${cls(o.res)}">${BR(o.res)}</td><td class="${cls(o.mg)}">${PCT(o.mg)}</td><td>${o.vei}</td><td>${occBar(o.ocup)}</td><td class="l wrap2">${o.trecho}</td><td>${BR(o.tgt)}</td><td>${dh}</td><td>${stBadge(o.st)}</td><td class="l wrap2" style="font-weight:400">${o.cli}</td><td class="l wrap2" style="font-weight:400">${o.rt}</td><td class="l wrap2" style="font-weight:400">${o.re}</td><td>${o.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${o.ckg>0?'R$ '+o.ckg.toFixed(3).replace('.',','):'—'}</td>`;rb.appendChild(tr);});}
-addRows(frac_ops,'sf');
-if(frac_ops.length){const tf=frac_ops.reduce((a,o)=>{a.fat+=o.fat;a.res+=o.res;a.ctes+=o.ctes;a.ctot+=o.ctot;a.co+=o.co;a.peso+=o.peso;return a;},{fat:0,res:0,ctes:0,ctot:0,co:0,peso:0});const sr=document.createElement('tr');sr.className='sf';sr.innerHTML=`<td><b>FRAC.</b></td><td class="l"><b>SUBTOTAL</b></td><td><b>${tf.ctes}</b></td><td><b>${BR(tf.fat)}</b></td><td colspan="2"></td><td><b>${BR(tf.ctot)}</b></td><td><b>${BR(tf.co)}</b></td><td class="${cls(tf.res)}"><b>${BR(tf.res)}</b></td><td class="${cls(tf.res/tf.fat)}"><b>${PCT(tf.res/tf.fat)}</b></td><td colspan="10"></td><td><b>${tf.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</b></td><td></td>`;rb.appendChild(sr);}
-addRows(ded_ops,'sd');
-if(ded_ops.length){const td2=ded_ops.reduce((a,o)=>{a.fat+=o.fat;a.res+=o.res;a.ctes+=o.ctes;a.ctot+=o.ctot;a.co+=o.co;a.peso+=o.peso;return a;},{fat:0,res:0,ctes:0,ctot:0,co:0,peso:0});const sr=document.createElement('tr');sr.className='sd';sr.innerHTML=`<td><b>DED.</b></td><td class="l"><b>SUBTOTAL</b></td><td><b>${td2.ctes}</b></td><td><b>${BR(td2.fat)}</b></td><td colspan="2"></td><td><b>${BR(td2.ctot)}</b></td><td><b>${BR(td2.co)}</b></td><td class="${cls(td2.res)}"><b>${BR(td2.res)}</b></td><td class="${cls(td2.res/td2.fat)}"><b>${PCT(td2.res/td2.fat)}</b></td><td colspan="10"></td><td><b>${td2.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</b></td><td></td>`;rb.appendChild(sr);}
-const gt=ops.reduce((a,o)=>{a.fat+=o.fat;a.res+=o.res;a.ctes+=o.ctes;a.ctot+=o.ctot;a.co+=o.co;a.peso+=o.peso;return a;},{fat:0,res:0,ctes:0,ctot:0,co:0,peso:0});
-const gtr=document.createElement('tr');gtr.className='gt';gtr.innerHTML=`<td>TOTAL</td><td class="l">CONSOLIDADO</td><td>${gt.ctes}</td><td>${BR(gt.fat)}</td><td colspan="2"></td><td>${BR(gt.ctot)}</td><td>${BR(gt.co)}</td><td>${BR(gt.res)}</td><td>${PCT(gt.res/gt.fat)}</td><td colspan="10"></td><td>${gt.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td></td>`;rb.appendChild(gtr);
-const cb=document.getElementById('cliBody');
-clientes.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';const rb2=c.ren==='P'?'<span class="b bg">🟢 Positiva</span>':c.ren==='N'?'<span class="b br">🔴 Negativa</span>':'<span class="b bo">🟡 Baixa</span>';tr.innerHTML=`<td class="l">${i+1}</td><td class="l">${c.cli}</td><td>${c.ctes}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td><td>${c.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${BR(c.out)}</td><td>${rb2}</td>`;cb.appendChild(tr);});
-function fillRank(id,data){const tb=document.getElementById(id);data.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';tr.innerHTML=`<td>${i+1}</td><td class="l">${c.op}</td><td class="l">${c.cli}</td><td class="l">${c.dest}</td><td class="l">${c.serv}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td>`;tb.appendChild(tr);});}
-fillRank('top5',top5cte);fillRank('bot5',bot5cte);
-const ab=document.getElementById('allCTE');
-allCTEs.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';tr.innerHTML=`<td>${i+1}</td><td class="l">${c.op}</td><td class="l">${c.cli}</td><td class="l">${c.dest}</td><td class="l">${c.serv}</td><td>${c.min}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td><td class="l">${c.rt}</td><td class="l">${c.re}</td>`;ab.appendChild(tr);});
-const vb=document.getElementById('veiBody');
-ops.forEach((o,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';const dh=o.dif<0?`<span class="neg">-R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`:`<span class="pos">+R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;tr.innerHTML=`<td class="l">${o.nome}</td><td>${o.vei}</td><td>${o.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${occBar(o.ocup)}</td><td class="l wrap2">${o.trecho}</td><td>${BR(o.ctot)}</td><td>${BR(o.tgt)}</td><td>${dh}</td><td>${stBadge(o.st)}</td><td class="${cls(o.res)}">${BR(o.res)}</td><td class="${cls(o.mg)}">${PCT(o.mg)}</td><td class="l">${o.rt}</td><td class="l">${o.re}</td>`;vb.appendChild(tr);});
-const NAMES=ops.map(o=>o.nome);
-new Chart(document.getElementById('resChart'),{type:'bar',data:{labels:NAMES,datasets:[{label:'Resultado',data:ops.map(o=>o.res),backgroundColor:ops.map(o=>o.res>0?'rgba(0,97,0,.8)':'rgba(156,0,6,.8)'),borderWidth:1}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},scales:{y:{ticks:{callback:v=>BR(v),font:{size:9}}},x:{ticks:{font:{size:10}}}}}
+
+// Tabela de todas as viagens (consolidado)
+function buildAllOps(){
+  const tb=document.getElementById('allOpsBody');
+  DIAS_KEYS.forEach(dk=>{
+    const d=DIAS[dk];
+    // header do dia
+    const htr=document.createElement('tr');htr.className='day-hdr';
+    htr.innerHTML=`<td colspan="15">📅 ${dk} — ${d.ops.length} viagens · ${d.n_ctes} CTEs · ${BR(d.fat)} · Res ${BR(d.res)} · ${PCT(d.mg)}</td>`;
+    tb.appendChild(htr);
+    d.ops.forEach((o,i)=>{
+      const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';
+      const dif=o.dif<0?`<span class="neg">-R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`:`<span class="pos">+R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;
+      tr.innerHTML=`<td><span class="b bb">${dk}</span></td><td>${tbBadge(o.ctes)}</td><td class="l">${o.nome}</td><td>${o.ctes}</td><td>${BR(o.fat)}</td><td>${BR(o.ctot)}</td><td>${BR(o.co)}</td><td class="${cls(o.res)}">${BR(o.res)}</td><td class="${cls(o.mg)}">${PCT(o.mg)}</td><td>${o.vei}</td><td class="l wrap2">${o.trecho}</td><td>${BR(o.tgt)}</td><td>${dif}</td><td>${stBadge(o.st)}</td><td class="l">${o.rt}</td>`;
+      tb.appendChild(tr);
+    });
+  });
+  // Total geral
+  const gt=document.createElement('tr');gt.className='gt';
+  const tFat=DIAS_KEYS.reduce((s,k)=>s+DIAS[k].fat,0);
+  const tRes=DIAS_KEYS.reduce((s,k)=>s+DIAS[k].res,0);
+  const tCtes=DIAS_KEYS.reduce((s,k)=>s+DIAS[k].n_ctes,0);
+  const tVg=DIAS_KEYS.reduce((s,k)=>s+DIAS[k].ops.length,0);
+  gt.innerHTML=`<td colspan="2">TOTAL</td><td class="l"><b>CONSOLIDADO (${tVg} viagens)</b></td><td><b>${tCtes}</b></td><td><b>${BR(tFat)}</b></td><td colspan="2"></td><td><b>${BR(tRes)}</b></td><td><b>${PCT(tRes/tFat)}</b></td><td colspan="6"></td>`;
+  tb.appendChild(gt);
+}
+
+// Conteúdo de cada aba de dia
+function buildDayTab(dk){
+  const el=document.getElementById('content-'+dk);
+  if(el.dataset.built) return;
+  el.dataset.built='1';
+  const d=DIAS[dk];
+  const frac=d.ops.filter(o=>o.ctes>1),ded=d.ops.filter(o=>o.ctes<=1);
+  const fora=d.ops.filter(o=>o.st.includes('FORA')).length;
+  const dentro=d.ops.filter(o=>o.st.includes('DENTRO')).length;
+  const abaixo=d.ops.filter(o=>o.st.includes('ABAIXO')).length;
+
+  el.innerHTML=`
+    <div class="kpi-strip" style="margin:0 -22px 20px;padding:14px 22px">
+      <div class="kpi k0"><div class="kl">Faturamento</div><div class="kv">${BR(d.fat)}</div><div class="ks">${d.ops.length} viagens · ${d.n_ctes} CTEs</div></div>
+      <div class="kpi k1"><div class="kl">Resultado</div><div class="kv" style="color:${d.res>=0?'#006100':'#9C0006'}">${BR(d.res)}</div><div class="ks">Margem: ${PCT(d.mg)}</div></div>
+      <div class="kpi k2"><div class="kl">Fracionado (${frac.length})</div><div class="kv">${BR(d.fat_frac)}</div><div class="ks">Res ${BR(d.res_frac)} · ${PCT(d.fat_frac>0?d.res_frac/d.fat_frac:0)}</div></div>
+      <div class="kpi k3"><div class="kl">Dedicado (${ded.length})</div><div class="kv">${BR(d.fat_ded)}</div><div class="ks">Res ${BR(d.res_ded)} · ${PCT(d.fat_ded>0?d.res_ded/d.fat_ded:0)}</div></div>
+      <div class="kpi k4"><div class="kl">Status Target</div><div class="kv">${dentro+abaixo}✔ / ${fora}✘</div><div class="ks">Dentro/Abaixo · Fora</div></div>
+      <div class="kpi k5"><div class="kl">C.Transf+Entrega</div><div class="kv">${BR(d.ctot_total)}</div><div class="ks">Peso: ${d.peso_total.toLocaleString('pt-BR',{minimumFractionDigits:2})} kg</div></div>
+    </div>
+    <div class="sh">📊 Viagens do Dia</div>
+    <div class="g3">
+      <div class="card"><div class="ctitle">Resultado Op. (R$)</div><canvas id="rc_${dk.replace(/\//g,'_')}" height="160"></canvas></div>
+      <div class="card"><div class="ctitle">Margem (%)</div><canvas id="mc_${dk.replace(/\//g,'_')}" height="160"></canvas></div>
+      <div class="card"><div class="ctitle">Status Target</div><canvas id="tc_${dk.replace(/\//g,'_')}" height="160"></canvas></div>
+    </div>
+    <div class="sh">📋 Resumo por Viagem</div>
+    <div class="tw"><table><thead><tr><th>Tipo</th><th class="l">Operador</th><th>CTEs</th><th>Faturamento</th><th>C.Transf.</th><th>C.Entrega</th><th>C.T+E</th><th>C.Outros</th><th>Resultado Op.</th><th>Margem</th><th>Veículo</th><th>Ocup.</th><th class="l">Trecho</th><th>Target</th><th>Diferença</th><th>Status</th><th class="l">Clientes</th><th class="l">Resp.Transf.</th><th class="l">Resp.Entrega</th><th>Peso(kg)</th><th>R$/kg</th></tr></thead><tbody id="rb_${dk.replace(/\//g,'_')}"></tbody></table></div>
+    <div class="sh">👥 Por Cliente</div>
+    <div class="tw"><table><thead><tr><th>#</th><th class="l">Cliente</th><th>CTEs</th><th>Faturamento</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th><th>Peso(kg)</th><th>Rentabilidade</th></tr></thead><tbody id="cb_${dk.replace(/\//g,'_')}"></tbody></table></div>
+    <div class="sh">🏆 Top/Bottom 5 CTEs</div>
+    <div class="g2">
+      <div class="tw" style="margin-bottom:0"><table><thead><tr><th colspan="8" style="background:#27ae60;text-align:left;padding:8px 12px">✅ TOP 5</th></tr><tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th></tr></thead><tbody id="t5_${dk.replace(/\//g,'_')}"></tbody></table></div>
+      <div class="tw" style="margin-bottom:0"><table><thead><tr><th colspan="8" style="background:#c0392b;text-align:left;padding:8px 12px">❌ BOTTOM 5</th></tr><tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th></tr></thead><tbody id="b5_${dk.replace(/\//g,'_')}"></tbody></table></div>
+    </div>
+    <div class="sh">📋 Todos os CTEs (${d.n_ctes})</div>
+    <div class="tw" style="max-height:420px;overflow-y:auto"><table><thead><tr><th>#</th><th class="l">Operador</th><th class="l">Cliente</th><th class="l">Destino</th><th class="l">Serviço</th><th>Minuta</th><th>Fat.</th><th>Resultado</th><th>Lucro Líq.</th><th>Margem</th><th class="l">Resp.Transf.</th><th class="l">Resp.Entrega</th></tr></thead><tbody id="ac_${dk.replace(/\//g,'_')}"></tbody></table></div>
+  `;
+
+  const sfx=dk.replace(/\//g,'_');
+  // Tabela de ops
+  const rb=document.getElementById('rb_'+sfx);
+  function addRowsD(arr,cls2){arr.forEach(o=>{const tr=document.createElement('tr');tr.className=cls2;const dif=o.dif<0?`<span class="neg">R$ ${Math.abs(o.dif).toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`:`<span class="pos">R$ ${o.dif.toLocaleString('pt-BR',{minimumFractionDigits:2})}</span>`;tr.innerHTML=`<td>${tbBadge(o.ctes)}</td><td class="l">${o.nome}</td><td>${o.ctes}</td><td>${BR(o.fat)}</td><td>${BR(o.ct)}</td><td>${BR(o.ce)}</td><td>${BR(o.ctot)}</td><td>${BR(o.co)}</td><td class="${cls(o.res)}">${BR(o.res)}</td><td class="${cls(o.mg)}">${PCT(o.mg)}</td><td>${o.vei}</td><td>${occBar(o.ocup)}</td><td class="l wrap2">${o.trecho}</td><td>${BR(o.tgt)}</td><td>${dif}</td><td>${stBadge(o.st)}</td><td class="l wrap2" style="font-weight:400">${o.cli}</td><td class="l">${o.rt}</td><td class="l">${o.re}</td><td>${o.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${o.ckg>0?'R$ '+o.ckg.toFixed(3).replace('.',','):'—'}</td>`;rb.appendChild(tr);});}
+  addRowsD(frac,'sf');addRowsD(ded,'sd');
+  const gt2=document.createElement('tr');gt2.className='gt';const tFat2=d.ops.reduce((s,o)=>s+o.fat,0),tRes2=d.ops.reduce((s,o)=>s+o.res,0),tCte2=d.ops.reduce((s,o)=>s+o.ctes,0);
+  gt2.innerHTML=`<td>TOTAL</td><td class="l">CONSOLIDADO</td><td>${tCte2}</td><td>${BR(tFat2)}</td><td colspan="4"></td><td>${BR(tRes2)}</td><td>${PCT(tRes2/tFat2)}</td><td colspan="11"></td>`;rb.appendChild(gt2);
+  // Clientes
+  const cb=document.getElementById('cb_'+sfx);
+  d.cli.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';const rb2=c.ren==='P'?'<span class="b bg">🟢 Positiva</span>':c.ren==='N'?'<span class="b br">🔴 Negativa</span>':'<span class="b bo">🟡 Baixa</span>';tr.innerHTML=`<td>${i+1}</td><td class="l">${c.cli}</td><td>${c.ctes}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td><td>${c.peso.toLocaleString('pt-BR',{minimumFractionDigits:2})}</td><td>${rb2}</td>`;cb.appendChild(tr);});
+  // Top/Bot
+  function fillRankD(id,data){const tb2=document.getElementById(id);data.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';tr.innerHTML=`<td>${i+1}</td><td class="l">${c.op}</td><td class="l">${c.cli}</td><td class="l">${c.dest}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td>`;tb2.appendChild(tr);});}
+  fillRankD('t5_'+sfx,d.top5);fillRankD('b5_'+sfx,d.bot5);
+  // Todos CTEs
+  const ac=document.getElementById('ac_'+sfx);
+  d.ctes.forEach((c,i)=>{const tr=document.createElement('tr');tr.className=i%2===0?'ev':'';tr.innerHTML=`<td>${i+1}</td><td class="l">${c.op}</td><td class="l">${c.cli}</td><td class="l">${c.dest}</td><td class="l">${c.serv}</td><td>${c.min}</td><td>${BR(c.fat)}</td><td class="${cls(c.res)}">${BR(c.res)}</td><td class="${cls(c.ll)}">${BR(c.ll)}</td><td class="${cls(c.mg)}">${PCT(c.mg)}</td><td class="l">${c.rt}</td><td class="l">${c.re}</td>`;ac.appendChild(tr);});
+  // Charts
+  const NAMES=d.ops.map(o=>o.nome);
+  new Chart(document.getElementById('rc_'+sfx),{type:'bar',data:{labels:NAMES,datasets:[{label:'Resultado',data:d.ops.map(o=>o.res),backgroundColor:d.ops.map(o=>o.res>=0?'rgba(0,97,0,.8)':'rgba(156,0,6,.8)'),borderWidth:1}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},scales:{y:{ticks:{callback:v=>BR(v),font:{size:9}}},x:{ticks:{font:{size:10}}}}}
+  });
+  new Chart(document.getElementById('mc_'+sfx),{type:'bar',data:{labels:NAMES,datasets:[{label:'Margem',data:d.ops.map(o=>+(o.mg*100).toFixed(2)),backgroundColor:d.ops.map(o=>o.mg<0?'rgba(156,0,6,.75)':'rgba(46,95,170,.75)'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:10}}}}}
+  });
+  new Chart(document.getElementById('tc_'+sfx),{type:'doughnut',data:{labels:['Dentro','Abaixo','Fora'],datasets:[{data:[dentro,abaixo,fora],backgroundColor:['#BDD7EE','#C6EFCE','#FFC7CE'],borderColor:['#2E5FAA','#006100','#9C0006'],borderWidth:2}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}}}}
+  });
+}
+
+// Gráficos consolidados
+const COR=['#2E5FAA','#27ae60','#e67e22'];
+new Chart(document.getElementById('fatChart'),{type:'bar',data:{labels:DIAS_KEYS,datasets:[{label:'Faturamento',data:DIAS_KEYS.map(k=>DIAS[k].fat),backgroundColor:COR,borderWidth:1}]},options:{responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},scales:{y:{ticks:{callback:v=>BR(v),font:{size:9}}},x:{ticks:{font:{size:10}}}}}
 });
-new Chart(document.getElementById('mgChart'),{type:'bar',data:{labels:NAMES,datasets:[{label:'Margem',data:ops.map(o=>+(o.mg*100).toFixed(2)),backgroundColor:ops.map(o=>o.mg<0?'rgba(156,0,6,.75)':'rgba(46,95,170,.75)'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(2).replace('.',',')+' %'}}},scales:{x:{ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:10}}}}}
+new Chart(document.getElementById('resChart'),{type:'bar',data:{labels:DIAS_KEYS,datasets:[{label:'Resultado',data:DIAS_KEYS.map(k=>DIAS[k].res),backgroundColor:DIAS_KEYS.map(k=>DIAS[k].res>=0?'rgba(0,97,0,.8)':'rgba(156,0,6,.8)'),borderWidth:1,yAxisID:'y'},{label:'Margem %',data:DIAS_KEYS.map(k=>+(DIAS[k].mg*100).toFixed(2)),type:'line',borderColor:'#8e44ad',backgroundColor:'rgba(142,68,173,.15)',yAxisID:'y2',tension:.3,pointRadius:5}]},options:{responsive:true,plugins:{legend:{position:'top',labels:{font:{size:10}}},tooltip:{callbacks:{label:ctx=>ctx.dataset.yAxisID==='y'?BR(ctx.raw):ctx.raw.toFixed(2).replace('.',',')+' %'}}},scales:{y:{ticks:{callback:v=>BR(v),font:{size:9}}},y2:{position:'right',ticks:{callback:v=>v+'%',font:{size:9}},grid:{drawOnChartArea:false}},x:{ticks:{font:{size:10}}}}}
 });
-new Chart(document.getElementById('targetChart'),{type:'doughnut',data:{labels:['Dentro','Abaixo','Fora'],datasets:[{data:[2,0,1],backgroundColor:['#BDD7EE','#C6EFCE','#FFC7CE'],borderColor:['#2E5FAA','#006100','#9C0006'],borderWidth:2}]},options:{responsive:true,cutout:'60%',plugins:{legend:{position:'bottom',labels:{font:{size:10},boxWidth:12}},tooltip:{callbacks:{label:ctx=>ctx.label+': '+ctx.raw}}}}
-});
-new Chart(document.getElementById('cliChart'),{type:'bar',data:{labels:top10cli.map(c=>c.cli),datasets:[{label:'Lucro Líq.',data:top10cli.map(c=>c.ll),backgroundColor:top10cli.map(c=>c.ll>0?'rgba(0,97,0,.75)':'rgba(156,0,6,.75)'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>BR(ctx.raw)}}},scales:{x:{ticks:{callback:v=>BR(v),font:{size:9}}},y:{ticks:{font:{size:9}}}}}
-});
-new Chart(document.getElementById('occChart'),{type:'bar',data:{labels:ops.map(o=>o.nome+' ('+o.vei+')'),datasets:[{label:'Ocup %',data:ops.map(o=>+(o.ocup*100).toFixed(1)),backgroundColor:ops.map(o=>o.ocup>1?'rgba(156,0,6,.7)':o.ocup<0.5?'rgba(230,126,34,.7)':'rgba(0,97,0,.7)'),borderWidth:1}]},options:{indexAxis:'y',responsive:true,plugins:{legend:{display:false},tooltip:{callbacks:{label:ctx=>ctx.raw.toFixed(1).replace('.',',')+' %'}}},scales:{x:{max:110,ticks:{callback:v=>v+'%',font:{size:9}}},y:{ticks:{font:{size:9}}}}}
-});
+
+buildAllOps();
+
+function switchTab(name){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.getElementById('tab-'+name).classList.add('active');
+  const btns=document.querySelectorAll('.tab-btn');
+  const map={'consolidado':0,'22/07/2026':1,'23/07/2026':2,'24/07/2026':3};
+  btns[map[name]].classList.add('active');
+  if(name!=='consolidado') buildDayTab(name);
+}
 </script></body></html>
