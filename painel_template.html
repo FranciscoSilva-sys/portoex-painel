@@ -1,0 +1,1473 @@
+<!DOCTYPE html>
+<html lang="pt-BR" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel Operacional | Portoex</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,300;0,14..32,400;0,14..32,500;0,14..32,600;0,14..32,700;0,14..32,800&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/* ═══ RESET ════════════════════════════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+/* ═══ DESIGN TOKENS ════════════════════════════════════════════════════════ */
+:root{
+  --navy:#1B2C6E;
+  --navy-dk:#0F1B4D;
+  --navy-lt:#2E41A0;
+  --accent:#2563EB;
+  --accent-hover:#1D4ED8;
+  --accent-bg:#EFF6FF;
+  --green:#059669;
+  --green-bg:#ECFDF5;
+  --red:#DC2626;
+  --red-bg:#FEF2F2;
+  --amber:#D97706;
+  --amber-bg:#FFFBEB;
+  --bg:#F0F4FA;
+  --card:#FFFFFF;
+  --text:#0F172A;
+  --text2:#475569;
+  --text3:#94A3B8;
+  --border:#E2E8F0;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.05);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);
+  --shadow:0 4px 16px rgba(0,0,0,.08),0 2px 6px rgba(0,0,0,.04);
+  --shadow-lg:0 12px 32px rgba(0,0,0,.10),0 4px 12px rgba(0,0,0,.06);
+  --r:12px;--r-sm:8px;--r-xs:6px;
+  --ease:0.22s cubic-bezier(.4,0,.2,1);
+}
+[data-theme="dark"]{
+  --bg:#080F1F;--card:#111827;
+  --text:#F1F5F9;--text2:#94A3B8;--text3:#475569;
+  --border:#1E2D45;
+  --accent-bg:#1A2744;--green-bg:#052915;--red-bg:#290A0A;--amber-bg:#251500;
+  --shadow-xs:0 1px 2px rgba(0,0,0,.4);
+  --shadow-sm:0 1px 3px rgba(0,0,0,.35),0 1px 2px rgba(0,0,0,.25);
+  --shadow:0 4px 16px rgba(0,0,0,.45),0 2px 6px rgba(0,0,0,.30);
+  --shadow-lg:0 12px 32px rgba(0,0,0,.55),0 4px 12px rgba(0,0,0,.35);
+}
+
+/* ═══ BASE ═════════════════════════════════════════════════════════════════ */
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+  background:var(--bg);color:var(--text);font-size:14px;line-height:1.55;
+  -webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;
+  transition:background var(--ease),color var(--ease);
+  min-height:100vh;
+}
+
+/* ═══ HEADER ════════════════════════════════════════════════════════════════ */
+.app-header{
+  background:linear-gradient(130deg,var(--navy-dk) 0%,var(--navy) 55%,var(--navy-lt) 100%);
+  height:60px;padding:0 28px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:200;
+  box-shadow:0 2px 24px rgba(0,0,0,.30);
+}
+.h-left{display:flex;align-items:center;gap:14px}
+.h-logo{
+  width:36px;height:36px;border-radius:9px;
+  background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.18);
+  display:flex;align-items:center;justify-content:center;font-size:17px;
+  backdrop-filter:blur(8px);flex-shrink:0;
+}
+.h-title{color:#fff}
+.h-title h1{font-size:.95rem;font-weight:700;letter-spacing:-.01em;line-height:1.2}
+.h-sub{
+  display:flex;align-items:center;gap:6px;
+  font-size:.7rem;color:rgba(255,255,255,.62);font-weight:400;letter-spacing:.02em;margin-top:2px;
+}
+.online-dot{width:6px;height:6px;background:#34D399;border-radius:50%;flex-shrink:0;animation:pulse-dot 2.2s ease-in-out infinite}
+@keyframes pulse-dot{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.55;transform:scale(.8)}}
+.h-right{display:flex;align-items:center;gap:8px}
+.h-btn{
+  height:32px;padding:0 13px;
+  border-radius:var(--r-xs);border:1px solid rgba(255,255,255,.18);
+  background:rgba(255,255,255,.08);color:rgba(255,255,255,.88);
+  cursor:pointer;font-family:inherit;font-size:.76rem;font-weight:500;
+  display:flex;align-items:center;gap:5px;
+  transition:background var(--ease),transform var(--ease);
+  backdrop-filter:blur(8px);white-space:nowrap;
+}
+.h-btn:hover{background:rgba(255,255,255,.17);transform:translateY(-1px)}
+.h-btn:active{transform:translateY(0)}
+.h-btn svg{width:13px;height:13px;flex-shrink:0}
+@media(max-width:600px){.h-btn span{display:none}.h-btn{padding:0 10px}}
+
+/* ═══ NAV ═══════════════════════════════════════════════════════════════════ */
+.app-nav{
+  background:var(--card);border-bottom:1px solid var(--border);
+  padding:0 28px;display:flex;align-items:flex-end;gap:0;
+  overflow-x:auto;scrollbar-width:none;
+  position:sticky;top:60px;z-index:190;
+  box-shadow:var(--shadow-xs);
+  transition:background var(--ease);
+}
+.app-nav::-webkit-scrollbar{display:none}
+.tab-btn{
+  display:flex;align-items:center;gap:6px;
+  padding:13px 18px 12px;border:none;background:transparent;cursor:pointer;
+  font-family:inherit;font-size:.8rem;font-weight:500;
+  color:var(--text2);border-bottom:2.5px solid transparent;
+  white-space:nowrap;transition:color var(--ease),border-color var(--ease);
+}
+.tab-btn:hover{color:var(--accent)}
+.tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tab-btn svg{width:14px;height:14px;opacity:.65;flex-shrink:0}
+.tab-btn.active svg{opacity:1}
+.tab-badge{
+  background:var(--red);color:#fff;
+  border-radius:10px;padding:1px 7px;
+  font-size:.68rem;font-weight:700;min-width:18px;text-align:center;
+}
+
+/* ═══ MAIN ══════════════════════════════════════════════════════════════════ */
+.main{padding:22px 28px;max-width:1640px;margin:0 auto}
+@media(max-width:640px){.main{padding:14px 14px}.app-header{padding:0 14px}.app-nav{padding:0 10px}}
+
+/* ═══ SECTION LABEL ═════════════════════════════════════════════════════════ */
+.lbl{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--text3);margin-bottom:12px}
+
+/* ═══ KPI CARDS ═════════════════════════════════════════════════════════════ */
+.kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:20px}
+@media(max-width:1080px){.kpi-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){.kpi-grid{grid-template-columns:1fr 1fr}}
+
+.kpi-card{
+  background:var(--card);border-radius:var(--r);
+  padding:18px 20px;
+  box-shadow:var(--shadow-sm);border:1px solid var(--border);
+  display:flex;align-items:flex-start;gap:14px;
+  transition:box-shadow var(--ease),transform var(--ease),background var(--ease);
+  cursor:default;position:relative;overflow:hidden;
+}
+.kpi-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;border-radius:var(--r) var(--r) 0 0;
+}
+.kpi-card.k-blue::before{background:var(--accent)}
+.kpi-card.k-green::before{background:var(--green)}
+.kpi-card.k-red::before{background:var(--red)}
+.kpi-card.k-amber::before{background:var(--amber)}
+.kpi-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+
+.kpi-ico{
+  width:40px;height:40px;border-radius:9px;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.kpi-ico.k-blue{background:var(--accent-bg);color:var(--accent)}
+.kpi-ico.k-green{background:var(--green-bg);color:var(--green)}
+.kpi-ico.k-red{background:var(--red-bg);color:var(--red)}
+.kpi-ico.k-amber{background:var(--amber-bg);color:var(--amber)}
+.kpi-ico svg{width:19px;height:19px}
+
+.kpi-body{flex:1;min-width:0}
+.kpi-lbl{font-size:.68rem;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--text2);margin-bottom:5px}
+.kpi-val{font-size:1.85rem;font-weight:800;color:var(--text);line-height:1;letter-spacing:-.025em;font-variant-numeric:tabular-nums}
+.kpi-sub{font-size:.7rem;color:var(--text3);margin-top:5px;font-weight:400}
+
+@keyframes kpi-in{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.kpi-card{animation:kpi-in .35s ease both}
+.kpi-card:nth-child(1){animation-delay:.04s}
+.kpi-card:nth-child(2){animation-delay:.09s}
+.kpi-card:nth-child(3){animation-delay:.14s}
+.kpi-card:nth-child(4){animation-delay:.19s}
+
+/* ═══ CARDS ═════════════════════════════════════════════════════════════════ */
+.card{
+  background:var(--card);border-radius:var(--r);
+  border:1px solid var(--border);box-shadow:var(--shadow-sm);
+  transition:background var(--ease);overflow:hidden;
+}
+.c-head{padding:16px 18px 0;display:flex;align-items:center;justify-content:space-between}
+.c-title{font-size:.74rem;font-weight:700;color:var(--text);text-transform:uppercase;letter-spacing:.06em}
+.c-body{padding:14px 18px 18px}
+
+/* ═══ GRIDS ═════════════════════════════════════════════════════════════════ */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px;margin-bottom:14px}
+.span2{grid-column:span 2}
+@media(max-width:900px){.g2,.g3{grid-template-columns:1fr}.span2{grid-column:span 1}}
+
+/* ═══ CHART WRAPPERS ════════════════════════════════════════════════════════ */
+.ch{position:relative;height:256px}
+.ch-md{position:relative;height:300px}
+.ch-tall{position:relative;height:420px}
+#chart-uf-wrap{position:relative;height:320px;overflow-y:auto}
+
+/* ═══ TABLES ════════════════════════════════════════════════════════════════ */
+.table-wrap{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:.8rem}
+thead th{
+  background:var(--bg);color:var(--text2);
+  padding:9px 13px;text-align:left;
+  font-weight:600;font-size:.68rem;text-transform:uppercase;letter-spacing:.06em;
+  border-bottom:1px solid var(--border);white-space:nowrap;cursor:pointer;
+  position:sticky;top:0;z-index:1;transition:color var(--ease);
+}
+thead th:hover{color:var(--accent)}
+tbody td{
+  padding:9px 13px;border-bottom:1px solid var(--border);
+  vertical-align:middle;transition:background var(--ease);
+}
+tbody tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:var(--accent-bg)}
+tbody tr:nth-child(even) td{background:rgba(0,0,0,.013)}
+[data-theme="dark"] tbody tr:nth-child(even) td{background:rgba(255,255,255,.018)}
+tbody tr:nth-child(even):hover td{background:var(--accent-bg)}
+
+.text-right{text-align:right}
+.text-center{text-align:center}
+
+/* ═══ BADGES ════════════════════════════════════════════════════════════════ */
+.badge{
+  display:inline-flex;align-items:center;
+  padding:2px 8px;border-radius:20px;
+  font-size:.7rem;font-weight:600;letter-spacing:.02em;
+}
+.badge-green{background:var(--green-bg);color:var(--green)}
+.badge-red{background:var(--red-bg);color:var(--red)}
+.badge-orange{background:var(--amber-bg);color:var(--amber)}
+.badge-sys{background:rgba(0,0,0,.06);color:var(--text2)}
+[data-theme="dark"] .badge-sys{background:rgba(255,255,255,.08);color:var(--text2)}
+
+.val-pos{color:var(--green);font-weight:600}
+.val-neg{color:var(--red);font-weight:600}
+.lucro-neg{color:var(--red);font-weight:600}
+
+/* ═══ MARGIN BAR ════════════════════════════════════════════════════════════ */
+.margin-bar{display:flex;align-items:center;gap:8px;min-width:110px}
+.bar-track{flex:1;height:5px;background:var(--border);border-radius:3px;overflow:hidden;min-width:50px}
+.bar-fill{height:100%;border-radius:3px;transition:width .55s cubic-bezier(.4,0,.2,1)}
+.bar-label{font-size:.73rem;font-weight:700;min-width:40px;text-align:right;font-variant-numeric:tabular-nums}
+
+/* ═══ FILTERS ═══════════════════════════════════════════════════════════════ */
+.filter-row{display:flex;gap:10px;margin-bottom:14px;flex-wrap:wrap;align-items:flex-end}
+.filter-group{display:flex;flex-direction:column;gap:3px}
+.filter-group label,.flabel{
+  font-size:.66rem;font-weight:600;text-transform:uppercase;
+  letter-spacing:.07em;color:var(--text3);
+}
+.filter-group select,.filter-group input{
+  height:33px;padding:0 11px;
+  border:1.5px solid var(--border);border-radius:var(--r-sm);
+  background:var(--card);color:var(--text);
+  font-family:inherit;font-size:.8rem;outline:none;
+  transition:border-color var(--ease),box-shadow var(--ease),background var(--ease);
+  min-width:130px;
+}
+.filter-group input{min-width:190px}
+.filter-group select:focus,.filter-group input:focus{
+  border-color:var(--accent);box-shadow:0 0 0 3px rgba(37,99,235,.12);
+}
+.btn-reset{
+  height:33px;padding:0 14px;border-radius:var(--r-sm);
+  border:1.5px solid var(--border);background:var(--card);
+  color:var(--text2);cursor:pointer;
+  font-family:inherit;font-size:.76rem;font-weight:500;
+  display:flex;align-items:center;gap:5px;align-self:flex-end;white-space:nowrap;
+  transition:border-color var(--ease),color var(--ease),background var(--ease);
+}
+.btn-reset:hover{border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.btn-reset svg{width:12px;height:12px}
+
+/* ═══ RESULT COUNT / INFO ════════════════════════════════════════════════════ */
+.result-count{font-size:.74rem;color:var(--text3);margin-bottom:10px;font-weight:500}
+.clientes-info{font-size:.72rem;color:var(--text3);padding:6px 0 10px;font-style:italic}
+
+/* ═══ PAGINATION ════════════════════════════════════════════════════════════ */
+.pagination{
+  display:flex;align-items:center;gap:4px;
+  padding:10px 14px;border-top:1px solid var(--border);
+  justify-content:center;flex-wrap:wrap;font-size:.77rem;
+}
+.pagination span{color:var(--text2);font-weight:500;margin:0 6px}
+.pagination button{
+  height:28px;min-width:28px;padding:0 8px;
+  border:1.5px solid var(--border);border-radius:5px;
+  background:var(--card);color:var(--text);cursor:pointer;
+  font-family:inherit;font-size:.76rem;font-weight:500;
+  transition:all var(--ease);
+}
+.pagination button:hover:not(:disabled){border-color:var(--accent);color:var(--accent);background:var(--accent-bg)}
+.pagination button.active{background:var(--accent);color:#fff;border-color:var(--accent);font-weight:700}
+.pagination button:disabled{opacity:.35;cursor:not-allowed}
+
+/* ═══ TAB PANELS ════════════════════════════════════════════════════════════ */
+.tab-panel{display:none}
+.tab-panel.active{display:block;animation:tab-in .22s ease both}
+@keyframes tab-in{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:translateY(0)}}
+
+/* ═══ UF TAB LAYOUT ═════════════════════════════════════════════════════════ */
+.uf-layout{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px}
+@media(max-width:900px){.uf-layout{grid-template-columns:1fr}}
+
+/* ═══ MISC ══════════════════════════════════════════════════════════════════ */
+strong{font-weight:600}
+small{font-size:.76rem;color:var(--text2)}
+</style>
+</head>
+<body>
+
+<!-- ═══ HEADER ══════════════════════════════════════════════════════════════ -->
+<header class="app-header">
+  <div class="h-left">
+    <div class="h-logo">🚚</div>
+    <div class="h-title">
+      <h1>Painel Operacional — Portoex</h1>
+      <div class="h-sub">
+        <span class="online-dot"></span>
+        <span id="header-periodo">Resultado 147</span>
+      </div>
+    </div>
+  </div>
+  <div class="h-right">
+    <button class="h-btn" onclick="location.reload()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
+      <span>Atualizar</span>
+    </button>
+    <button class="h-btn" onclick="toggleDark()" id="dark-btn">
+      <svg id="dark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      <span id="dark-lbl">Escuro</span>
+    </button>
+  </div>
+</header>
+
+<!-- ═══ NAV ═════════════════════════════════════════════════════════════════ -->
+<nav class="app-nav">
+  <button class="tab-btn active" onclick="showTab('visao-geral')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+    Visão Geral
+  </button>
+  <button class="tab-btn" onclick="showTab('por-servico')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+    Por Serviço
+  </button>
+  <button class="tab-btn" onclick="showTab('por-uf')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>
+    Por UF
+  </button>
+  <button class="tab-btn" onclick="showTab('clientes')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+    Clientes
+  </button>
+  <button class="tab-btn" onclick="showTab('negativas')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+    Minutas Negativas
+    <span class="tab-badge" id="neg-count-badge"></span>
+  </button>
+  <button class="tab-btn" onclick="showTab('sem-custo')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+    Sem Custo Transp.
+    <span class="tab-badge" id="sc-count-badge" style="display:none"></span>
+  </button>
+
+  <button class="tab-btn" onclick="showTab('curva-abc')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+    Curva ABC
+  </button>
+</nav>
+
+<!-- ═══ MAIN ════════════════════════════════════════════════════════════════ -->
+<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem;">
+  <span style="font-weight:600;color:var(--text-muted)">Filtrar Período:</span>
+  <input type="date" id="date-from" onchange="applyDateFilter()"
+    style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+  <span style="color:var(--text-muted)">até</span>
+  <input type="date" id="date-to" onchange="applyDateFilter()"
+    style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+  <span id="date-filter-info" style="color:var(--accent);font-weight:600;"></span>
+  <button onclick="resetDateFilter()"
+    style="border:1px solid var(--border);border-radius:6px;padding:4px 12px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.82rem;">Limpar</button>
+</div>
+<main class="main">
+
+<!-- ── TAB 1 · VISÃO GERAL ─────────────────────────────────────────────── -->
+<div id="tab-visao-geral" class="tab-panel active">
+
+  <div class="kpi-grid">
+    <div class="kpi-card k-blue">
+      <div class="kpi-ico k-blue">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="M9 12h6M9 16h4"/></svg>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-lbl">Total de Minutas</div>
+        <div class="kpi-val" id="kpi-minutas">—</div>
+        <div class="kpi-sub">emissões no período</div>
+      </div>
+    </div>
+    <div class="kpi-card k-amber">
+      <div class="kpi-ico k-amber">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/></svg>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-lbl">Margem Geral</div>
+        <div class="kpi-val" id="kpi-margem">—</div>
+        <div class="kpi-sub">resultado / frete bruto</div>
+      </div>
+    </div>
+    <div class="kpi-card k-green">
+      <div class="kpi-ico k-green">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><polyline points="20 6 9 17 4 12"/></svg>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-lbl">% Lucrativas</div>
+        <div class="kpi-val" id="kpi-lucrativas">—</div>
+        <div class="kpi-sub" id="kpi-lucro-count">minutas com lucro</div>
+      </div>
+    </div>
+    <div class="kpi-card k-red">
+      <div class="kpi-ico k-red">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+      </div>
+      <div class="kpi-body">
+        <div class="kpi-lbl">% Com Prejuízo</div>
+        <div class="kpi-val" id="kpi-prejuizo">—</div>
+        <div class="kpi-sub" id="kpi-prej-count">minutas negativas</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="c-head"><span class="c-title">Lucrativas vs. Com Prejuízo</span></div>
+      <div class="c-body"><div class="ch"><canvas id="chart-donut"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="c-head"><span class="c-title">Margem por Serviço (%)</span></div>
+      <div class="c-body"><div class="ch"><canvas id="chart-servico-visao"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="c-head"><span class="c-title">Minutas por Serviço</span></div>
+      <div class="c-body"><div class="ch"><canvas id="chart-servico-vol"></canvas></div></div>
+    </div>
+    <div class="card">
+      <div class="c-head"><span class="c-title">Margem por UF — Top 10 Volume</span></div>
+      <div class="c-body"><div class="ch"><canvas id="chart-uf-visao"></canvas></div></div>
+    </div>
+  </div>
+
+</div>
+
+<!-- ── TAB 2 · POR SERVIÇO ─────────────────────────────────────────────── -->
+<div id="tab-por-servico" class="tab-panel">
+  <div class="card" style="margin-bottom:14px">
+    <div class="c-head"><span class="c-title">Margem por Serviço (%)</span></div>
+    <div class="c-body"><div class="ch-tall"><canvas id="chart-servico-full"></canvas></div></div>
+  </div>
+  <div class="card">
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th onclick="sortTable('servico-data','servico',0)">Serviço ↕</th>
+          <th class="text-right" onclick="sortTable('servico-data','minutas',1)">Minutas ↕</th>
+          <th class="text-right" onclick="sortTable('servico-data','pct_total',2)">% Total ↕</th>
+          <th onclick="sortTable('servico-data','margem',3)">Margem ↕</th>
+        </tr></thead>
+        <tbody id="servico-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+<!-- ── TAB 3 · POR UF ─────────────────────────────────────────────────── -->
+<div id="tab-por-uf" class="tab-panel">
+  <div class="card">
+    <div class="c-body">
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>Filtrar Margem</label>
+          <select id="uf-filter-margem" onchange="renderUF()">
+            <option value="">Todas as UFs</option>
+            <option value="neg">Com Prejuízo (&lt;0%)</option>
+            <option value="0-15">0% a 15%</option>
+            <option value="15-30">15% a 30%</option>
+            <option value="30+">Acima de 30%</option>
+          </select>
+        </div>
+        <button class="btn-reset" onclick="document.getElementById('uf-filter-margem').value='';renderUF()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+          Limpar
+        </button>
+        <div class="result-count" id="uf-count" style="align-self:flex-end;margin-bottom:0"></div>
+      </div>
+    </div>
+  </div>
+  <div class="uf-layout">
+    <div class="card">
+      <div class="table-wrap">
+        <table>
+          <thead><tr>
+            <th onclick="sortUF('uf')">UF ↕</th>
+            <th class="text-right" onclick="sortUF('minutas')">Minutas ↕</th>
+            <th class="text-right" onclick="sortUF('pct_total')">% Total ↕</th>
+            <th onclick="sortUF('margem')">Margem ↕</th>
+          </tr></thead>
+          <tbody id="uf-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+    <div class="card">
+      <div class="c-head" style="padding-bottom:10px"><span class="c-title">Margem por UF (%)</span></div>
+      <div class="c-body" style="padding-top:6px">
+        <div id="chart-uf-wrap" style="height:320px;position:relative;overflow-y:auto">
+          <canvas id="chart-uf-full"></canvas>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ── TAB 4 · CLIENTES ────────────────────────────────────────────────── -->
+<div id="tab-clientes" class="tab-panel">
+  <div class="card">
+    <div class="c-body">
+      <div class="lbl">Análise de Clientes</div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>Buscar Cliente</label>
+          <input type="text" id="cli-search" placeholder="Nome do cliente..." oninput="renderClientes()">
+        </div>
+        <div class="filter-group">
+          <label>UF</label>
+          <select id="cli-uf" onchange="renderClientes()">
+            <option value="">Todas</option>
+<option value="AL">AL</option>
+<option value="AM">AM</option>
+<option value="AP">AP</option>
+<option value="BA">BA</option>
+<option value="CE">CE</option>
+<option value="DF">DF</option>
+<option value="ES">ES</option>
+<option value="GO">GO</option>
+<option value="MA">MA</option>
+<option value="MG">MG</option>
+<option value="MS">MS</option>
+<option value="MT">MT</option>
+<option value="PA">PA</option>
+<option value="PB">PB</option>
+<option value="PE">PE</option>
+<option value="PR">PR</option>
+<option value="RJ">RJ</option>
+<option value="RN">RN</option>
+<option value="RO">RO</option>
+<option value="RS">RS</option>
+<option value="SC">SC</option>
+<option value="SE">SE</option>
+<option value="SP">SP</option>
+</select>
+        </div>
+        <div class="filter-group">
+          <label>Serviço</label>
+          <select id="cli-servico" onchange="renderClientes()">
+            <option value="">Todos</option>
+<option value="ECONOMICO">ECONOMICO</option>
+<option value="EXPRESSO">EXPRESSO</option>
+<option value="PERSONALIZADO">PERSONALIZADO</option>
+<option value="REPASSE">REPASSE</option>
+<option value="SERVIÇO LOGÍSTICO">SERVIÇO LOGÍSTICO</option>
+</select>
+        </div>
+        <div class="filter-group">
+          <label>Resultado</label>
+          <select id="cli-resultado" onchange="renderClientes()">
+            <option value="">Todos</option>
+            <option value="pos">Lucrativo (≥0%)</option>
+            <option value="neg">Com Prejuízo (&lt;0%)</option>
+            <option value="0-10">Margem 0-10%</option>
+            <option value="10-25">Margem 10-25%</option>
+            <option value="25+">Margem &gt;25%</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Ordenar por</label>
+          <select id="cli-sort" onchange="renderClientes()">
+            <option value="lucro-desc">Melhor Margem</option>
+            <option value="lucro-asc">Pior Margem</option>
+            <option value="minutas-desc">Mais Minutas</option>
+            <option value="cliente-asc">Nome A-Z</option>
+          </select>
+        </div>
+        <button class="btn-reset" onclick="resetCliFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+          Limpar
+        </button>
+      </div>
+      <div class="clientes-info">Margem calculada a partir das minutas do período — valores em %.</div>
+      <div class="result-count" id="cli-count"></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Cliente</th>
+          <th class="text-right">Minutas</th>
+          <th>UFs</th>
+          <th>Serviços</th>
+          <th>Margem</th>
+        </tr></thead>
+        <tbody id="cli-tbody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="cli-pagination"></div>
+  </div>
+</div>
+
+<!-- ── TAB 5 · MINUTAS NEGATIVAS ─────────────────────────────────────── -->
+<div id="tab-negativas" class="tab-panel">
+  <div class="card">
+    <div class="c-body">
+      <div class="lbl">Minutas com Prejuízo — Detalhamento Completo</div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>Buscar Cliente</label>
+          <input type="text" id="neg-search" placeholder="Nome do cliente..." oninput="renderNeg()">
+        </div>
+        <div class="filter-group">
+          <label>UF</label>
+          <select id="neg-uf" onchange="renderNeg()">
+            <option value="">Todas</option>
+<option value="BA">BA</option>
+<option value="CE">CE</option>
+<option value="DF">DF</option>
+<option value="ES">ES</option>
+<option value="GO">GO</option>
+<option value="MA">MA</option>
+<option value="MG">MG</option>
+<option value="MS">MS</option>
+<option value="MT">MT</option>
+<option value="PA">PA</option>
+<option value="PE">PE</option>
+<option value="PR">PR</option>
+<option value="RJ">RJ</option>
+<option value="RN">RN</option>
+<option value="RO">RO</option>
+<option value="RS">RS</option>
+<option value="SC">SC</option>
+<option value="SP">SP</option>
+</select>
+        </div>
+        <div class="filter-group">
+          <label>Serviço</label>
+          <select id="neg-servico" onchange="renderNeg()">
+            <option value="">Todos</option>
+<option value="ECONOMICO">ECONOMICO</option>
+<option value="EXPRESSO">EXPRESSO</option>
+<option value="PERSONALIZADO">PERSONALIZADO</option>
+<option value="REPASSE">REPASSE</option>
+<option value="SERVIÇO LOGÍSTICO">SERVIÇO LOGÍSTICO</option>
+</select>
+        </div>
+        <div class="filter-group">
+          <label>Sistema</label>
+          <select id="neg-sistema" onchange="renderNeg()">
+            <option value="">Todos</option>
+            <option value="PEX LOGÍSTICA">PEX LOGÍSTICA</option>
+<option value="PORTOEX">PORTOEX</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Ordenar por</label>
+          <select id="neg-sort" onchange="renderNeg()">
+            <option value="lucro-asc">Maior Prejuízo</option>
+            <option value="margem-asc">Pior Margem</option>
+            <option value="frete-desc">Maior Frete</option>
+            <option value="minuta-asc">Nº Minuta</option>
+            <option value="data-asc">Data</option>
+          </select>
+        </div>
+        <button class="btn-reset" onclick="resetNegFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+          Limpar
+        </button>
+      </div>
+      <div class="result-count" id="neg-count"></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Minuta</th>
+          <th>Data</th>
+          <th>Sistema</th>
+          <th>Cliente</th>
+          <th>Serviço</th>
+          <th>Destino</th>
+          <th class="text-right">Frete (R$)</th>
+          <th class="text-right">Custo (R$)</th>
+          <th class="text-right">Lucro Líq. (R$)</th>
+          <th class="text-right">Margem</th>
+        </tr></thead>
+        <tbody id="neg-tbody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="neg-pagination"></div>
+  </div>
+</div>
+
+<!-- ── TAB 6 · SEM CUSTO DE TRANSPORTE ─────────────────────────────────── -->
+<div id="tab-sem-custo" class="tab-panel">
+  <div class="card">
+    <div class="c-body">
+      <div class="lbl">Minutas sem Custo de Transporte Registrado</div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <label>Buscar Cliente</label>
+          <input type="text" id="sc-search" placeholder="Nome do cliente..." oninput="renderSemCusto()">
+        </div>
+        <div class="filter-group">
+          <label>UF</label>
+          <select id="sc-uf" onchange="renderSemCusto()">
+            <option value="">Todas</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Serviço</label>
+          <select id="sc-servico" onchange="renderSemCusto()">
+            <option value="">Todos</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Sistema</label>
+          <select id="sc-sistema" onchange="renderSemCusto()">
+            <option value="">Todos</option>
+            <option value="PEX LOGÍSTICA">PEX LOGÍSTICA</option>
+            <option value="PORTOEX">PORTOEX</option>
+          </select>
+        </div>
+        <div class="filter-group">
+          <label>Ordenar por</label>
+          <select id="sc-sort" onchange="renderSemCusto()">
+            <option value="frete-desc">Maior Frete</option>
+            <option value="minuta-asc">Nº Minuta</option>
+            <option value="data-asc">Data</option>
+            <option value="cliente-asc">Cliente A-Z</option>
+          </select>
+        </div>
+        <button class="btn-reset" onclick="resetScFilters()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
+          Limpar
+        </button>
+      </div>
+      <div class="result-count" id="sc-count"></div>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Minuta</th>
+          <th>Data</th>
+          <th>Sistema</th>
+          <th>Cliente</th>
+          <th>Serviço</th>
+          <th>Destino</th>
+          <th class="text-right">Frete (R$)</th>
+          <th>Resp. Coleta</th>
+          <th>Resp. Entrega</th>
+          <th>Resp. Transf.</th>
+          <th class="text-right">Lucro (R$)</th>
+          <th class="text-right">Margem</th>
+        </tr></thead>
+        <tbody id="sc-tbody"></tbody>
+      </table>
+    </div>
+    <div class="pagination" id="sc-pagination"></div>
+  </div>
+</div>
+
+
+<div id="tab-curva-abc" class="tab-panel">
+  <div class="card">
+    <div class="c-head">
+      <span class="c-tit">Curva ABC — Comparativo de Períodos</span>
+      <span class="c-sub">Resultado operacional por serviço</span>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;">
+      <div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);margin-bottom:4px;">PERÍODO A — REFERÊNCIA</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="date" id="abc-a-from" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+          <span style="color:var(--text-muted)">até</span>
+          <input type="date" id="abc-a-to" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);margin-bottom:4px;">PERÍODO B — ATUAL</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="date" id="abc-b-from" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+          <span style="color:var(--text-muted)">até</span>
+          <input type="date" id="abc-b-to" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+        </div>
+      </div>
+      <button onclick="renderCurvaABC()" style="padding:6px 18px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;">Comparar</button>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:12px;font-size:.78rem;flex-wrap:wrap;">
+      <span style="background:#27AE60;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">A</span><span style="color:var(--text-muted)">Top 80% do faturamento</span>
+      <span style="background:#F39C12;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">B</span><span style="color:var(--text-muted)">80% – 95%</span>
+      <span style="background:#E74C3C;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">C</span><span style="color:var(--text-muted)">95% – 100%</span>
+      <span style="margin-left:8px;">▲ Melhorou</span><span>▼ Piorou</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Classe</th><th>Serviço</th>
+          <th class="text-right">Min. A</th><th class="text-right">Min. B</th>
+          <th class="text-right">Resultado A</th><th class="text-right">Resultado B</th>
+          <th class="text-right">Δ Variação</th><th>Tendência</th>
+        </tr></thead>
+        <tbody id="abc-tbody"><tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px;">Selecione os períodos e clique em Comparar</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
+</main>
+
+<script>
+function toggleDark(){
+  const h=document.documentElement;
+  const dark=h.getAttribute('data-theme')==='dark';
+  h.setAttribute('data-theme',dark?'light':'dark');
+  document.getElementById('dark-lbl').textContent=dark?'Escuro':'Claro';
+  document.getElementById('dark-icon').innerHTML=dark
+    ?'<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>'
+    :'<circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>';
+}
+</script>
+
+<script>
+const DATA = __DATA_PORTOEX_PAINEL__;
+
+const kpis = DATA.kpis;
+// porServico, porUF, clientes, minutasNeg removidos como const:
+// _recalcFromMinutas substitui DATA.* por novos arrays ao filtrar por data.
+// Usar DATA.por_servico, DATA.por_uf, DATA.clientes, DATA.minutas_neg diretamente.
+
+// Chart instances
+let charts = {};
+
+// ─── TABS ──────────────────────────────────────────────────────────────────
+function showTab(id) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  event.target.classList.add('active');
+  // lazy-init charts/tables
+  if (id === 'visao-geral' && !charts['donut']) initOverviewCharts();
+  if (id === 'por-servico' && !charts['servico-full']) initServicoFull();
+  if (id === 'por-uf') { renderUF(); }
+  if (id === 'clientes') { renderClientes(); }
+  if (id === 'negativas') { renderNeg(); }
+  if (id === 'sem-custo') { renderSemCusto(); }
+}
+
+
+const _ORIG = {
+  minutas:          DATA.minutas          ? [...DATA.minutas]          : [],
+  minutas_neg:      DATA.minutas_neg      ? [...DATA.minutas_neg]      : [],
+  minutas_sem_custo:DATA.minutas_sem_custo? [...DATA.minutas_sem_custo]: [],
+};
+
+function _brDateToDate(s) {
+  if (!s) return null;
+  const p = s.split('/');
+  return p.length === 3 ? new Date(+p[2], +p[1]-1, +p[0]) : null;
+}
+function _isoToDate(s) {
+  if (!s) return null;
+  const p = s.split('-');
+  return new Date(+p[0], +p[1]-1, +p[2]);
+}
+
+const _EXCLUIDOS = new Set(['REPASSE','SERVIÇO LOGÍSTICO','SERVIÃO LOGÃSTICO','CORTESIA']);
+
+function _recalcFromMinutas(allMinutas) {
+  const principais = allMinutas.filter(r => !_EXCLUIDOS.has((r.servico||'').toUpperCase()));
+  const byS = {};
+  for (const r of principais) {
+    const s = r.servico || 'N/D';
+    if (!byS[s]) byS[s] = {servico:s,minutas:0,frete:0,custo:0,resultado:0};
+    byS[s].minutas++; byS[s].frete+=(r.frete||0); byS[s].custo+=(r.custo||0); byS[s].resultado+=(r.lucro||0);
+  }
+  const totF = Object.values(byS).reduce((s,v)=>s+v.frete,0);
+  DATA.por_servico = Object.values(byS).map(v=>({...v,
+    frete:Math.round(v.frete*100)/100, custo:Math.round(v.custo*100)/100,
+    resultado:Math.round(v.resultado*100)/100,
+    margem:v.frete?Math.round(v.resultado/v.frete*10000)/100:0,
+    pct_total:totF?Math.round(v.frete/totF*10000)/100:0,
+  })).sort((a,b)=>b.frete-a.frete);
+  const byUF = {};
+  for (const r of principais) {
+    const uf = r.uf||r.destino||'N/D';
+    if (!byUF[uf]) byUF[uf]={uf,minutas:0,frete:0,resultado:0};
+    byUF[uf].minutas++; byUF[uf].frete+=(r.frete||0); byUF[uf].resultado+=(r.lucro||0);
+  }
+  DATA.por_uf = Object.values(byUF).map(v=>({...v,
+    frete:Math.round(v.frete*100)/100, resultado:Math.round(v.resultado*100)/100,
+    margem:v.frete?Math.round(v.resultado/v.frete*10000)/100:0,
+    pct_total:totF?Math.round(v.frete/totF*10000)/100:0,
+  })).sort((a,b)=>b.frete-a.frete);
+  const comLucro=principais.filter(r=>(r.lucro||0)>=0).length;
+  const comPrej=principais.filter(r=>(r.lucro||0)<0).length;
+  const totLucro=principais.reduce((s,r)=>s+(r.lucro||0),0);
+  DATA.kpis={...DATA.kpis, minutas:principais.length, com_lucro:comLucro, com_prejuizo:comPrej,
+    pct_lucrativas:principais.length?(comLucro/principais.length*100):0,
+    pct_prejuizo:principais.length?(comPrej/principais.length*100):0,
+    frete:Math.round(totF*100)/100, lucro:Math.round(totLucro*100)/100,
+    margem:totF?(totLucro/totF*100):0};
+  document.getElementById('kpi-minutas').textContent=DATA.kpis.minutas.toLocaleString('pt-BR');
+  document.getElementById('kpi-margem').textContent=DATA.kpis.margem.toFixed(1)+'%';
+  document.getElementById('kpi-lucrativas').textContent=DATA.kpis.pct_lucrativas.toFixed(1)+'%';
+  document.getElementById('kpi-prejuizo').textContent=DATA.kpis.pct_prejuizo.toFixed(1)+'%';
+  document.getElementById('kpi-lucro-count').textContent=DATA.kpis.com_lucro.toLocaleString('pt-BR')+' minutas com lucro';
+  document.getElementById('kpi-prej-count').textContent=DATA.kpis.com_prejuizo.toLocaleString('pt-BR')+' minutas negativas';
+  document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
+  // Recalcular clientes a partir das minutas filtradas
+  const byCli={};
+  for(const r of principais){
+    const k=r.cliente||'N/D';
+    if(!byCli[k])byCli[k]={cliente:k,minutas:0,frete:0,resultado:0,ufs:new Set(),servicos:new Set()};
+    byCli[k].minutas++;byCli[k].frete+=(r.frete||0);byCli[k].resultado+=(r.lucro||0);
+    if(r.uf)byCli[k].ufs.add(r.uf);if(r.servico)byCli[k].servicos.add(r.servico);
+  }
+  DATA.clientes=Object.values(byCli).map(v=>({
+    cliente:v.cliente,minutas:v.minutas,
+    frete:Math.round(v.frete*100)/100,resultado:Math.round(v.resultado*100)/100,
+    margem:v.frete?Math.round(v.resultado/v.frete*10000)/100:0,
+    ufs:[...v.ufs].sort(),servicos:[...v.servicos].sort()
+  })).sort((a,b)=>b.resultado-a.resultado);
+  // Sincronizar servicoData com o novo DATA.por_servico
+  servicoData=DATA.por_servico;
+  ['donut','servico-visao','servico-vol','uf-visao','servico-full','uf-full'].forEach(k=>{if(charts[k]){charts[k].destroy();delete charts[k];}});
+  initOverviewCharts();
+  // Re-renderizar aba ativa (exceto visão-geral que já foi via initOverviewCharts)
+  const _activeTab=document.querySelector('.tab-panel.active');
+  if(_activeTab){
+    const _tid=_activeTab.id.replace('tab-','');
+    if(_tid==='por-servico')initServicoFull();
+    if(_tid==='por-uf')renderUF();
+    if(_tid==='clientes')renderClientes();
+    if(_tid==='negativas')renderNeg();
+    if(_tid==='sem-custo')renderSemCusto();
+  }
+}
+
+function applyDateFilter() {
+  const from=_isoToDate(document.getElementById('date-from').value);
+  const to=_isoToDate(document.getElementById('date-to').value);
+  const info=document.getElementById('date-filter-info');
+  if(!from&&!to){resetDateFilter();return;}
+  function filter(rows){return rows.filter(r=>{const d=_brDateToDate(r.data);if(!d)return true;if(from&&d<from)return false;if(to&&d>to)return false;return true;});}
+  DATA.minutas=filter(_ORIG.minutas); DATA.minutas_neg=filter(_ORIG.minutas_neg); DATA.minutas_sem_custo=filter(_ORIG.minutas_sem_custo);
+  info.textContent=DATA.minutas.length.toLocaleString('pt-BR')+' minutas no período';
+  _recalcFromMinutas(DATA.minutas);
+  document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
+  // _recalcFromMinutas já renderiza a aba ativa — nada mais necessário aqui.
+}
+
+function resetDateFilter() {
+  document.getElementById('date-from').value=''; document.getElementById('date-to').value='';
+  document.getElementById('date-filter-info').textContent='';
+  DATA.minutas=[..._ORIG.minutas]; DATA.minutas_neg=[..._ORIG.minutas_neg]; DATA.minutas_sem_custo=[..._ORIG.minutas_sem_custo];
+  _recalcFromMinutas(DATA.minutas);
+  document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
+}
+
+function initABCDefaults() {
+  const k=DATA.kpis;
+  if(k.data_inicial&&k.data_final){
+    function brToISO(s){const p=s.split('/');return p[2]+'-'+p[1]+'-'+p[0];}
+    const bFrom=document.getElementById('abc-b-from'); const bTo=document.getElementById('abc-b-to');
+    if(bFrom&&!bFrom.value)bFrom.value=brToISO(k.data_inicial);
+    if(bTo&&!bTo.value)bTo.value=brToISO(k.data_final);
+  }
+}
+
+function renderCurvaABC() {
+  const aFrom=_isoToDate(document.getElementById('abc-a-from').value);
+  const aTo=_isoToDate(document.getElementById('abc-a-to').value);
+  const bFrom=_isoToDate(document.getElementById('abc-b-from').value);
+  const bTo=_isoToDate(document.getElementById('abc-b-to').value);
+  function filterGroup(from,to){
+    const rows=_ORIG.minutas.filter(r=>{if(!from&&!to)return true;const d=_brDateToDate(r.data);if(!d)return true;if(from&&d<from)return false;if(to&&d>to)return false;return true;});
+    const byS={};
+    for(const r of rows){const s=r.servico||'N/D';if(!byS[s])byS[s]={servico:s,minutas:0,frete:0,resultado:0};byS[s].minutas++;byS[s].frete+=(r.frete||0);byS[s].resultado+=(r.lucro||0);}
+    return Object.values(byS).sort((a,b)=>b.frete-a.frete);
+  }
+  function assignABC(groups){const totF=groups.reduce((s,g)=>s+g.frete,0);let cum=0;return groups.map(g=>{cum+=g.frete;const pct=totF?(cum/totF)*100:0;return{...g,pct_cum:pct,classe:pct<=80?'A':pct<=95?'B':'C'};});}
+  const grpA=assignABC(filterGroup(aFrom,aTo)); const grpB=assignABC(filterGroup(bFrom,bTo));
+  const mapA={}; grpA.forEach(g=>{mapA[g.servico]=g;});
+  const mapB={}; grpB.forEach(g=>{mapB[g.servico]=g;});
+  const allSrvs=[...new Set([...Object.keys(mapA),...Object.keys(mapB)])];
+  const fmtBRL=v=>'R$ '+v.toLocaleString('pt-BR',{minimumFractionDigits:2,maximumFractionDigits:2});
+  const clsBadge=c=>{const bg=c==='A'?'#27AE60':c==='B'?'#F39C12':'#E74C3C';return `<span style="background:${bg};color:#fff;padding:1px 7px;border-radius:10px;font-weight:700;">${c}</span>`;};
+  const rows=allSrvs.map(s=>{
+    const a=mapA[s]||{minutas:0,frete:0,resultado:0,classe:'—'}; const b=mapB[s]||{minutas:0,frete:0,resultado:0,classe:'—'};
+    const delta=b.resultado-a.resultado; const tend=a.resultado===0?'—':delta>0?'▲ Melhorou':'▼ Piorou';
+    const tc=delta>0?'#27AE60':delta<0?'#E74C3C':'var(--text-muted)';
+    return `<tr><td>${clsBadge(b.classe||'—')}</td><td>${s}</td><td class="text-right">${a.minutas.toLocaleString('pt-BR')}</td><td class="text-right">${b.minutas.toLocaleString('pt-BR')}</td><td class="text-right">${fmtBRL(a.resultado)}</td><td class="text-right">${fmtBRL(b.resultado)}</td><td class="text-right" style="color:${tc};font-weight:600;">${delta>=0?'+':''}${fmtBRL(delta)}</td><td style="color:${tc};font-weight:700;">${tend}</td></tr>`;
+  }).join('');
+  document.getElementById('abc-tbody').innerHTML=rows||'<tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px;">Sem dados</td></tr>';
+}
+
+
+
+
+
+
+// ─── KPIs ──────────────────────────────────────────────────────────────────
+document.getElementById('kpi-minutas').textContent = kpis.minutas.toLocaleString('pt-BR');
+document.getElementById('kpi-margem').textContent = kpis.margem.toFixed(1) + '%';
+document.getElementById('kpi-lucrativas').textContent = kpis.pct_lucrativas.toFixed(1) + '%';
+document.getElementById('kpi-prejuizo').textContent = kpis.pct_prejuizo.toFixed(1) + '%';
+document.getElementById('kpi-lucro-count').textContent = kpis.com_lucro.toLocaleString('pt-BR') + ' minutas com lucro';
+document.getElementById('kpi-prej-count').textContent = kpis.com_prejuizo.toLocaleString('pt-BR') + ' minutas negativas'
+  // Período no cabeçalho
+  const periodoEl = document.getElementById('header-periodo');
+  if (periodoEl && kpis.data_inicial && kpis.data_final) {
+    periodoEl.innerHTML = kpis.data_inicial + ' &nbsp;a&nbsp; ' + kpis.data_final + ' &nbsp;|&nbsp; Dados: Resultado 147';
+  } else if (periodoEl) {
+    periodoEl.innerHTML = (kpis.periodo || '') + ' &nbsp;|&nbsp; Dados: Resultado 147';
+  };
+document.getElementById('neg-count-badge').textContent = kpis.com_prejuizo.toLocaleString('pt-BR');
+
+// ─── HELPERS ───────────────────────────────────────────────────────────────
+function fmtPct(v) {
+  const cls = v >= 0 ? 'val-pos' : 'val-neg';
+  return `<span class="${cls}">${v.toFixed(1)}%</span>`;
+}
+function fmtPctBar(v) {
+  const max = 60;
+  const pct = Math.min(Math.abs(v), max) / max * 100;
+  const color = v < 0 ? '#E74C3C' : v < 15 ? '#F39C12' : '#27AE60';
+  return `<div class="margin-bar">
+    <div class="bar-track"><div class="bar-fill" style="width:${pct}%;background:${color}"></div></div>
+    <div class="bar-label" style="color:${color}">${v.toFixed(1)}%</div>
+  </div>`;
+}
+function fmtBRL(v) {
+  return 'R$ ' + v.toLocaleString('pt-BR', {minimumFractionDigits:2, maximumFractionDigits:2});
+}
+function margBadge(m) {
+  if (m < 0) return '<span class="badge badge-red">' + m.toFixed(1) + '%</span>';
+  if (m < 15) return '<span class="badge badge-orange">' + m.toFixed(1) + '%</span>';
+  return '<span class="badge badge-green">' + m.toFixed(1) + '%</span>';
+}
+function clrFromMargem(m) {
+  if (m < 0) return '#E74C3C';
+  if (m < 15) return '#F39C12';
+  if (m < 25) return '#4472C4';
+  return '#27AE60';
+}
+
+// ─── OVERVIEW CHARTS ───────────────────────────────────────────────────────
+function initOverviewCharts() {
+  // Donut
+  charts['donut'] = new Chart(document.getElementById('chart-donut'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Lucrativas', 'Com Prejuízo'],
+      datasets: [{ data: [DATA.kpis.com_lucro, DATA.kpis.com_prejuizo], backgroundColor: ['#27AE60','#E74C3C'], borderWidth: 0 }]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { font: { size: 12 } } },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.label}: ${ctx.raw.toLocaleString('pt-BR')} minutas (${(ctx.raw/DATA.kpis.minutas*100).toFixed(1)}%)` } }
+      }
+    }
+  });
+
+  // Margem por Serviço
+  const labels_s = DATA.por_servico.map(s => s.servico.replace('_', ' '));
+  const colors_s = DATA.por_servico.map(s => clrFromMargem(s.margem));
+  charts['servico-visao'] = new Chart(document.getElementById('chart-servico-visao'), {
+    type: 'bar',
+    data: { labels: labels_s, datasets: [{ label: 'Margem %', data: DATA.por_servico.map(s => s.margem), backgroundColor: colors_s, borderWidth:0 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toFixed(1)}%` } } },
+      scales: {
+        y: { ticks: { callback: v => v+'%' }, grid: { color: '#f0f0f0' } },
+        x: { ticks: { font: { size: 10 } } }
+      }
+    }
+  });
+
+  // Volume por Serviço
+  charts['servico-vol'] = new Chart(document.getElementById('chart-servico-vol'), {
+    type: 'bar',
+    data: { labels: labels_s, datasets: [{ label: 'Minutas', data: DATA.por_servico.map(s => s.minutas), backgroundColor: '#4472C4', borderWidth:0 }] },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toLocaleString('pt-BR')} minutas` } } },
+      scales: { y: { grid: { color: '#f0f0f0' } }, x: { ticks: { font: { size: 10 } } } }
+    }
+  });
+
+  // Margem por UF
+  const top10uf = [...DATA.por_uf].sort((a,b)=>b.minutas-a.minutas).slice(0,10);
+  charts['uf-visao'] = new Chart(document.getElementById('chart-uf-visao'), {
+    type: 'bar',
+    data: {
+      labels: top10uf.map(u => u.uf),
+      datasets: [{ label: 'Margem %', data: top10uf.map(u => u.margem), backgroundColor: top10uf.map(u => clrFromMargem(u.margem)), borderWidth:0 }]
+    },
+    options: {
+      indexAxis: 'y',
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toFixed(1)}%` } } },
+      scales: {
+        x: { ticks: { callback: v => v+'%' }, grid: { color: '#f0f0f0' } }
+      }
+    }
+  });
+
+  // Serviço table
+  renderServicoTable(DATA.por_servico);
+}
+
+// ─── SERVIÇO FULL TAB ──────────────────────────────────────────────────────
+let servicoSort = { col: 'minutas', dir: -1 };
+let servicoData = DATA.por_servico;
+
+function initServicoFull() {
+  const labels = servicoData.map(s => s.servico.replace(/_/g,' '));
+  charts['servico-full'] = new Chart(document.getElementById('chart-servico-full'), {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [
+        { label: 'Margem %', data: servicoData.map(s => s.margem), backgroundColor: servicoData.map(s => clrFromMargem(s.margem)), borderWidth:0, yAxisID:'y' },
+      ]
+    },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { display:false },
+        tooltip: { callbacks: { label: ctx => ` ${ctx.dataset.label}: ${ctx.raw.toFixed(1)}%` } }
+      },
+      scales: { y: { ticks: { callback: v => v+'%' }, grid: { color: '#f0f0f0' } } }
+    }
+  });
+  renderServicoTable(servicoData);
+}
+
+function renderServicoTable(data) {
+  const tbody = document.getElementById('servico-tbody');
+  if (!tbody) return;
+  tbody.innerHTML = data.map(s => `
+    <tr>
+      <td><strong>${s.servico}</strong></td>
+      <td class="text-right">${s.minutas.toLocaleString('pt-BR')}</td>
+      <td class="text-right">${s.pct_total ? s.pct_total.toFixed(1)+'%' : '-'}</td>
+      <td>${fmtPctBar(s.margem)}</td>
+    </tr>`).join('');
+}
+
+function sortTable(key, col, idx) {
+  if (servicoSort.col === col) servicoSort.dir *= -1;
+  else { servicoSort.col = col; servicoSort.dir = -1; }
+  servicoData.sort((a,b) => (a[col] > b[col] ? 1 : -1) * servicoSort.dir);
+  renderServicoTable(servicoData);
+}
+
+// ─── UF TAB ─────────────────────────────────────────────────────────────────
+let ufSort = { col: 'minutas', dir: -1 };
+let ufChart = null;
+
+function renderUF() {
+  const filterMargem = document.getElementById('uf-filter-margem').value;
+  let filtered = [...DATA.por_uf];
+
+  if (filterMargem === 'neg') filtered = filtered.filter(u => u.margem < 0);
+  else if (filterMargem === '0-15') filtered = filtered.filter(u => u.margem >= 0 && u.margem < 15);
+  else if (filterMargem === '15-30') filtered = filtered.filter(u => u.margem >= 15 && u.margem < 30);
+  else if (filterMargem === '30+') filtered = filtered.filter(u => u.margem >= 30);
+
+  filtered.sort((a,b) => (a[ufSort.col] > b[ufSort.col] ? 1 : -1) * ufSort.dir);
+
+  document.getElementById('uf-count').textContent = `${filtered.length} de ${DATA.por_uf.length} UFs`;
+  
+  // Update table
+  document.getElementById('uf-tbody').innerHTML = filtered.map(u => `
+    <tr>
+      <td><strong>${u.uf}</strong></td>
+      <td class="text-right">${u.minutas.toLocaleString('pt-BR')}</td>
+      <td class="text-right">${u.pct_total ? u.pct_total.toFixed(1)+'%' : '-'}</td>
+      <td>${fmtPctBar(u.margem)}</td>
+    </tr>`).join('');
+  
+  // Update chart
+  const sortedForChart = [...filtered].sort((a,b) => a.margem - b.margem);
+  if (ufChart) ufChart.destroy();
+  const wrap = document.getElementById('chart-uf-wrap');
+  wrap.style.height = Math.max(280, sortedForChart.length * 32) + 'px';
+  ufChart = new Chart(document.getElementById('chart-uf-full'), {
+    type: 'bar',
+    data: {
+      labels: sortedForChart.map(u => u.uf + ' (' + u.minutas + ')'),
+      datasets: [{ label: 'Margem %', data: sortedForChart.map(u => u.margem), backgroundColor: sortedForChart.map(u => clrFromMargem(u.margem)), borderWidth:0 }]
+    },
+    options: {
+      indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toFixed(1)}%` } } },
+      scales: { x: { ticks: { callback: v => v+'%' }, grid: { color: '#f0f0f0' } } }
+    }
+  });
+}
+
+function sortUF(col) {
+  if (ufSort.col === col) ufSort.dir *= -1;
+  else { ufSort.col = col; ufSort.dir = -1; }
+  renderUF();
+}
+
+// ─── CLIENTES TAB ───────────────────────────────────────────────────────────
+let cliPage = 1;
+const CLI_PAGE_SIZE = 50;
+
+function resetCliFilters() {
+  document.getElementById('cli-search').value = '';
+  document.getElementById('cli-uf').value = '';
+  document.getElementById('cli-servico').value = '';
+  document.getElementById('cli-resultado').value = '';
+  document.getElementById('cli-sort').value = 'lucro-desc';
+  renderClientes();
+}
+
+function renderClientes() {
+  cliPage = 1;
+  drawClientes();
+}
+
+function drawClientes() {
+  const search = document.getElementById('cli-search').value.toLowerCase();
+  const uf = document.getElementById('cli-uf').value;
+  const servico = document.getElementById('cli-servico').value;
+  const resultado = document.getElementById('cli-resultado').value;
+  const sortVal = document.getElementById('cli-sort').value;
+  
+  let filtered = DATA.clientes.filter(c => {
+    if (search && !c.cliente.toLowerCase().includes(search)) return false;
+    if (uf && !c.ufs.includes(uf)) return false;
+    if (servico && !c.servicos.includes(servico)) return false;
+    if (resultado === 'pos' && c.margem < 0) return false;
+    if (resultado === 'neg' && c.margem >= 0) return false;
+    if (resultado === '0-10' && (c.margem < 0 || c.margem >= 10)) return false;
+    if (resultado === '10-25' && (c.margem < 10 || c.margem >= 25)) return false;
+    if (resultado === '25+' && c.margem < 25) return false;
+    return true;
+  });
+  
+  // Sort
+  const [sc, dir] = sortVal.split('-');
+  filtered.sort((a,b) => {
+    let va, vb;
+    if (sc === 'lucro') { va = a.margem; vb = b.margem; }
+    else if (sc === 'minutas') { va = a.minutas; vb = b.minutas; }
+    else { va = a.cliente; vb = b.cliente; }
+    return dir === 'desc' ? (vb > va ? 1 : -1) : (va > vb ? 1 : -1);
+  });
+  
+  const total = filtered.length;
+  const pages = Math.ceil(total / CLI_PAGE_SIZE);
+  cliPage = Math.min(cliPage, pages || 1);
+  const slice = filtered.slice((cliPage-1)*CLI_PAGE_SIZE, cliPage*CLI_PAGE_SIZE);
+  
+  document.getElementById('cli-count').textContent = `${total.toLocaleString('pt-BR')} clientes encontrados`;
+  
+  document.getElementById('cli-tbody').innerHTML = slice.map(c => `
+    <tr>
+      <td><strong>${c.cliente}</strong></td>
+      <td class="text-right">${c.minutas.toLocaleString('pt-BR')}</td>
+      <td><small>${c.ufs.slice(0,4).join(', ')}${c.ufs.length>4 ? ' +'+( c.ufs.length-4) : ''}</small></td>
+      <td><small>${c.servicos.slice(0,2).join(', ')}${c.servicos.length>2 ? ' +'+( c.servicos.length-2) : ''}</small></td>
+      <td>${fmtPctBar(c.margem)}</td>
+    </tr>`).join('') || '<tr><td colspan="5" class="text-center" style="padding:20px;color:#999">Nenhum cliente encontrado</td></tr>';
+  
+  // Pagination
+  const pag = document.getElementById('cli-pagination');
+  if (pages <= 1) { pag.innerHTML = ''; return; }
+  let btns = `<span>Pág. ${cliPage} de ${pages}</span>`;
+  btns += `<button ${cliPage===1?'disabled':''} onclick="cliPage--;drawClientes()">‹ Ant.</button>`;
+  const start = Math.max(1, cliPage-2), end = Math.min(pages, cliPage+2);
+  for (let i=start;i<=end;i++) btns += `<button class="${i===cliPage?'active':''}" onclick="cliPage=${i};drawClientes()">${i}</button>`;
+  btns += `<button ${cliPage===pages?'disabled':''} onclick="cliPage++;drawClientes()">Próx. ›</button>`;
+  pag.innerHTML = btns;
+}
+
+// ─── MINUTAS NEGATIVAS TAB ──────────────────────────────────────────────────
+let negPage = 1;
+const NEG_PAGE_SIZE = 50;
+
+function resetNegFilters() {
+  document.getElementById('neg-search').value = '';
+  document.getElementById('neg-uf').value = '';
+  document.getElementById('neg-servico').value = '';
+  document.getElementById('neg-sistema').value = '';
+  document.getElementById('neg-sort').value = 'lucro-asc';
+  renderNeg();
+}
+
+function renderNeg() {
+  negPage = 1;
+  drawNeg();
+}
+
+function drawNeg() {
+  const search = document.getElementById('neg-search').value.toLowerCase();
+  const uf = document.getElementById('neg-uf').value;
+  const servico = document.getElementById('neg-servico').value;
+  const sistema = document.getElementById('neg-sistema').value;
+  const sortVal = document.getElementById('neg-sort').value;
+  
+  let filtered = DATA.minutas_neg.filter(m => {
+    if (search && !m.cliente.toLowerCase().includes(search)) return false;
+    if (uf && m.uf !== uf) return false;
+    if (servico && m.servico !== servico) return false;
+    if (sistema && m.sistema !== sistema) return false;
+    return true;
+  });
+  
+  // Sort
+  const sortMap = {
+    'lucro-asc': (a,b) => a.lucro - b.lucro,
+    'margem-asc': (a,b) => a.margem - b.margem,
+    'frete-desc': (a,b) => b.frete - a.frete,
+    'minuta-asc': (a,b) => parseInt(a.minuta)-parseInt(b.minuta),
+    'data-asc': (a,b) => a.data.localeCompare(b.data),
+  };
+  filtered.sort(sortMap[sortVal] || sortMap['lucro-asc']);
+  
+  const total = filtered.length;
+  const pages = Math.ceil(total / NEG_PAGE_SIZE);
+  negPage = Math.min(negPage, pages || 1);
+  const slice = filtered.slice((negPage-1)*NEG_PAGE_SIZE, negPage*NEG_PAGE_SIZE);
+  
+  document.getElementById('neg-count').textContent = `${total.toLocaleString('pt-BR')} minutas com prejuízo encontradas`;
+  
+  document.getElementById('neg-tbody').innerHTML = slice.map(m => `
+    <tr>
+      <td><strong>${m.minuta}</strong></td>
+      <td style="white-space:nowrap">${m.data}</td>
+      <td><span class="badge" style="background:#e3e8f0;color:#444">${m.sistema}</span></td>
+      <td>${m.cliente}</td>
+      <td><small>${m.servico}</small></td>
+      <td><small>${m.destino}</small></td>
+      <td class="text-right">${m.frete > 0 ? fmtBRL(m.frete) : '-'}</td>
+      <td class="text-right">${m.custo > 0 ? fmtBRL(m.custo) : '-'}</td>
+      <td class="text-right lucro-neg">${fmtBRL(m.lucro)}</td>
+      <td class="text-right">${margBadge(m.margem)}</td>
+    </tr>`).join('') || '<tr><td colspan="10" class="text-center" style="padding:20px;color:#999">Nenhuma minuta encontrada</td></tr>';
+  
+  // Pagination
+  const pag = document.getElementById('neg-pagination');
+  if (pages <= 1) { pag.innerHTML = ''; return; }
+  let btns = `<span>Pág. ${negPage} de ${pages}</span>`;
+  btns += `<button ${negPage===1?'disabled':''} onclick="negPage--;drawNeg()">‹ Ant.</button>`;
+  const start = Math.max(1, negPage-2), end = Math.min(pages, negPage+2);
+  for (let i=start;i<=end;i++) btns += `<button class="${i===negPage?'active':''}" onclick="negPage=${i};drawNeg()">${i}</button>`;
+  btns += `<button ${negPage===pages?'disabled':''} onclick="negPage++;drawNeg()">Próx. ›</button>`;
+  pag.innerHTML = btns;
+}
+
+// ─── INIT ──────────────────────────────────────────────────────────────────
+initOverviewCharts();
+
+// ─── SEM CUSTO DE TRANSPORTE TAB ────────────────────────────────────────────
+const minutasSemCusto = DATA.minutas_sem_custo || [];
+
+// Populate dynamic filters
+(function(){
+  const ufs = [...new Set(minutasSemCusto.map(m => m.uf).filter(Boolean))].sort();
+  const srvs = [...new Set(minutasSemCusto.map(m => m.servico).filter(Boolean))].sort();
+  const ufSel = document.getElementById('sc-uf');
+  const srvSel = document.getElementById('sc-servico');
+  ufs.forEach(u => { const o=document.createElement('option');o.value=o.textContent=u;ufSel.appendChild(o); });
+  srvs.forEach(s => { const o=document.createElement('option');o.value=o.textContent=s;srvSel.appendChild(o); });
+
+  // Badge
+  if (minutasSemCusto.length > 0) {
+    const badge = document.getElementById('sc-count-badge');
+    badge.textContent = minutasSemCusto.length;
+    badge.style.display = '';
+  }
+})();
+
+let scPage = 1;
+const SC_PAGE_SIZE = 50;
+
+function resetScFilters() {
+  document.getElementById('sc-search').value = '';
+  document.getElementById('sc-uf').value = '';
+  document.getElementById('sc-servico').value = '';
+  document.getElementById('sc-sistema').value = '';
+  document.getElementById('sc-sort').value = 'frete-desc';
+  renderSemCusto();
+}
+
+function renderSemCusto() { scPage = 1; drawSemCusto(); }
+
+function drawSemCusto() {
+  const search = document.getElementById('sc-search').value.toLowerCase();
+  const uf     = document.getElementById('sc-uf').value;
+  const serv   = document.getElementById('sc-servico').value;
+  const sis    = document.getElementById('sc-sistema').value;
+  const sortV  = document.getElementById('sc-sort').value;
+
+  let filtered = (DATA.minutas_sem_custo||[]).filter(m => {
+    if (search && !m.cliente.toLowerCase().includes(search)) return false;
+    if (uf && m.uf !== uf) return false;
+    if (serv && m.servico !== serv) return false;
+    if (sis && m.sistema !== sis) return false;
+    return true;
+  });
+
+  const sortMap = {
+    'frete-desc':   (a,b) => b.frete - a.frete,
+    'minuta-asc':   (a,b) => parseInt(a.minuta) - parseInt(b.minuta),
+    'data-asc':     (a,b) => a.data.localeCompare(b.data),
+    'cliente-asc':  (a,b) => a.cliente.localeCompare(b.cliente),
+  };
+  filtered.sort(sortMap[sortV] || sortMap['frete-desc']);
+
+  const total = filtered.length;
+  const pages = Math.ceil(total / SC_PAGE_SIZE);
+  scPage = Math.min(scPage, pages || 1);
+  const slice = filtered.slice((scPage-1)*SC_PAGE_SIZE, scPage*SC_PAGE_SIZE);
+
+  document.getElementById('sc-count').textContent =
+    total === 0
+      ? 'Nenhuma minuta sem custo encontrada para os filtros selecionados'
+      : total.toLocaleString('pt-BR') + ' minuta(s) sem custo de transporte';
+
+  document.getElementById('sc-tbody').innerHTML = slice.map(m => `
+    <tr>
+      <td style="white-space:nowrap"><strong>${m.minuta}</strong></td>
+      <td style="white-space:nowrap">${m.data}</td>
+      <td><span class="badge badge-sys">${m.sistema}</span></td>
+      <td>${m.cliente}</td>
+      <td><small>${m.servico}</small></td>
+      <td><small>${m.destino}</small></td>
+      <td class="text-right">${m.frete > 0 ? fmtBRL(m.frete) : '<span style="color:var(--text3)">—</span>'}</td>
+      <td><small style="color:var(--text2)">${m.respColeta||'—'}</small></td>
+      <td><small style="color:var(--text2)">${m.respEntrega||'—'}</small></td>
+      <td><small style="color:var(--text2)">${m.respTransf||'—'}</small></td>
+      <td class="text-right"><span class="val-${m.lucro>=0?'pos':'neg'}">${fmtBRL(m.lucro)}</span></td>
+      <td class="text-right">${margBadge(m.margem)}</td>
+    </tr>`).join('') || '<tr><td colspan="12" class="text-center" style="padding:20px;color:var(--text3)">Nenhuma minuta encontrada</td></tr>';
+
+  // Pagination
+  const pag = document.getElementById('sc-pagination');
+  if (pages <= 1) { pag.innerHTML = ''; return; }
+  let btns = `<span>Pág. ${scPage} de ${pages}</span>`;
+  btns += `<button ${scPage===1?'disabled':''} onclick="scPage--;drawSemCusto()">‹ Ant.</button>`;
+  const start = Math.max(1, scPage-2), end = Math.min(pages, scPage+2);
+  for (let i=start;i<=end;i++) btns += `<button class="${i===scPage?'active':''}" onclick="scPage=${i};drawSemCusto()">${i}</button>`;
+  btns += `<button ${scPage===pages?'disabled':''} onclick="scPage++;drawSemCusto()">Próx. ›</button>`;
+  pag.innerHTML = btns;
+}
+
+</script>
+</body>
+</html>
