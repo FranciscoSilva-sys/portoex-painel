@@ -1340,7 +1340,12 @@ function _recalcFromMinutas(allMinutas) {
     margem:v.frete?Math.round(v.resultado/v.frete*10000)/100:0,
     ufs:[...v.ufs].sort(),servicos:[...v.servicos].sort()
   })).sort((a,b)=>b.resultado-a.resultado);
+  // Sincronizar TODAS as variáveis globais usadas pelos charts e renders
   servicoData=DATA.por_servico;
+  porServico=DATA.por_servico;
+  porUF=DATA.por_uf;
+  kpis=DATA.kpis;
+  clientes=DATA.clientes;
   ['donut','servico-visao','servico-vol','uf-visao','servico-full','uf-full'].forEach(k=>{if(charts[k]){charts[k].destroy();delete charts[k];}});
   initOverviewCharts();
   const _activeTab=document.querySelector('.tab-panel.active');
