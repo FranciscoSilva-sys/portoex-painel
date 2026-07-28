@@ -369,12 +369,14 @@ small{font-size:.76rem;color:var(--text2)}
 <!-- ═══ FILTRO DE PERÍODO ════════════════════════════════════════════════════ -->
 <div style="background:var(--panel);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;">
   <span style="font-weight:600;color:var(--text-muted)">Filtrar Período:</span>
-  <input type="date" id="date-from" onchange="applyDateFilter()"
+  <input type="date" id="date-from" oninput="applyDateFilter()" onchange="applyDateFilter()"
     style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
   <span style="color:var(--text-muted)">até</span>
-  <input type="date" id="date-to" onchange="applyDateFilter()"
+  <input type="date" id="date-to" oninput="applyDateFilter()" onchange="applyDateFilter()"
     style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
   <span id="date-filter-info" style="color:var(--accent);font-weight:600;"></span>
+  <button onclick="applyDateFilter()"
+    style="border:1px solid var(--border);border-radius:6px;padding:4px 12px;background:var(--accent);color:#fff;cursor:pointer;font-size:.82rem;font-weight:600;">Aplicar</button>
   <button onclick="resetDateFilter()"
     style="border:1px solid var(--border);border-radius:6px;padding:4px 12px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.82rem;">Limpar</button>
 </div>
