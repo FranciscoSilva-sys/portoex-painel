@@ -683,6 +683,10 @@ small{font-size:.76rem;color:var(--text2)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
           Limpar
         </button>
+        <a href="https://franciscosilva-sys.github.io/portoex-painel/custos_abertos.xlsx" download="CustosAbertos.xlsx" class="btn-reset" style="background:var(--accent);color:#fff;border-color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Custos Abertos
+        </a>
       </div>
       <div class="result-count" id="neg-count"></div>
     </div>
@@ -807,9 +811,9 @@ small{font-size:.76rem;color:var(--text2)}
       <button onclick="renderCurvaABC()" style="padding:6px 18px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;">Comparar</button>
     </div>
     <div style="display:flex;gap:12px;margin-bottom:12px;font-size:.78rem;flex-wrap:wrap;">
-      <span style="background:#27AE60;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">A</span><span style="color:var(--text-muted)">Top 80% do faturamento</span>
-      <span style="background:#F39C12;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">B</span><span style="color:var(--text-muted)">80% – 95%</span>
-      <span style="background:#E74C3C;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">C</span><span style="color:var(--text-muted)">95% – 100%</span>
+      <span style="background:#27AE60;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">A</span><span style="color:var(--text-muted)">Top 60% do faturamento</span>
+      <span style="background:#F39C12;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">B</span><span style="color:var(--text-muted)">60% – 90%</span>
+      <span style="background:#E74C3C;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">C</span><span style="color:var(--text-muted)">90% – 100%</span>
       <span style="margin-left:8px;">▲ Melhorou</span><span>▼ Piorou</span>
     </div>
     <div class="table-wrap">
@@ -927,9 +931,15 @@ function _recalcFromMinutas(allMinutas) {
   document.getElementById('kpi-prej-count').textContent=DATA.kpis.com_prejuizo.toLocaleString('pt-BR')+' minutas negativas';
   document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
   // Recalcular clientes a partir das minutas filtradas
+  const _isCliExcluido = (nome) => {
+    const n = (nome||'').toUpperCase().trim();
+    return n === 'PORTOEX' || n === 'PEX' || n === 'PEX LOGÍSTICA' || n === 'PEX LOGISTICA'
+      || n.startsWith('PEX ') || (n.includes('PORTOEX') && !n.includes(' '));
+  };
   const byCli={};
   for(const r of principais){
     const k=r.cliente||'N/D';
+    if(_isCliExcluido(k)) continue;
     if(!byCli[k])byCli[k]={cliente:k,minutas:0,frete:0,resultado:0,ufs:new Set(),servicos:new Set()};
     byCli[k].minutas++;byCli[k].frete+=(r.frete||0);byCli[k].resultado+=(r.lucro||0);
     if(r.uf)byCli[k].ufs.add(r.uf);if(r.servico)byCli[k].servicos.add(r.servico);
@@ -1000,7 +1010,7 @@ function renderCurvaABC() {
     for(const r of rows){const s=r.servico||'N/D';if(!byS[s])byS[s]={servico:s,minutas:0,frete:0,resultado:0};byS[s].minutas++;byS[s].frete+=(r.frete||0);byS[s].resultado+=(r.lucro||0);}
     return Object.values(byS).sort((a,b)=>b.frete-a.frete);
   }
-  function assignABC(groups){const totF=groups.reduce((s,g)=>s+g.frete,0);let cum=0;return groups.map(g=>{cum+=g.frete;const pct=totF?(cum/totF)*100:0;return{...g,pct_cum:pct,classe:pct<=80?'A':pct<=95?'B':'C'};});}
+  function assignABC(groups){const totF=groups.reduce((s,g)=>s+g.frete,0);let cum=0;return groups.map(g=>{cum+=g.frete;const pct=totF?(cum/totF)*100:0;return{...g,pct_cum:pct,classe:pct<=60?'A':pct<=90?'B':'C'};});}
   const grpA=assignABC(filterGroup(aFrom,aTo)); const grpB=assignABC(filterGroup(bFrom,bTo));
   const mapA={}; grpA.forEach(g=>{mapA[g.servico]=g;});
   const mapB={}; grpB.forEach(g=>{mapB[g.servico]=g;});
@@ -1036,6 +1046,15 @@ document.getElementById('kpi-prej-count').textContent = kpis.com_prejuizo.toLoca
     periodoEl.innerHTML = (kpis.periodo || '') + ' &nbsp;|&nbsp; Dados: Resultado 147';
   };
 document.getElementById('neg-count-badge').textContent = kpis.com_prejuizo.toLocaleString('pt-BR');
+
+// ─── Pré-preencher calendário do filtro de período com as datas do relatório ──
+if (kpis.data_inicial && kpis.data_final) {
+  function brToISO_main(s){const p=s.split('/');return p[2]+'-'+p[1]+'-'+p[0];}
+  const dfrom = document.getElementById('date-from');
+  const dto   = document.getElementById('date-to');
+  if (dfrom && !dfrom.value) dfrom.value = brToISO_main(kpis.data_inicial);
+  if (dto   && !dto.value)   dto.value   = brToISO_main(kpis.data_final);
+}
 
 // ─── HELPERS ───────────────────────────────────────────────────────────────
 function fmtPct(v) {
@@ -1253,7 +1272,22 @@ function drawClientes() {
   const servico = document.getElementById('cli-servico').value;
   const resultado = document.getElementById('cli-resultado').value;
   const sortVal = document.getElementById('cli-sort').value;
-  
+
+  // Calcular classe ABC de cada cliente com base no faturamento total (lista completa)
+  const _abcMap = {};
+  const _allSortedByFrete = [...DATA.clientes].sort((a,b) => b.frete - a.frete);
+  const _totFrete = _allSortedByFrete.reduce((s,c) => s + c.frete, 0);
+  let _cumF = 0;
+  for (const c of _allSortedByFrete) {
+    _cumF += c.frete;
+    const pct = _totFrete ? (_cumF / _totFrete) * 100 : 0;
+    _abcMap[c.cliente] = pct <= 60 ? 'A' : pct <= 90 ? 'B' : 'C';
+  }
+  const _abcBadge = cl => {
+    const bg = cl==='A' ? '#27AE60' : cl==='B' ? '#F39C12' : '#E74C3C';
+    return `<span style="background:${bg};color:#fff;padding:1px 7px;border-radius:10px;font-size:.68rem;font-weight:700;margin-right:6px;">${cl}</span>`;
+  };
+
   let filtered = DATA.clientes.filter(c => {
     if (search && !c.cliente.toLowerCase().includes(search)) return false;
     if (uf && !c.ufs.includes(uf)) return false;
@@ -1265,7 +1299,7 @@ function drawClientes() {
     if (resultado === '25+' && c.margem < 25) return false;
     return true;
   });
-  
+
   // Sort
   const [sc, dir] = sortVal.split('-');
   filtered.sort((a,b) => {
@@ -1275,17 +1309,17 @@ function drawClientes() {
     else { va = a.cliente; vb = b.cliente; }
     return dir === 'desc' ? (vb > va ? 1 : -1) : (va > vb ? 1 : -1);
   });
-  
+
   const total = filtered.length;
   const pages = Math.ceil(total / CLI_PAGE_SIZE);
   cliPage = Math.min(cliPage, pages || 1);
   const slice = filtered.slice((cliPage-1)*CLI_PAGE_SIZE, cliPage*CLI_PAGE_SIZE);
-  
+
   document.getElementById('cli-count').textContent = `${total.toLocaleString('pt-BR')} clientes encontrados`;
-  
+
   document.getElementById('cli-tbody').innerHTML = slice.map(c => `
     <tr>
-      <td><strong>${c.cliente}</strong></td>
+      <td><strong>${_abcBadge(_abcMap[c.cliente]||'C')}${c.cliente}</strong></td>
       <td class="text-right">${c.minutas.toLocaleString('pt-BR')}</td>
       <td><small>${c.ufs.slice(0,4).join(', ')}${c.ufs.length>4 ? ' +'+( c.ufs.length-4) : ''}</small></td>
       <td><small>${c.servicos.slice(0,2).join(', ')}${c.servicos.length>2 ? ' +'+( c.servicos.length-2) : ''}</small></td>
@@ -1475,6 +1509,48 @@ function drawSemCusto() {
   pag.innerHTML = btns;
 }
 
+
+function downloadNegativasExcel() {
+  const rows = DATA.minutas_neg || [];
+  if (!rows.length) { alert('Nenhuma minuta negativa para exportar.'); return; }
+
+  // Aplicar mesmos filtros visuais da aba
+  const search  = (document.getElementById('neg-search')?.value||'').toLowerCase();
+  const ufFlt   = document.getElementById('neg-uf')?.value||'';
+  const svcFlt  = document.getElementById('neg-servico')?.value||'';
+  const sisFlt  = document.getElementById('neg-sistema')?.value||'';
+  const filtered = rows.filter(m => {
+    if (search  && !(m.cliente||'').toLowerCase().includes(search)) return false;
+    if (ufFlt   && m.uf   !== ufFlt)  return false;
+    if (svcFlt  && m.servico !== svcFlt) return false;
+    if (sisFlt  && m.sistema !== sisFlt) return false;
+    return true;
+  });
+  if (!filtered.length) { alert('Nenhuma minuta no filtro atual.'); return; }
+
+  const headers = ['Sistema','Minuta','Tipo CT-e','Data','Cliente','Serviço','Destino','UF',
+    'Frete (R$)','Custo Total (R$)','Resultado (R$)','Comissão (R$)','Lucro Líq. (R$)','Margem (%)',
+    'Resp. Coleta','Custo Coleta','Resp. Entrega','Custo Entrega','Resp. Transf.','Custo Transf.'];
+
+  const data = [headers, ...filtered.map(m => [
+    m.sistema, m.minuta, m.tipoCte||'', m.data, m.cliente, m.servico, m.destino, m.uf,
+    m.frete, m.custo, m.resultado, m.comis||0, m.lucro, m.margem,
+    m.resp_coleta||'', m.custo_coleta||0,
+    m.resp_entrega||'', m.custo_entrega||0,
+    m.resp_transf||'', m.custo_transf||0
+  ])];
+
+  const ws = XLSX.utils.aoa_to_sheet(data);
+  ws['!cols'] = [
+    {wch:14},{wch:10},{wch:16},{wch:12},{wch:35},{wch:16},{wch:22},{wch:5},
+    {wch:13},{wch:14},{wch:14},{wch:13},{wch:14},{wch:10},
+    {wch:20},{wch:13},{wch:20},{wch:14},{wch:20},{wch:13}
+  ];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Custos Abertos');
+  const periodo = (DATA.kpis && DATA.kpis.periodo) ? DATA.kpis.periodo.replace(/[\/:*?"<>|]/g,'_') : 'Painel';
+  XLSX.writeFile(wb, `CustosAbertos_${periodo}.xlsx`);
+}
 
 function downloadSemCustoExcel() {
   const rows = DATA.minutas_sem_custo || [];
