@@ -364,9 +364,21 @@ small{font-size:.76rem;color:var(--text2)}
     Sem Custo Transp.
     <span class="tab-badge" id="sc-count-badge" style="display:none"></span>
   </button>
+  <button class="tab-btn" onclick="showTab('curva-abc')">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
+    Curva ABC
+  </button>
 </nav>
 
 <!-- ═══ MAIN ════════════════════════════════════════════════════════════════ -->
+<div id="periodo-filter-bar" style="background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem;">
+  <span style="font-weight:600;color:var(--text-muted)">Filtrar Período:</span>
+  <input type="date" id="date-from" onchange="applyDateFilter()" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+  <span style="color:var(--text-muted)">até</span>
+  <input type="date" id="date-to" onchange="applyDateFilter()" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+  <span id="date-filter-info" style="color:var(--accent);font-weight:600;"></span>
+  <button onclick="resetDateFilter()" style="border:1px solid var(--border);border-radius:6px;padding:4px 12px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.82rem;">Limpar</button>
+</div>
 <main class="main">
 
 <!-- ── TAB 1 · VISÃO GERAL ─────────────────────────────────────────────── -->
@@ -761,6 +773,51 @@ small{font-size:.76rem;color:var(--text2)}
   </div>
 </div>
 
+
+<div id="tab-curva-abc" class="tab-panel">
+  <div class="card">
+    <div class="c-head">
+      <span class="c-tit">Curva ABC — Comparativo de Períodos</span>
+      <span class="c-sub">Resultado operacional por cliente (baseado em DATA.minutas)</span>
+    </div>
+    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;">
+      <div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);margin-bottom:4px;">PERÍODO A — REFERÊNCIA</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="date" id="abc-a-from" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+          <span style="color:var(--text-muted)">até</span>
+          <input type="date" id="abc-a-to" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+        </div>
+      </div>
+      <div>
+        <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);margin-bottom:4px;">PERÍODO B — ATUAL</div>
+        <div style="display:flex;gap:8px;align-items:center;">
+          <input type="date" id="abc-b-from" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+          <span style="color:var(--text-muted)">até</span>
+          <input type="date" id="abc-b-to" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
+        </div>
+      </div>
+      <button onclick="renderCurvaABC()" style="padding:6px 18px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;">Comparar</button>
+    </div>
+    <div style="display:flex;gap:12px;margin-bottom:12px;font-size:.78rem;flex-wrap:wrap;">
+      <span style="background:#27AE60;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">A</span><span style="color:var(--text-muted)">Top 60% do faturamento</span>
+      <span style="background:#F39C12;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">B</span><span style="color:var(--text-muted)">60% – 90%</span>
+      <span style="background:#E74C3C;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">C</span><span style="color:var(--text-muted)">90% – 100%</span>
+      <span style="margin-left:8px;">▲ Melhorou</span><span>▼ Piorou</span>
+    </div>
+    <div class="table-wrap">
+      <table>
+        <thead><tr>
+          <th>Classe</th><th>Cliente</th>
+          <th class="text-right">Min. A</th><th class="text-right">Min. B</th>
+          <th class="text-right">Lucro A</th><th class="text-right">Lucro B</th>
+          <th class="text-right">Δ Variação</th><th>Tendência</th>
+        </tr></thead>
+        <tbody id="abc-tbody"><tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px;">Selecione os períodos e clique em Comparar</td></tr></tbody>
+      </table>
+    </div>
+  </div>
+</div>
 </main>
 
 <script>
@@ -782,7 +839,7 @@ const kpis = DATA.kpis;
 const porServico = DATA.por_servico;
 const porUF = DATA.por_uf;
 const clientes = DATA.clientes;
-const minutasNeg = DATA.minutas_neg;
+let minutasNeg = DATA.minutas_neg;
 
 // Chart instances
 let charts = {};
@@ -1163,7 +1220,7 @@ function drawNeg() {
 initOverviewCharts();
 
 // ─── SEM CUSTO DE TRANSPORTE TAB ────────────────────────────────────────────
-const minutasSemCusto = DATA.minutas_sem_custo || [];
+let minutasSemCusto = DATA.minutas_sem_custo || [];
 
 // Populate dynamic filters
 (function(){
@@ -1256,6 +1313,85 @@ function drawSemCusto() {
   pag.innerHTML = btns;
 }
 
+
+// ─── FILTRO DE PERÍODO GLOBAL ──────────────────────────────────────────────
+let _dateFrom = null, _dateTo = null;
+function parseDataBR(s){
+  if(!s)return null;
+  const parts=s.split('/');
+  if(parts.length!==3)return null;
+  return new Date(+parts[2],+parts[1]-1,+parts[0]);
+}
+function applyDateFilter(){
+  const fv=document.getElementById('date-from').value;
+  const tv=document.getElementById('date-to').value;
+  _dateFrom=fv?new Date(fv):null;
+  _dateTo  =tv?new Date(tv):null;
+  const info=document.getElementById('date-filter-info');
+  if(_dateFrom||_dateTo){
+    const f=fv?new Date(fv).toLocaleDateString('pt-BR'):'—';
+    const t=tv?new Date(tv).toLocaleDateString('pt-BR'):'—';
+    info.textContent='Filtrando: '+f+' até '+t;
+  } else {info.textContent='';}
+  if(_dateFrom||_dateTo){
+    const ok=m=>{const d=parseDataBR(m.data);return d&&(!_dateFrom||d>=_dateFrom)&&(!_dateTo||d<=_dateTo);};
+    minutasNeg        =(DATA.minutas_neg||[]).filter(ok);
+    minutasSemCusto   =(DATA.minutas_sem_custo||[]).filter(ok);
+  } else {
+    minutasNeg      =DATA.minutas_neg;
+    minutasSemCusto =DATA.minutas_sem_custo||[];
+  }
+  renderNeg(); renderSemCusto();
+}
+function resetDateFilter(){
+  document.getElementById('date-from').value='';
+  document.getElementById('date-to').value='';
+  _dateFrom=null; _dateTo=null;
+  document.getElementById('date-filter-info').textContent='';
+  minutasNeg=DATA.minutas_neg;
+  minutasSemCusto=DATA.minutas_sem_custo||[];
+  renderNeg(); renderSemCusto();
+}
+// ─── CURVA ABC ─────────────────────────────────────────────────────────────
+function renderCurvaABC(){
+  const aF=document.getElementById('abc-a-from').value;
+  const aT=document.getElementById('abc-a-to').value;
+  const bF=document.getElementById('abc-b-from').value;
+  const bT=document.getElementById('abc-b-to').value;
+  if(!aF||!aT||!bF||!bT){alert('Preencha todos os campos de data.');return;}
+  const dAF=new Date(aF),dAT=new Date(aT),dBF=new Date(bF),dBT=new Date(bT);
+  const filterP=(f,t)=>(DATA.minutas||[]).filter(m=>{const d=parseDataBR(m.data);return d&&d>=f&&d<=t;});
+  const group=mins=>{
+    const mp={};
+    for(const m of mins){
+      if(!mp[m.cliente])mp[m.cliente]={minutas:0,frete:0,lucro:0};
+      mp[m.cliente].minutas++; mp[m.cliente].frete+=m.frete||0; mp[m.cliente].lucro+=m.lucro||0;
+    }
+    return Object.entries(mp).map(([k,v])=>({...v,cliente:k})).sort((a,b)=>b.frete-a.frete);
+  };
+  const classify=list=>{
+    const tot=list.reduce((s,c)=>s+c.frete,0); let acc=0;
+    return list.map(c=>{acc+=c.frete;const p=tot?acc/tot*100:0;return{...c,classe:p<=60?'A':p<=90?'B':'C'};});
+  };
+  const pA=classify(group(filterP(dAF,dAT)));
+  const pB=classify(group(filterP(dBF,dBT)));
+  const mapB=Object.fromEntries(pB.map(c=>[c.cliente,c]));
+  const allC=[...new Set([...pA.map(c=>c.cliente),...Object.keys(mapB)])];
+  const rows=allC.map(cli=>{
+    const a=pA.find(c=>c.cliente===cli)||{frete:0,lucro:0,minutas:0,classe:'—'};
+    const b=mapB[cli]||{frete:0,lucro:0,minutas:0,classe:'—'};
+    return{cli,a,b,delta:b.lucro-a.lucro};
+  }).sort((x,y)=>y.b.frete-x.b.frete);
+  const bg={A:'#27AE60',B:'#F39C12',C:'#E74C3C','—':'#999'};
+  document.getElementById('abc-tbody').innerHTML=rows.map(r=>`<tr>
+    <td><span style="background:${bg[r.b.classe]};color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">${r.b.classe}</span></td>
+    <td>${r.cli}</td>
+    <td class="text-right">${r.a.minutas}</td><td class="text-right">${r.b.minutas}</td>
+    <td class="text-right">${fmtBRL(r.a.lucro)}</td><td class="text-right">${fmtBRL(r.b.lucro)}</td>
+    <td class="text-right" style="color:${r.delta>=0?'#27AE60':'#E74C3C'}">${r.delta>=0?'+':''}${fmtBRL(r.delta)}</td>
+    <td style="font-size:1.1rem;color:${r.delta>=0?'#27AE60':'#E74C3C'}">${r.delta>0?'▲':r.delta<0?'▼':'—'}</td>
+  </tr>`).join('')||'<tr><td colspan="8" style="text-align:center;padding:24px;color:#999">Sem dados</td></tr>';
+}
 </script>
 </body>
 </html>
