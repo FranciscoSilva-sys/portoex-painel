@@ -1341,24 +1341,31 @@ function _updateKpis(mins){
   const pjEl=document.getElementById('kpi-prej-count');
   if(pjEl)pjEl.textContent=comPrej.toLocaleString('pt-BR')+' minutas negativas';
 }
+function _dateToYMD(v){
+  // converte DD/MM/YYYY → YYYY-MM-DD para comparação de string sem timezone
+  if(!v)return null;
+  const p=v.split('/');
+  if(p.length!==3)return null;
+  return p[2]+'-'+p[1]+'-'+p[0];
+}
 function applyDateFilter(){
-  const fv=document.getElementById('date-from').value;
-  const tv=document.getElementById('date-to').value;
-  _dateFrom=fv?new Date(fv):null;
-  _dateTo  =tv?new Date(tv):null;
+  const fv=document.getElementById('date-from').value;  // YYYY-MM-DD
+  const tv=document.getElementById('date-to').value;    // YYYY-MM-DD
+  _dateFrom=fv||null;
+  _dateTo  =tv||null;
   const info=document.getElementById('date-filter-info');
-  if(_dateFrom||_dateTo){
-    const f=fv?new Date(fv).toLocaleDateString('pt-BR'):'—';
-    const t=tv?new Date(tv).toLocaleDateString('pt-BR'):'—';
-    info.textContent='Filtrando: '+f+' até '+t;
+  if(fv||tv){
+    const fmtBR=s=>s?s.split('-').reverse().join('/'):'—';
+    info.textContent='Filtrando: '+fmtBR(fv)+' até '+fmtBR(tv);
   } else {info.textContent='';}
-  if(_dateFrom||_dateTo){
-    const ok=m=>{const d=parseDataBR(m.data);return d&&(!_dateFrom||d>=_dateFrom)&&(!_dateTo||d<=_dateTo);};
+  if(fv||tv){
+    // comparação puramente por string YYYY-MM-DD — sem problema de timezone
+    const ok=m=>{const d=_dateToYMD(m.data);return d&&(!_dateFrom||d>=_dateFrom)&&(!_dateTo||d<=_dateTo);};
     minutasNeg        =(DATA.minutas_neg||[]).filter(ok);
     minutasSemCusto   =(DATA.minutas_sem_custo||[]).filter(ok);
     _updateKpis((DATA.minutas||[]).filter(ok));
   } else {
-    minutasNeg      =DATA.minutas_neg;
+    minutasNeg      =DATA.minutas_neg||[];
     minutasSemCusto =DATA.minutas_sem_custo||[];
     _updateKpis(DATA.minutas||[]);
   }
