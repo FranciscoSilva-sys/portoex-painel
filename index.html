@@ -1795,6 +1795,10 @@ function applyDateFilter(){
     minutasSemCusto =DATA.minutas_sem_custo||[];
     _updateKpis(DATA.minutas||[]);
   }
+  const negBadge=document.getElementById('neg-count-badge');
+  if(negBadge)negBadge.textContent=minutasNeg.length;
+  const scBadge=document.getElementById('sc-count-badge');
+  if(scBadge)scBadge.textContent=minutasSemCusto.length;
   renderNeg(); renderSemCusto();
 }
 function resetDateFilter(){
@@ -1805,6 +1809,10 @@ function resetDateFilter(){
   minutasNeg=DATA.minutas_neg;
   minutasSemCusto=DATA.minutas_sem_custo||[];
   _updateKpis(DATA.minutas||[]);
+  const negBadge=document.getElementById('neg-count-badge');
+  if(negBadge)negBadge.textContent=minutasNeg.length;
+  const scBadge=document.getElementById('sc-count-badge');
+  if(scBadge)scBadge.textContent=minutasSemCusto.length;
   renderNeg(); renderSemCusto();
 }
 // ─── CURVA ABC ─────────────────────────────────────────────────────────────
