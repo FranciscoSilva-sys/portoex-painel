@@ -368,10 +368,6 @@ small{font-size:.76rem;color:var(--text2)}
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
     Curva ABC
   </button>
-  <button class="tab-btn" onclick="showTab('curva-abc')">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/><line x1="6" y1="20" x2="6" y2="14"/><line x1="2" y1="20" x2="22" y2="20"/></svg>
-    Curva ABC
-  </button>
 </nav>
 
 <!-- ═══ MAIN ════════════════════════════════════════════════════════════════ -->
@@ -833,50 +829,6 @@ small{font-size:.76rem;color:var(--text2)}
   </div>
 </div>
 
-<div id="tab-curva-abc" class="tab-panel">
-  <div class="card">
-    <div class="c-head">
-      <span class="c-tit">Curva ABC — Comparativo de Períodos</span>
-      <span class="c-sub">Resultado operacional por cliente (baseado em DATA.minutas)</span>
-    </div>
-    <div style="display:flex;gap:16px;flex-wrap:wrap;align-items:flex-end;margin-bottom:16px;">
-      <div>
-        <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);margin-bottom:4px;">PERÍODO A — REFERÊNCIA</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <input type="date" id="abc-a-from" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-          <span style="color:var(--text-muted)">até</span>
-          <input type="date" id="abc-a-to" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-        </div>
-      </div>
-      <div>
-        <div style="font-size:.75rem;font-weight:600;color:var(--text-muted);margin-bottom:4px;">PERÍODO B — ATUAL</div>
-        <div style="display:flex;gap:8px;align-items:center;">
-          <input type="date" id="abc-b-from" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-          <span style="color:var(--text-muted)">até</span>
-          <input type="date" id="abc-b-to" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-        </div>
-      </div>
-      <button onclick="renderCurvaABC()" style="padding:6px 18px;background:var(--accent);color:#fff;border:none;border-radius:6px;cursor:pointer;font-weight:600;">Comparar</button>
-    </div>
-    <div style="display:flex;gap:12px;margin-bottom:12px;font-size:.78rem;flex-wrap:wrap;">
-      <span style="background:#27AE60;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">A</span><span style="color:var(--text-muted)">Top 60% do faturamento</span>
-      <span style="background:#F39C12;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">B</span><span style="color:var(--text-muted)">60% – 90%</span>
-      <span style="background:#E74C3C;color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">C</span><span style="color:var(--text-muted)">90% – 100%</span>
-      <span style="margin-left:8px;">▲ Melhorou</span><span>▼ Piorou</span>
-    </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th>Classe</th><th>Cliente</th>
-          <th class="text-right">Min. A</th><th class="text-right">Min. B</th>
-          <th class="text-right">Lucro A</th><th class="text-right">Lucro B</th>
-          <th class="text-right">Δ Variação</th><th>Tendência</th>
-        </tr></thead>
-        <tbody id="abc-tbody"><tr><td colspan="8" style="text-align:center;color:var(--text-muted);padding:24px;">Selecione os períodos e clique em Comparar</td></tr></tbody>
-      </table>
-    </div>
-  </div>
-</div>
 </main>
 
 <script>
@@ -1816,45 +1768,7 @@ function resetDateFilter(){
   renderNeg(); renderSemCusto();
 }
 // ─── CURVA ABC ─────────────────────────────────────────────────────────────
-function renderCurvaABC(){
-  const aF=document.getElementById('abc-a-from').value;
-  const aT=document.getElementById('abc-a-to').value;
-  const bF=document.getElementById('abc-b-from').value;
-  const bT=document.getElementById('abc-b-to').value;
-  if(!aF||!aT||!bF||!bT){alert('Preencha todos os campos de data.');return;}
-  const dAF=new Date(aF),dAT=new Date(aT),dBF=new Date(bF),dBT=new Date(bT);
-  const filterP=(f,t)=>(DATA.minutas||[]).filter(m=>{const d=parseDataBR(m.data);return d&&d>=f&&d<=t;});
-  const group=mins=>{
-    const mp={};
-    for(const m of mins){
-      if(!mp[m.cliente])mp[m.cliente]={minutas:0,frete:0,lucro:0};
-      mp[m.cliente].minutas++; mp[m.cliente].frete+=m.frete||0; mp[m.cliente].lucro+=m.lucro||0;
-    }
-    return Object.entries(mp).map(([k,v])=>({...v,cliente:k})).sort((a,b)=>b.frete-a.frete);
-  };
-  const classify=list=>{
-    const tot=list.reduce((s,c)=>s+c.frete,0); let acc=0;
-    return list.map(c=>{acc+=c.frete;const p=tot?acc/tot*100:0;return{...c,classe:p<=60?'A':p<=90?'B':'C'};});
-  };
-  const pA=classify(group(filterP(dAF,dAT)));
-  const pB=classify(group(filterP(dBF,dBT)));
-  const mapB=Object.fromEntries(pB.map(c=>[c.cliente,c]));
-  const allC=[...new Set([...pA.map(c=>c.cliente),...Object.keys(mapB)])];
-  const rows=allC.map(cli=>{
-    const a=pA.find(c=>c.cliente===cli)||{frete:0,lucro:0,minutas:0,classe:'—'};
-    const b=mapB[cli]||{frete:0,lucro:0,minutas:0,classe:'—'};
-    return{cli,a,b,delta:b.lucro-a.lucro};
-  }).sort((x,y)=>y.b.frete-x.b.frete);
-  const bg={A:'#27AE60',B:'#F39C12',C:'#E74C3C','—':'#999'};
-  document.getElementById('abc-tbody').innerHTML=rows.map(r=>`<tr>
-    <td><span style="background:${bg[r.b.classe]};color:#fff;padding:2px 8px;border-radius:12px;font-weight:700;">${r.b.classe}</span></td>
-    <td>${r.cli}</td>
-    <td class="text-right">${r.a.minutas}</td><td class="text-right">${r.b.minutas}</td>
-    <td class="text-right">${fmtBRL(r.a.lucro)}</td><td class="text-right">${fmtBRL(r.b.lucro)}</td>
-    <td class="text-right" style="color:${r.delta>=0?'#27AE60':'#E74C3C'}">${r.delta>=0?'+':''}${fmtBRL(r.delta)}</td>
-    <td style="font-size:1.1rem;color:${r.delta>=0?'#27AE60':'#E74C3C'}">${r.delta>0?'▲':r.delta<0?'▼':'—'}</td>
-  </tr>`).join('')||'<tr><td colspan="8" style="text-align:center;padding:24px;color:#999">Sem dados</td></tr>';
-}
+
 // ─── DOWNLOAD EXCEL ────────────────────────────────────────────────────────
 function downloadNegExcel(){
   if(!window.XLSX){alert('Aguarde o carregamento da biblioteca Excel.');return;}
