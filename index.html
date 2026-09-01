@@ -375,17 +375,6 @@ small{font-size:.76rem;color:var(--text2)}
 </nav>
 
 <!-- ═══ MAIN ════════════════════════════════════════════════════════════════ -->
-<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem;">
-  <span style="font-weight:600;color:var(--text-muted)">Filtrar Período:</span>
-  <input type="date" id="date-from" onchange="applyDateFilter()"
-    style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-  <span style="color:var(--text-muted)">até</span>
-  <input type="date" id="date-to" onchange="applyDateFilter()"
-    style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-  <span id="date-filter-info" style="color:var(--accent);font-weight:600;"></span>
-  <button onclick="resetDateFilter()"
-    style="border:1px solid var(--border);border-radius:6px;padding:4px 12px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.82rem;">Limpar</button>
-</div>
 <div id="periodo-filter-bar" style="background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem;">
   <span style="font-weight:600;color:var(--text-muted)">Filtrar Período:</span>
   <input type="date" id="date-from" onchange="applyDateFilter()" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
@@ -1023,29 +1012,6 @@ function _recalcFromMinutas(allMinutas) {
     if(_tid==='negativas')renderNeg();
     if(_tid==='sem-custo')renderSemCusto();
   }
-}
-
-function applyDateFilter() {
-  const from=_isoToDate(document.getElementById('date-from').value);
-  const to=_isoToDate(document.getElementById('date-to').value);
-  const info=document.getElementById('date-filter-info');
-  if(!from&&!to){resetDateFilter();return;}
-  function filter(rows){return rows.filter(r=>{const d=_brDateToDate(r.data);if(!d)return true;if(from&&d<from)return false;if(to&&d>to)return false;return true;});}
-  DATA.minutas=filter(_ORIG.minutas); DATA.minutas_neg=filter(_ORIG.minutas_neg); DATA.minutas_sem_custo=filter(_ORIG.minutas_sem_custo);
-  info.textContent=DATA.minutas.length.toLocaleString('pt-BR')+' minutas no período';
-  _recalcFromMinutas(DATA.minutas);
-  document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
-  document.getElementById('sc-count-badge').textContent=DATA.minutas_sem_custo.length;
-  // _recalcFromMinutas já renderiza a aba ativa — nada mais necessário aqui.
-}
-
-function resetDateFilter() {
-  document.getElementById('date-from').value=''; document.getElementById('date-to').value='';
-  document.getElementById('date-filter-info').textContent='';
-  DATA.minutas=[..._ORIG.minutas]; DATA.minutas_neg=[..._ORIG.minutas_neg]; DATA.minutas_sem_custo=[..._ORIG.minutas_sem_custo];
-  _recalcFromMinutas(DATA.minutas);
-  document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
-  document.getElementById('sc-count-badge').textContent=DATA.minutas_sem_custo.length;
 }
 
 function initABCDefaults() {
