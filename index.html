@@ -371,7 +371,7 @@ small{font-size:.76rem;color:var(--text2)}
 </nav>
 
 <!-- ═══ MAIN ════════════════════════════════════════════════════════════════ -->
-<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem;">
+<div id="periodo-filter-bar" style="background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem;">
   <span style="font-weight:600;color:var(--text-muted)">Filtrar Período:</span>
   <input type="date" id="date-from" onchange="applyDateFilter()"
     style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
@@ -381,14 +381,6 @@ small{font-size:.76rem;color:var(--text2)}
   <span id="date-filter-info" style="color:var(--accent);font-weight:600;"></span>
   <button onclick="resetDateFilter()"
     style="border:1px solid var(--border);border-radius:6px;padding:4px 12px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.82rem;">Limpar</button>
-</div>
-<div id="periodo-filter-bar" style="background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem;">
-  <span style="font-weight:600;color:var(--text-muted)">Filtrar Período:</span>
-  <input type="date" id="date-from" onchange="applyDateFilter()" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-  <span style="color:var(--text-muted)">até</span>
-  <input type="date" id="date-to" onchange="applyDateFilter()" style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-  <span id="date-filter-info" style="color:var(--accent);font-weight:600;"></span>
-  <button onclick="resetDateFilter()" style="border:1px solid var(--border);border-radius:6px;padding:4px 12px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.82rem;">Limpar</button>
 </div>
 <main class="main">
 
