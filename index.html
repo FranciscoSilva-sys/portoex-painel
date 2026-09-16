@@ -687,11 +687,31 @@ small{font-size:.76rem;color:var(--text2)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Custos Abertos
         </button>
-        <button class="btn-reset" onclick="downloadNegExcel()" style="background:var(--accent);color:#fff;border-color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Minutas Neg.</button>
+        
       </div>
       <div class="result-count" id="neg-count"></div>
     </div>
-    <div id="neg-cards-container" style="padding:0 16px 16px"></div>
+    <div class="table-wrap" style="padding:0 16px 16px;overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:#1F3864;color:#fff;font-weight:700">
+            <th style="padding:6px 8px;text-align:left">Sistema</th>
+            <th style="padding:6px 8px;text-align:left">Minuta</th>
+            <th style="padding:6px 8px;text-align:left">Data</th>
+            <th style="padding:6px 8px;text-align:left">Cliente</th>
+            <th style="padding:6px 8px;text-align:left">Serviço</th>
+            <th style="padding:6px 8px;text-align:left">Destino</th>
+            <th style="padding:6px 8px;text-align:center">UF</th>
+            <th style="padding:6px 8px;text-align:right">Frete (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Custo Total (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Resultado (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Lucro Líq. (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Margem (%)</th>
+          </tr>
+        </thead>
+        <tbody id="neg-tbody"></tbody>
+      </table>
+    </div>
     <div class="pagination" id="neg-pagination"></div>
   </div>
 </div>
@@ -747,7 +767,31 @@ small{font-size:.76rem;color:var(--text2)}
       </div>
       <div class="result-count" id="sc-count"></div>
     </div>
-    <div id="sc-cards-container" style="padding:0 16px 8px"></div>
+    <div class="table-wrap" style="padding:0 16px 8px;overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:#1F3864;color:#fff;font-weight:700">
+            <th style="padding:6px 8px;text-align:left">Sistema</th>
+            <th style="padding:6px 8px;text-align:left">Minuta</th>
+            <th style="padding:6px 8px;text-align:left">Data</th>
+            <th style="padding:6px 8px;text-align:left">Cliente</th>
+            <th style="padding:6px 8px;text-align:left">Serviço</th>
+            <th style="padding:6px 8px;text-align:left">Destino</th>
+            <th style="padding:6px 8px;text-align:center">UF</th>
+            <th style="padding:6px 8px;text-align:right">Frete (R$)</th>
+            <th style="padding:6px 8px;text-align:left">Resp. Coleta</th>
+            <th style="padding:6px 8px;text-align:right">Custo Col.</th>
+            <th style="padding:6px 8px;text-align:left">Resp. Entrega</th>
+            <th style="padding:6px 8px;text-align:right">Custo Entr.</th>
+            <th style="padding:6px 8px;text-align:left">Resp. Transf.</th>
+            <th style="padding:6px 8px;text-align:right">Custo Transf.</th>
+            <th style="padding:6px 8px;text-align:right">Lucro Líq. (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Margem (%)</th>
+          </tr>
+        </thead>
+        <tbody id="sc-tbody"></tbody>
+      </table>
+    </div>
     <div class="pagination" id="sc-pagination"></div>
   </div>
 </div>
@@ -1309,142 +1353,7 @@ function drawClientes() {
   pag.innerHTML = btns;
 }
 
-// ─── MINUTAS NEGATIVAS TAB ──────────────────────────────────────────────────
-let negPage = 1;
-const NEG_PAGE_SIZE = 50;
-
-function resetNegFilters() {
-  document.getElementById('neg-search').value = '';
-  document.getElementById('neg-uf').value = '';
-  document.getElementById('neg-servico').value = '';
-  document.getElementById('neg-sistema').value = '';
-  document.getElementById('neg-sort').value = 'lucro-asc';
-  renderNeg();
-}
-
-function renderNeg() {
-  negPage = 1;
-  drawNeg();
-}
-
-function drawNeg() {
-  const search = document.getElementById('neg-search').value.toLowerCase();
-  const uf = document.getElementById('neg-uf').value;
-  const servico = document.getElementById('neg-servico').value;
-  const sistema = document.getElementById('neg-sistema').value;
-  const sortVal = document.getElementById('neg-sort').value;
-  
-  let filtered = DATA.minutas_neg.filter(m => {
-    if (search && !m.cliente.toLowerCase().includes(search)) return false;
-    if (uf && m.uf !== uf) return false;
-    if (servico && m.servico !== servico) return false;
-    if (sistema && m.sistema !== sistema) return false;
-    return true;
-  });
-  
-  // Sort
-  const sortMap = {
-    'lucro-asc': (a,b) => a.lucro - b.lucro,
-    'margem-asc': (a,b) => a.margem - b.margem,
-    'frete-desc': (a,b) => b.frete - a.frete,
-    'minuta-asc': (a,b) => parseInt(a.minuta)-parseInt(b.minuta),
-    'data-asc': (a,b) => a.data.localeCompare(b.data),
-  };
-  filtered.sort(sortMap[sortVal] || sortMap['lucro-asc']);
-  
-  const total = filtered.length;
-  const pages = Math.ceil(total / NEG_PAGE_SIZE);
-  negPage = Math.min(negPage, pages || 1);
-  const slice = filtered.slice((negPage-1)*NEG_PAGE_SIZE, negPage*NEG_PAGE_SIZE);
-  
-  document.getElementById('neg-count').textContent = `${total.toLocaleString('pt-BR')} minutas com prejuízo encontradas`;
-
-  const NAVY   = '#1F3864';
-  const SALMON = '#FCE4D6';
-  const BLUE   = '#2E75B6';
-  const YELLOW = '#FFF2CC';
-
-  function cardRow(bg, cols, bold) {
-    const isNavy = bg.includes('#1F3864') || bg.includes('1F3864');
-    const textColor = isNavy ? '#fff' : '#1a1a1a';
-    const cellStyle = `style="padding:4px 8px;font-size:12px;border:1px solid rgba(0,0,0,0.08);${bold?'font-weight:700;':''}color:${textColor}"`;
-    return `<tr style="background:${bg}">${cols.map(c=>`<td ${cellStyle}>${c??''}</td>`).join('')}</tr>`;
-  }
-
-  const cards = slice.map(m => {
-    const custo = m.custo || 0;
-    const outros = custo - (m.custoColeta||0) - (m.custoEntrega||0) - (m.custoTransf||0);
-    const outrosVal = outros > 0.01 ? outros : 0;
-
-    const headerHtml = `
-      <div style="background:${NAVY};color:#fff;padding:6px 10px;font-size:12px;font-weight:700;border-radius:6px 6px 0 0;letter-spacing:0.3px">
-        MINUTA ${m.minuta} &nbsp;|&nbsp; ${m.cliente} &nbsp;|&nbsp; ${m.servico} &nbsp;|&nbsp; ${m.destino} &nbsp;|&nbsp; <span style="opacity:.75;font-weight:400">${m.data} · ${m.sistema}</span>
-      </div>`;
-
-    const summaryHtml = `
-      <div style="background:${SALMON};padding:5px 10px;font-size:12px;font-weight:600;color:#333;display:flex;gap:20px;flex-wrap:wrap">
-        <span>Frete: <b>R$ ${fmtBRL(m.frete)}</b></span>
-        <span>Custo Total: <b>R$ ${fmtBRL(custo)}</b></span>
-        <span>Resultado: <b>R$ ${fmtBRL(m.resultado||0)}</b></span>
-        <span>Comissão: <b>R$ ${fmtBRL(m.comis||0)}</b></span>
-        <span>Lucro Líq.: <b style="color:${m.lucro<0?'#c0392b':'#27ae60'}">R$ ${fmtBRL(m.lucro)}</b></span>
-        <span>Margem: <b style="color:${m.margem<0?'#c0392b':'#27ae60'}">${m.margem.toFixed(1)}%</b></span>
-      </div>`;
-
-    const tableHtml = `
-      <table style="width:100%;border-collapse:collapse;font-size:12px">
-        <tr style="background:${BLUE};color:#fff;font-weight:700">
-          ${['TIPO DE CUSTO','RESPONSÁVEL / EMPRESA','REFERÊNCIA / DESCRIÇÃO','VALOR (R$)'].map(h=>`<th style="padding:4px 8px;text-align:left;border:1px solid rgba(255,255,255,0.2)">${h}</th>`).join('')}
-        </tr>
-        ${cardRow('#ffffff',     ['COLETA',  m.respColeta||'—',  '—', m.custoColeta>0?fmtBRL(m.custoColeta):'-'], false)}
-        ${cardRow(SALMON,        ['ENTREGA', m.respEntrega||'—', '—', m.custoEntrega>0?fmtBRL(m.custoEntrega):'-'], false)}
-        ${cardRow('#ffffff',     ['TRANSF.', m.respTransf||'—',  '—', m.custoTransf>0?fmtBRL(m.custoTransf):'-'], false)}
-        ${outrosVal>0 ? cardRow(YELLOW, ['OUTROS', '—', 'Custos adicionais', fmtBRL(outrosVal)], false) : ''}
-        ${cardRow(NAVY+';color:#fff', ['TOTAL CUSTO', '', '', fmtBRL(custo)], true)}
-        ${cardRow(SALMON, ['LUCRO LÍQ.', '', '', `<b style="color:${m.lucro<0?'#c0392b':'#27ae60'}">${fmtBRL(m.lucro)}</b>`], true)}
-      </table>`;
-
-    return `<div style="margin-bottom:14px;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12)">
-      ${headerHtml}${summaryHtml}${tableHtml}
-    </div>`;
-  }).join('') || '<div style="padding:20px;text-align:center;color:#999">Nenhuma minuta encontrada</div>';
-
-  document.getElementById('neg-cards-container').innerHTML = cards;
-  
-  // Pagination
-  const pag = document.getElementById('neg-pagination');
-  if (pages <= 1) { pag.innerHTML = ''; return; }
-  let btns = `<span>Pág. ${negPage} de ${pages}</span>`;
-  btns += `<button ${negPage===1?'disabled':''} onclick="negPage--;drawNeg()">‹ Ant.</button>`;
-  const start = Math.max(1, negPage-2), end = Math.min(pages, negPage+2);
-  for (let i=start;i<=end;i++) btns += `<button class="${i===negPage?'active':''}" onclick="negPage=${i};drawNeg()">${i}</button>`;
-  btns += `<button ${negPage===pages?'disabled':''} onclick="negPage++;drawNeg()">Próx. ›</button>`;
-  pag.innerHTML = btns;
-}
-
-// ─── INIT ──────────────────────────────────────────────────────────────────
-initOverviewCharts();
-
 // ─── SEM CUSTO DE TRANSPORTE TAB ────────────────────────────────────────────
-let minutasSemCusto = DATA.minutas_sem_custo || [];
-
-// Populate dynamic filters
-(function(){
-  const ufs = [...new Set(minutasSemCusto.map(m => m.uf).filter(Boolean))].sort();
-  const srvs = [...new Set(minutasSemCusto.map(m => m.servico).filter(Boolean))].sort();
-  const ufSel = document.getElementById('sc-uf');
-  const srvSel = document.getElementById('sc-servico');
-  ufs.forEach(u => { const o=document.createElement('option');o.value=o.textContent=u;ufSel.appendChild(o); });
-  srvs.forEach(s => { const o=document.createElement('option');o.value=o.textContent=s;srvSel.appendChild(o); });
-
-  // Badge
-  if (minutasSemCusto.length > 0) {
-    const badge = document.getElementById('sc-count-badge');
-    badge.textContent = minutasSemCusto.length;
-    badge.style.display = '';
-  }
-})();
-
 let scPage = 1;
 const SC_PAGE_SIZE = 50;
 
@@ -1457,7 +1366,10 @@ function resetScFilters() {
   renderSemCusto();
 }
 
-function renderSemCusto() { scPage = 1; drawSemCusto(); }
+function renderSemCusto() {
+  scPage = 1;
+  drawSemCusto();
+}
 
 function drawSemCusto() {
   const search = document.getElementById('sc-search').value.toLowerCase();
@@ -1492,36 +1404,34 @@ function drawSemCusto() {
       ? 'Nenhuma minuta sem custo encontrada para os filtros selecionados'
       : total.toLocaleString('pt-BR') + ' minuta(s) sem custo de transporte';
 
-  const scCards = slice.map(m => {
-    const headerHtml = `
-      <div style="background:${NAVY};color:#fff;padding:6px 10px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
-        <span>MINUTA ${m.minuta} | ${m.cliente} | ${m.servico} | ${m.destino}</span>
-        <span style="opacity:.8;font-weight:400">${m.data} · ${m.sistema}</span>
-      </div>`;
-    const summaryHtml = `
-      <div style="background:#f0f4fa;padding:5px 10px;font-size:12px;display:flex;flex-wrap:wrap;gap:12px;color:#333">
-        <span>Frete: <b>${fmtBRL(m.frete)}</b></span>
-        <span>Custo Total: <b>R$ 0,00</b></span>
-        <span>Resultado: <b style="color:${m.lucro<0?'#c0392b':'#27ae60'}">${fmtBRL(m.resultado||m.lucro)}</b></span>
-        <span>Lucro Líq.: <b style="color:${m.lucro<0?'#c0392b':'#27ae60'}">${fmtBRL(m.lucro)}</b></span>
-        <span>Margem: <b style="color:${m.margem<0?'#c0392b':'#27ae60'}">${m.margem.toFixed(1)}%</b></span>
-      </div>`;
-    const tableHtml = `
-      <table style="width:100%;border-collapse:collapse;font-size:12px">
-        <tr style="background:${BLUE};color:#fff;font-weight:700">
-          ${['TIPO DE CUSTO','RESPONSÁVEL / EMPRESA','REFERÊNCIA / DESCRIÇÃO','VALOR (R$)'].map(h=>`<th style="padding:4px 8px;text-align:left;border:1px solid rgba(255,255,255,0.2)">${h}</th>`).join('')}
-        </tr>
-        ${cardRow('#ffffff',     ['COLETA',  m.respColeta||'—',  '—', '<span style="color:#c0392b;font-weight:700">SEM CUSTO</span>'], false)}
-        ${cardRow(SALMON,        ['ENTREGA', m.respEntrega||'—', '—', '<span style="color:#c0392b;font-weight:700">SEM CUSTO</span>'], false)}
-        ${cardRow('#ffffff',     ['TRANSF.', m.respTransf||'—',  '—', '<span style="color:#c0392b;font-weight:700">SEM CUSTO</span>'], false)}
-        ${cardRow(NAVY+';color:#fff', ['TOTAL CUSTO', '', '', 'R$ 0,00'], true)}
-        ${cardRow(SALMON, ['LUCRO LÍQ.', '', '', `<b style="color:${m.lucro<0?'#c0392b':'#27ae60'}">${fmtBRL(m.lucro)}</b>`], true)}
-      </table>`;
-    return `<div style="margin-bottom:14px;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12)">
-      ${headerHtml}${summaryHtml}${tableHtml}
-    </div>`;
-  }).join('') || '<div style="padding:20px;text-align:center;color:#999">Nenhuma minuta encontrada</div>';
-  document.getElementById('sc-cards-container').innerHTML = scCards;
+  const rows = slice.map((m, i) => {
+    const bg = i % 2 === 0 ? '#ffffff' : '#f7f9fc';
+    const lucroColor = m.lucro < 0 ? '#c0392b' : '#27ae60';
+    const margemColor = m.margem < 0 ? '#c0392b' : '#27ae60';
+    const tdS = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;color:#1a1a1a"`;
+    const tdR = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;color:#1a1a1a"`;
+    const tdC = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:center;color:#1a1a1a"`;
+    return `<tr style="background:${bg}">
+      <td ${tdS}>${m.sistema||''}</td>
+      <td ${tdS}>${m.minuta||''}</td>
+      <td ${tdS}>${m.data||''}</td>
+      <td ${tdS} title="${m.cliente||''}">${(m.cliente||'').substring(0,30)}</td>
+      <td ${tdS}>${m.servico||''}</td>
+      <td ${tdS}>${m.destino||''}</td>
+      <td ${tdC}>${m.uf||''}</td>
+      <td ${tdR}>${fmtBRL(m.frete)}</td>
+      <td ${tdS}>${m.respColeta||'—'}</td>
+      <td ${tdR}>${m.custoColeta > 0 ? fmtBRL(m.custoColeta) : '—'}</td>
+      <td ${tdS}>${m.respEntrega||'—'}</td>
+      <td ${tdR}>${m.custoEntrega > 0 ? fmtBRL(m.custoEntrega) : '—'}</td>
+      <td ${tdS}>${m.respTransf||'—'}</td>
+      <td ${tdR}>${m.custoTransf > 0 ? fmtBRL(m.custoTransf) : '—'}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;font-weight:700;color:${lucroColor}">${fmtBRL(m.lucro)}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;font-weight:700;color:${margemColor}">${m.margem.toFixed(1)}%</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="16" style="padding:20px;text-align:center;color:#999">Nenhuma minuta encontrada</td></tr>`;
+
+  document.getElementById('sc-tbody').innerHTML = rows;
 
   // Pagination
   const pag = document.getElementById('sc-pagination');
@@ -1534,7 +1444,91 @@ function drawSemCusto() {
   pag.innerHTML = btns;
 }
 
+// ─── MINUTAS NEGATIVAS TAB ──────────────────────────────────────────────────
+let negPage = 1;
+const NEG_PAGE_SIZE = 50;
 
+function resetNegFilters() {
+  document.getElementById('neg-search').value = '';
+  document.getElementById('neg-uf').value = '';
+  document.getElementById('neg-servico').value = '';
+  document.getElementById('neg-sistema').value = '';
+  document.getElementById('neg-sort').value = 'lucro-asc';
+  renderNeg();
+}
+
+function renderNeg() {
+  negPage = 1;
+  drawNeg();
+}
+
+function drawNeg() {
+  const search = document.getElementById('neg-search').value.toLowerCase();
+  const uf = document.getElementById('neg-uf').value;
+  const servico = document.getElementById('neg-servico').value;
+  const sistema = document.getElementById('neg-sistema').value;
+  const sortVal = document.getElementById('neg-sort').value;
+
+  let filtered = DATA.minutas_neg.filter(m => {
+    if (search && !m.cliente.toLowerCase().includes(search)) return false;
+    if (uf && m.uf !== uf) return false;
+    if (servico && m.servico !== servico) return false;
+    if (sistema && m.sistema !== sistema) return false;
+    return true;
+  });
+
+  const sortMap = {
+    'lucro-asc':   (a,b) => a.lucro - b.lucro,
+    'margem-asc':  (a,b) => a.margem - b.margem,
+    'frete-desc':  (a,b) => b.frete - a.frete,
+    'minuta-asc':  (a,b) => parseInt(a.minuta)-parseInt(b.minuta),
+    'data-asc':    (a,b) => a.data.localeCompare(b.data),
+  };
+  filtered.sort(sortMap[sortVal] || sortMap['lucro-asc']);
+
+  const total = filtered.length;
+  const pages = Math.ceil(total / NEG_PAGE_SIZE);
+  negPage = Math.min(negPage, pages || 1);
+  const slice = filtered.slice((negPage-1)*NEG_PAGE_SIZE, negPage*NEG_PAGE_SIZE);
+
+  document.getElementById('neg-count').textContent = `${total.toLocaleString('pt-BR')} minutas com prejuízo encontradas`;
+
+  const rows = slice.map((m, i) => {
+    const bg = i % 2 === 0 ? '#ffffff' : '#fff5f5';
+    const custo = m.custo || 0;
+    const lucroColor = m.lucro < 0 ? '#c0392b' : '#27ae60';
+    const margemColor = m.margem < 0 ? '#c0392b' : '#27ae60';
+    const tdS = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;color:#1a1a1a"`;
+    const tdR = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;color:#1a1a1a"`;
+    const tdC = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:center;color:#1a1a1a"`;
+    return `<tr style="background:${bg}">
+      <td ${tdS}>${m.sistema||''}</td>
+      <td ${tdS}>${m.minuta||''}</td>
+      <td ${tdS}>${m.data||''}</td>
+      <td ${tdS} title="${m.cliente||''}">${(m.cliente||'').substring(0,30)}</td>
+      <td ${tdS}>${m.servico||''}</td>
+      <td ${tdS}>${m.destino||''}</td>
+      <td ${tdC}>${m.uf||''}</td>
+      <td ${tdR}>${fmtBRL(m.frete)}</td>
+      <td ${tdR}>${fmtBRL(custo)}</td>
+      <td ${tdR}>${fmtBRL(m.resultado||0)}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;font-weight:700;color:${lucroColor}">${fmtBRL(m.lucro)}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;font-weight:700;color:${margemColor}">${m.margem.toFixed(1)}%</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="12" style="padding:20px;text-align:center;color:#999">Nenhuma minuta encontrada</td></tr>`;
+
+  document.getElementById('neg-tbody').innerHTML = rows;
+
+  // Pagination
+  const pag = document.getElementById('neg-pagination');
+  if (pages <= 1) { pag.innerHTML = ''; return; }
+  let btns = `<span>Pág. ${negPage} de ${pages}</span>`;
+  btns += `<button ${negPage===1?'disabled':''} onclick="negPage--;drawNeg()">‹ Ant.</button>`;
+  const start = Math.max(1, negPage-2), end = Math.min(pages, negPage+2);
+  for (let i=start;i<=end;i++) btns += `<button class="${i===negPage?'active':''}" onclick="negPage=${i};drawNeg()">${i}</button>`;
+  btns += `<button ${negPage===pages?'disabled':''} onclick="negPage++;drawNeg()">Próx. ›</button>`;
+  pag.innerHTML = btns;
+}
 function downloadNegativasExcel() {
   const rows = DATA.minutas_neg || [];
   if (!rows.length) { alert('Nenhuma minuta negativa para exportar.'); return; }
