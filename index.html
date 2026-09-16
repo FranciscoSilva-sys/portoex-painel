@@ -747,25 +747,7 @@ small{font-size:.76rem;color:var(--text2)}
       </div>
       <div class="result-count" id="sc-count"></div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th>Minuta</th>
-          <th>Data</th>
-          <th>Sistema</th>
-          <th>Cliente</th>
-          <th>Serviço</th>
-          <th>Destino</th>
-          <th class="text-right">Frete (R$)</th>
-          <th>Resp. Coleta</th>
-          <th>Resp. Entrega</th>
-          <th>Resp. Transf.</th>
-          <th class="text-right">Lucro (R$)</th>
-          <th class="text-right">Margem</th>
-        </tr></thead>
-        <tbody id="sc-tbody"></tbody>
-      </table>
-    </div>
+    <div id="sc-cards-container" style="padding:0 16px 8px"></div>
     <div class="pagination" id="sc-pagination"></div>
   </div>
 </div>
@@ -1383,7 +1365,9 @@ function drawNeg() {
   const YELLOW = '#FFF2CC';
 
   function cardRow(bg, cols, bold) {
-    const cellStyle = `style="padding:4px 8px;font-size:12px;border:1px solid rgba(0,0,0,0.08);${bold?'font-weight:700;':''}"`;
+    const isNavy = bg.includes('#1F3864') || bg.includes('1F3864');
+    const textColor = isNavy ? '#fff' : '#1a1a1a';
+    const cellStyle = `style="padding:4px 8px;font-size:12px;border:1px solid rgba(0,0,0,0.08);${bold?'font-weight:700;':''}color:${textColor}"`;
     return `<tr style="background:${bg}">${cols.map(c=>`<td ${cellStyle}>${c??''}</td>`).join('')}</tr>`;
   }
 
@@ -1508,21 +1492,36 @@ function drawSemCusto() {
       ? 'Nenhuma minuta sem custo encontrada para os filtros selecionados'
       : total.toLocaleString('pt-BR') + ' minuta(s) sem custo de transporte';
 
-  document.getElementById('sc-tbody').innerHTML = slice.map(m => `
-    <tr>
-      <td style="white-space:nowrap"><strong>${m.minuta}</strong></td>
-      <td style="white-space:nowrap">${m.data}</td>
-      <td><span class="badge badge-sys">${m.sistema}</span></td>
-      <td>${m.cliente}</td>
-      <td><small>${m.servico}</small></td>
-      <td><small>${m.destino}</small></td>
-      <td class="text-right">${m.frete > 0 ? fmtBRL(m.frete) : '<span style="color:var(--text3)">—</span>'}</td>
-      <td><small style="color:var(--text2)">${m.respColeta||'—'}</small></td>
-      <td><small style="color:var(--text2)">${m.respEntrega||'—'}</small></td>
-      <td><small style="color:var(--text2)">${m.respTransf||'—'}</small></td>
-      <td class="text-right"><span class="val-${m.lucro>=0?'pos':'neg'}">${fmtBRL(m.lucro)}</span></td>
-      <td class="text-right">${margBadge(m.margem)}</td>
-    </tr>`).join('') || '<tr><td colspan="12" class="text-center" style="padding:20px;color:var(--text3)">Nenhuma minuta encontrada</td></tr>';
+  const scCards = slice.map(m => {
+    const headerHtml = `
+      <div style="background:${NAVY};color:#fff;padding:6px 10px;font-size:12px;font-weight:700;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px">
+        <span>MINUTA ${m.minuta} | ${m.cliente} | ${m.servico} | ${m.destino}</span>
+        <span style="opacity:.8;font-weight:400">${m.data} · ${m.sistema}</span>
+      </div>`;
+    const summaryHtml = `
+      <div style="background:#f0f4fa;padding:5px 10px;font-size:12px;display:flex;flex-wrap:wrap;gap:12px;color:#333">
+        <span>Frete: <b>${fmtBRL(m.frete)}</b></span>
+        <span>Custo Total: <b>R$ 0,00</b></span>
+        <span>Resultado: <b style="color:${m.lucro<0?'#c0392b':'#27ae60'}">${fmtBRL(m.resultado||m.lucro)}</b></span>
+        <span>Lucro Líq.: <b style="color:${m.lucro<0?'#c0392b':'#27ae60'}">${fmtBRL(m.lucro)}</b></span>
+        <span>Margem: <b style="color:${m.margem<0?'#c0392b':'#27ae60'}">${m.margem.toFixed(1)}%</b></span>
+      </div>`;
+    const tableHtml = `
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <tr style="background:${BLUE};color:#fff;font-weight:700">
+          ${['TIPO DE CUSTO','RESPONSÁVEL / EMPRESA','REFERÊNCIA / DESCRIÇÃO','VALOR (R$)'].map(h=>`<th style="padding:4px 8px;text-align:left;border:1px solid rgba(255,255,255,0.2)">${h}</th>`).join('')}
+        </tr>
+        ${cardRow('#ffffff',     ['COLETA',  m.respColeta||'—',  '—', '<span style="color:#c0392b;font-weight:700">SEM CUSTO</span>'], false)}
+        ${cardRow(SALMON,        ['ENTREGA', m.respEntrega||'—', '—', '<span style="color:#c0392b;font-weight:700">SEM CUSTO</span>'], false)}
+        ${cardRow('#ffffff',     ['TRANSF.', m.respTransf||'—',  '—', '<span style="color:#c0392b;font-weight:700">SEM CUSTO</span>'], false)}
+        ${cardRow(NAVY+';color:#fff', ['TOTAL CUSTO', '', '', 'R$ 0,00'], true)}
+        ${cardRow(SALMON, ['LUCRO LÍQ.', '', '', `<b style="color:${m.lucro<0?'#c0392b':'#27ae60'}">${fmtBRL(m.lucro)}</b>`], true)}
+      </table>`;
+    return `<div style="margin-bottom:14px;border-radius:6px;overflow:hidden;box-shadow:0 1px 4px rgba(0,0,0,.12)">
+      ${headerHtml}${summaryHtml}${tableHtml}
+    </div>`;
+  }).join('') || '<div style="padding:20px;text-align:center;color:#999">Nenhuma minuta encontrada</div>';
+  document.getElementById('sc-cards-container').innerHTML = scCards;
 
   // Pagination
   const pag = document.getElementById('sc-pagination');
