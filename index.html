@@ -1305,6 +1305,7 @@ function drawClientes() {
   };
 
   let filtered = DATA.clientes.filter(c => {
+    if (c.minutas < 5) return false;
     if (search && !c.cliente.toLowerCase().includes(search)) return false;
     if (uf && !c.ufs.includes(uf)) return false;
     if (servico && !c.servicos.includes(servico)) return false;
