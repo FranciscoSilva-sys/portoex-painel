@@ -1101,6 +1101,17 @@ function clrFromMargem(m) {
   return '#27AE60';
 }
 
+// Cores fixas por serviço: ECONOMICO=verde, EXPRESSO=vermelho, PERSONALIZADO=laranja
+function clrFromServico(s) {
+  const u = (s||'').toUpperCase();
+  if (u.includes('ECONOM'))   return '#27AE60';  // verde
+  if (u.includes('EXPRESSO')) return '#E74C3C';  // vermelho
+  if (u.includes('PERSONAL')) return '#F39C12';  // laranja
+  if (u.includes('REPASSE'))  return '#8E44AD';  // roxo
+  if (u.includes('LOGIST'))   return '#2980B9';  // azul
+  return '#95A5A6';  // cinza para outros
+}
+
 // ─── OVERVIEW CHARTS ───────────────────────────────────────────────────────
 function initOverviewCharts() {
   // Donut
@@ -1121,7 +1132,7 @@ function initOverviewCharts() {
 
   // Margem por Serviço
   const labels_s = DATA.por_servico.map(s => s.servico.replace('_', ' '));
-  const colors_s = DATA.por_servico.map(s => clrFromMargem(s.margem));
+  const colors_s = DATA.por_servico.map(s => clrFromServico(s.servico));
   charts['servico-visao'] = new Chart(document.getElementById('chart-servico-visao'), {
     type: 'bar',
     data: { labels: labels_s, datasets: [{ label: 'Margem %', data: DATA.por_servico.map(s => s.margem), backgroundColor: colors_s, borderWidth:0 }] },
@@ -1138,7 +1149,7 @@ function initOverviewCharts() {
   // Volume por Serviço
   charts['servico-vol'] = new Chart(document.getElementById('chart-servico-vol'), {
     type: 'bar',
-    data: { labels: labels_s, datasets: [{ label: 'Minutas', data: DATA.por_servico.map(s => s.minutas), backgroundColor: '#4472C4', borderWidth:0 }] },
+    data: { labels: labels_s, datasets: [{ label: 'Minutas', data: DATA.por_servico.map(s => s.minutas), backgroundColor: DATA.por_servico.map(s => clrFromServico(s.servico)), borderWidth:0 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toLocaleString('pt-BR')} minutas` } } },
@@ -1179,7 +1190,7 @@ function initServicoFull() {
     data: {
       labels: labels,
       datasets: [
-        { label: 'Margem %', data: servicoData.map(s => s.margem), backgroundColor: servicoData.map(s => clrFromMargem(s.margem)), borderWidth:0, yAxisID:'y' },
+        { label: 'Margem %', data: servicoData.map(s => s.margem), backgroundColor: servicoData.map(s => clrFromServico(s.servico)), borderWidth:0, yAxisID:'y' },
       ]
     },
     options: {
