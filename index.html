@@ -215,6 +215,7 @@ tbody td{
 }
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--accent-bg)}
+#neg-tbody tr:hover td{background:#ffe0e0 !important}
 tbody tr:nth-child(even) td{background:rgba(0,0,0,.013)}
 [data-theme="dark"] tbody tr:nth-child(even) td{background:rgba(255,255,255,.018)}
 tbody tr:nth-child(even):hover td{background:var(--accent-bg)}
@@ -361,7 +362,7 @@ small{font-size:.76rem;color:var(--text2)}
   <button class="tab-btn" onclick="showTab('sem-custo')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
     Sem Custo Transp.
-    <span class="tab-badge" id="sc-count-badge" style="display:none"></span>
+    <span class="tab-badge" id="sc-count-badge"></span>
   </button>
 
   <button class="tab-btn" onclick="showTab('curva-abc')">
@@ -763,7 +764,7 @@ small{font-size:.76rem;color:var(--text2)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Excel
         </button>
-        <button class="btn-reset" onclick="downloadSemCustoExcel()" style="background:var(--accent);color:#fff;border-color:var(--accent)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Excel</button>
+        
       </div>
       <div class="result-count" id="sc-count"></div>
     </div>
@@ -1106,6 +1107,7 @@ function clrFromServico(s) {
   const u = (s||'').toUpperCase();
   if (u.includes('ECONOM'))   return '#27AE60';  // verde
   if (u.includes('EXPRESSO')) return '#E74C3C';  // vermelho
+  if (u.includes('PERSONALIZADO_L')) return '#2E75B6';  // azul (PERSONALIZADO_L)
   if (u.includes('PERSONAL')) return '#F39C12';  // laranja
   if (u.includes('REPASSE'))  return '#8E44AD';  // roxo
   if (u.includes('LOGIST'))   return '#2980B9';  // azul
@@ -1316,7 +1318,6 @@ function drawClientes() {
   };
 
   let filtered = DATA.clientes.filter(c => {
-    if (c.minutas < 5) return false;
     if (search && !c.cliente.toLowerCase().includes(search)) return false;
     if (uf && !c.ufs.includes(uf)) return false;
     if (servico && !c.servicos.includes(servico)) return false;
