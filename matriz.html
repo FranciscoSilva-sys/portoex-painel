@@ -217,6 +217,9 @@ tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--accent-bg)}
 #neg-tbody tr:hover td{background:#ffe0e0 !important}
 #sc-tbody tr:hover td{background:#e8f4fd !important}
+/* PERSONALIZADO_L — destaque azul */
+tr.pers-l td{background:#D6E4F7 !important}
+tr.pers-l:hover td{background:#b8d0ef !important}
 tbody tr:nth-child(even) td{background:rgba(0,0,0,.013)}
 [data-theme="dark"] tbody tr:nth-child(even) td{background:rgba(255,255,255,.018)}
 tbody tr:nth-child(even):hover td{background:var(--accent-bg)}
@@ -1200,13 +1203,15 @@ function initServicoFull() {
 function renderServicoTable(data) {
   const tbody = document.getElementById('servico-tbody');
   if (!tbody) return;
-  tbody.innerHTML = data.map(s => `
-    <tr>
-      <td><strong>${s.servico}</strong></td>
+  tbody.innerHTML = data.map(s => {
+    const isPL = s.servico === 'PERSONALIZADO_L';
+    return `<tr${isPL ? ' class="pers-l"' : ''}>
+      <td><strong>${s.servico}</strong>${isPL ? ' <span style="font-size:10px;background:#2E75B6;color:#fff;padding:1px 5px;border-radius:3px;vertical-align:middle">★</span>' : ''}</td>
       <td class="text-right">${s.minutas.toLocaleString('pt-BR')}</td>
       <td class="text-right">${s.pct_total ? s.pct_total.toFixed(1)+'%' : '-'}</td>
       <td>${fmtPctBar(s.margem)}</td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 function sortTable(key, col, idx) {
@@ -1408,13 +1413,14 @@ function drawSemCusto() {
       : total.toLocaleString('pt-BR') + ' minuta(s) sem custo de transporte';
 
   const rows = slice.map((m, i) => {
-    const bg = i % 2 === 0 ? '#ffffff' : '#f7f9fc';
+    const isPL = (m.servico||'') === 'PERSONALIZADO_L';
+    const bg = isPL ? '#D6E4F7' : (i % 2 === 0 ? '#ffffff' : '#f7f9fc');
     const lucroColor = m.lucro < 0 ? '#c0392b' : '#27ae60';
     const margemColor = m.margem < 0 ? '#c0392b' : '#27ae60';
     const tdS = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;color:#1a1a1a"`;
     const tdR = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;color:#1a1a1a"`;
     const tdC = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:center;color:#1a1a1a"`;
-    return `<tr style="background:${bg}">
+    return `<tr style="background:${bg}"${isPL ? ' class="pers-l"' : ''}>
       <td ${tdS}>${m.sistema||''}</td>
       <td ${tdS}>${m.minuta||''}</td>
       <td ${tdS}>${m.data||''}</td>
@@ -1497,14 +1503,15 @@ function drawNeg() {
   document.getElementById('neg-count').textContent = `${total.toLocaleString('pt-BR')} minutas com prejuízo encontradas`;
 
   const rows = slice.map((m, i) => {
-    const bg = i % 2 === 0 ? '#ffffff' : '#fff5f5';
+    const isPL = (m.servico||'') === 'PERSONALIZADO_L';
+    const bg = isPL ? '#D6E4F7' : (i % 2 === 0 ? '#ffffff' : '#fff5f5');
     const custo = m.custo || 0;
     const lucroColor = m.lucro < 0 ? '#c0392b' : '#27ae60';
     const margemColor = m.margem < 0 ? '#c0392b' : '#27ae60';
     const tdS = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;color:#1a1a1a"`;
     const tdR = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;color:#1a1a1a"`;
     const tdC = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:center;color:#1a1a1a"`;
-    return `<tr style="background:${bg}">
+    return `<tr style="background:${bg}"${isPL ? ' class="pers-l"' : ''}>
       <td ${tdS}>${m.sistema||''}</td>
       <td ${tdS}>${m.minuta||''}</td>
       <td ${tdS}>${m.data||''}</td>
