@@ -240,8 +240,13 @@ def construir_data(registros_todos, periodo, data_ini, data_fin):
         por_serv[s]['custo']   += r['custo']
         por_serv[s]['lucro']   += r['lucro']
 
+    SVC_ORDER = ['EXPRESSO', 'ECONOMICO', 'PERSONALIZADO', 'PERSONALIZADO_L']
+    def svc_sort_key(item):
+        s = item[0]
+        return SVC_ORDER.index(s) if s in SVC_ORDER else 99
+
     por_servico_list = []
-    for serv, v in sorted(por_serv.items(), key=lambda x: -x[1]['frete']):
+    for serv, v in sorted(por_serv.items(), key=svc_sort_key):
         m = (v['lucro'] / v['frete'] * 100) if v['frete'] else 0.0
         pct = (v['frete'] / total_frete * 100) if total_frete else 0.0
         por_servico_list.append({

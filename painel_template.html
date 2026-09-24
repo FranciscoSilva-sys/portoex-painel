@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="pt-BR" data-theme="light">
+<html lang="pt-BR" data-theme="dark">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -215,6 +215,11 @@ tbody td{
 }
 tbody tr:last-child td{border-bottom:none}
 tbody tr:hover td{background:var(--accent-bg)}
+#neg-tbody tr:hover td{background:#ffe0e0 !important}
+#sc-tbody tr:hover td{background:#e8f4fd !important}
+/* PERSONALIZADO_L — destaque azul */
+tr.pers-l td{background:#D6E4F7 !important}
+tr.pers-l:hover td{background:#b8d0ef !important}
 tbody tr:nth-child(even) td{background:rgba(0,0,0,.013)}
 [data-theme="dark"] tbody tr:nth-child(even) td{background:rgba(255,255,255,.018)}
 tbody tr:nth-child(even):hover td{background:var(--accent-bg)}
@@ -330,10 +335,7 @@ small{font-size:.76rem;color:var(--text2)}
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M1 4v6h6"/><path d="M23 20v-6h-6"/><path d="M20.49 9A9 9 0 0 0 5.64 5.64L1 10m22 4l-4.64 4.36A9 9 0 0 1 3.51 15"/></svg>
       <span>Atualizar</span>
     </button>
-    <button class="h-btn" onclick="toggleDark()" id="dark-btn">
-      <svg id="dark-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      <span id="dark-lbl">Escuro</span>
-    </button>
+    <!-- dark toggle removido — tema fixo escuro -->
   </div>
 </header>
 
@@ -363,7 +365,7 @@ small{font-size:.76rem;color:var(--text2)}
   <button class="tab-btn" onclick="showTab('sem-custo')">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
     Sem Custo Transp.
-    <span class="tab-badge" id="sc-count-badge" style="display:none"></span>
+    <span class="tab-badge" id="sc-count-badge"></span>
   </button>
 
   <button class="tab-btn" onclick="showTab('curva-abc')">
@@ -373,17 +375,6 @@ small{font-size:.76rem;color:var(--text2)}
 </nav>
 
 <!-- ═══ MAIN ════════════════════════════════════════════════════════════════ -->
-<div style="background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px;display:flex;align-items:center;gap:10px;flex-wrap:wrap;font-size:.82rem;">
-  <span style="font-weight:600;color:var(--text-muted)">Filtrar Período:</span>
-  <input type="date" id="date-from" onchange="applyDateFilter()"
-    style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-  <span style="color:var(--text-muted)">até</span>
-  <input type="date" id="date-to" onchange="applyDateFilter()"
-    style="border:1px solid var(--border);border-radius:6px;padding:4px 8px;background:var(--bg);color:var(--text);font-size:.82rem;">
-  <span id="date-filter-info" style="color:var(--accent);font-weight:600;"></span>
-  <button onclick="resetDateFilter()"
-    style="border:1px solid var(--border);border-radius:6px;padding:4px 12px;background:var(--bg);color:var(--text);cursor:pointer;font-size:.82rem;">Limpar</button>
-</div>
 <main class="main">
 
 <!-- ── TAB 1 · VISÃO GERAL ─────────────────────────────────────────────── -->
@@ -683,27 +674,31 @@ small{font-size:.76rem;color:var(--text2)}
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 .49-3.5"/></svg>
           Limpar
         </button>
-        <a href="https://franciscosilva-sys.github.io/portoex-painel/custos_abertos.xlsx" download="CustosAbertos.xlsx" class="btn-reset" style="background:var(--accent);color:#fff;border-color:var(--accent);text-decoration:none;display:inline-flex;align-items:center;gap:6px;">
+        <button class="btn-reset" onclick="downloadCustosAbertos()" style="background:var(--accent);color:#fff;border-color:var(--accent)">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           Custos Abertos
-        </a>
+        </button>
       </div>
       <div class="result-count" id="neg-count"></div>
     </div>
-    <div class="table-wrap">
-      <table>
-        <thead><tr>
-          <th>Minuta</th>
-          <th>Data</th>
-          <th>Sistema</th>
-          <th>Cliente</th>
-          <th>Serviço</th>
-          <th>Destino</th>
-          <th class="text-right">Frete (R$)</th>
-          <th class="text-right">Custo (R$)</th>
-          <th class="text-right">Lucro Líq. (R$)</th>
-          <th class="text-right">Margem</th>
-        </tr></thead>
+    <div class="table-wrap" style="padding:0 16px 16px;overflow-x:auto">
+      <table style="width:100%;border-collapse:collapse;font-size:12px">
+        <thead>
+          <tr style="background:#1F3864;color:#fff;font-weight:700">
+            <th style="padding:6px 8px;text-align:left">Sistema</th>
+            <th style="padding:6px 8px;text-align:left">Minuta</th>
+            <th style="padding:6px 8px;text-align:left">Data</th>
+            <th style="padding:6px 8px;text-align:left">Cliente</th>
+            <th style="padding:6px 8px;text-align:left">Serviço</th>
+            <th style="padding:6px 8px;text-align:left">Destino</th>
+            <th style="padding:6px 8px;text-align:center">UF</th>
+            <th style="padding:6px 8px;text-align:right">Frete (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Custo Total (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Resultado (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Lucro Líq. (R$)</th>
+            <th style="padding:6px 8px;text-align:right">Margem (%)</th>
+          </tr>
+        </thead>
         <tbody id="neg-tbody"></tbody>
       </table>
     </div>
@@ -898,12 +893,16 @@ function _recalcFromMinutas(allMinutas) {
     byS[s].minutas++; byS[s].frete+=(r.frete||0); byS[s].custo+=(r.custo||0); byS[s].resultado+=(r.lucro||0);
   }
   const totF = Object.values(byS).reduce((s,v)=>s+v.frete,0);
+  const SVC_ORDER=['EXPRESSO','ECONOMICO','PERSONALIZADO','PERSONALIZADO_L'];
   DATA.por_servico = Object.values(byS).map(v=>({...v,
     frete:Math.round(v.frete*100)/100, custo:Math.round(v.custo*100)/100,
     resultado:Math.round(v.resultado*100)/100,
     margem:v.frete?Math.round(v.resultado/v.frete*10000)/100:0,
     pct_total:totF?Math.round(v.frete/totF*10000)/100:0,
-  })).sort((a,b)=>b.frete-a.frete);
+  })).sort((a,b)=>{
+    const ia=SVC_ORDER.indexOf(a.servico), ib=SVC_ORDER.indexOf(b.servico);
+    return (ia<0?99:ia)-(ib<0?99:ib);
+  });
   const byUF = {};
   for (const r of principais) {
     const uf = r.uf||r.destino||'N/D';
@@ -977,7 +976,9 @@ function applyDateFilter() {
   _recalcFromMinutas(DATA.minutas);
   document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
   document.getElementById('sc-count-badge').textContent=DATA.minutas_sem_custo.length;
-  // _recalcFromMinutas já renderiza a aba ativa — nada mais necessário aqui.
+  if(typeof renderNeg==='function')renderNeg();
+  if(typeof renderSemCusto==='function')renderSemCusto();
+  // badges e tabelas de neg/sem-custo sempre atualizados com o período filtrado
 }
 
 function resetDateFilter() {
@@ -987,6 +988,8 @@ function resetDateFilter() {
   _recalcFromMinutas(DATA.minutas);
   document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
   document.getElementById('sc-count-badge').textContent=DATA.minutas_sem_custo.length;
+  if(typeof renderNeg==='function')renderNeg();
+  if(typeof renderSemCusto==='function')renderSemCusto();
 }
 
 function initABCDefaults() {
@@ -1085,6 +1088,18 @@ function clrFromMargem(m) {
   return '#27AE60';
 }
 
+// Cores fixas por serviço: ECONOMICO=verde, EXPRESSO=vermelho, PERSONALIZADO=laranja
+function clrFromServico(s) {
+  const u = (s||'').toUpperCase();
+  if (u.includes('ECONOM'))   return '#27AE60';  // verde
+  if (u.includes('EXPRESSO')) return '#E74C3C';  // vermelho
+  if (u.includes('PERSONALIZADO_L')) return '#2E75B6';  // azul (PERSONALIZADO_L)
+  if (u.includes('PERSONAL')) return '#F39C12';  // laranja
+  if (u.includes('REPASSE'))  return '#8E44AD';  // roxo
+  if (u.includes('LOGIST'))   return '#2980B9';  // azul
+  return '#95A5A6';  // cinza para outros
+}
+
 // ─── OVERVIEW CHARTS ───────────────────────────────────────────────────────
 function initOverviewCharts() {
   // Donut
@@ -1103,15 +1118,54 @@ function initOverviewCharts() {
     }
   });
 
+  // Metas por serviço (Chico — 24/09/2026)
+  const SVC_METAS = { EXPRESSO: 15, ECONOMICO: 10, PERSONALIZADO: 20, PERSONALIZADO_L: 10 };
+
+  // Plugin: linha tracejada de meta por barra
+  const metaLinesPlugin = {
+    id: 'metaLines',
+    afterDatasetsDraw(chart) {
+      const { ctx, scales: { x, y } } = chart;
+      chart.getDatasetMeta(0).data.forEach((bar, i) => {
+        const svc = (DATA.por_servico[i] || {}).servico || '';
+        const meta = SVC_METAS[svc];
+        if (meta == null) return;
+        const yPos   = y.getPixelForValue(meta);
+        const left   = bar.x - bar.width / 2 + 3;
+        const right  = bar.x + bar.width / 2 - 3;
+        ctx.save();
+        ctx.setLineDash([5, 3]);
+        ctx.strokeStyle = 'rgba(0,0,0,0.55)';
+        ctx.lineWidth = 1.8;
+        ctx.beginPath(); ctx.moveTo(left, yPos); ctx.lineTo(right, yPos); ctx.stroke();
+        ctx.setLineDash([]);
+        ctx.fillStyle = 'rgba(0,0,0,0.6)';
+        ctx.font = '600 9px Inter,sans-serif';
+        ctx.textAlign = 'right';
+        ctx.fillText('meta ' + meta + '%', right, yPos - 3);
+        ctx.restore();
+      });
+    }
+  };
+
   // Margem por Serviço
   const labels_s = DATA.por_servico.map(s => s.servico.replace('_', ' '));
-  const colors_s = DATA.por_servico.map(s => clrFromMargem(s.margem));
+  const colors_s = DATA.por_servico.map(s => clrFromServico(s.servico));
   charts['servico-visao'] = new Chart(document.getElementById('chart-servico-visao'), {
     type: 'bar',
+    plugins: [metaLinesPlugin],
     data: { labels: labels_s, datasets: [{ label: 'Margem %', data: DATA.por_servico.map(s => s.margem), backgroundColor: colors_s, borderWidth:0 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
-      plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toFixed(1)}%` } } },
+      plugins: {
+        legend: { display:false },
+        tooltip: { callbacks: { label: ctx => {
+          const svc = (DATA.por_servico[ctx.dataIndex]||{}).servico||'';
+          const meta = SVC_METAS[svc];
+          const delta = meta != null ? ` | meta ${meta}% (${(ctx.raw - meta) >= 0 ? '+' : ''}${(ctx.raw - meta).toFixed(1)}pp)` : '';
+          return ` ${ctx.raw.toFixed(1)}%${delta}`;
+        }}}
+      },
       scales: {
         y: { ticks: { callback: v => v+'%' }, grid: { color: '#f0f0f0' } },
         x: { ticks: { font: { size: 10 } } }
@@ -1122,7 +1176,7 @@ function initOverviewCharts() {
   // Volume por Serviço
   charts['servico-vol'] = new Chart(document.getElementById('chart-servico-vol'), {
     type: 'bar',
-    data: { labels: labels_s, datasets: [{ label: 'Minutas', data: DATA.por_servico.map(s => s.minutas), backgroundColor: '#4472C4', borderWidth:0 }] },
+    data: { labels: labels_s, datasets: [{ label: 'Minutas', data: DATA.por_servico.map(s => s.minutas), backgroundColor: DATA.por_servico.map(s => clrFromServico(s.servico)), borderWidth:0 }] },
     options: {
       responsive: true, maintainAspectRatio: false,
       plugins: { legend: { display:false }, tooltip: { callbacks: { label: ctx => ` ${ctx.raw.toLocaleString('pt-BR')} minutas` } } },
@@ -1163,7 +1217,7 @@ function initServicoFull() {
     data: {
       labels: labels,
       datasets: [
-        { label: 'Margem %', data: servicoData.map(s => s.margem), backgroundColor: servicoData.map(s => clrFromMargem(s.margem)), borderWidth:0, yAxisID:'y' },
+        { label: 'Margem %', data: servicoData.map(s => s.margem), backgroundColor: servicoData.map(s => clrFromServico(s.servico)), borderWidth:0, yAxisID:'y' },
       ]
     },
     options: {
@@ -1181,13 +1235,15 @@ function initServicoFull() {
 function renderServicoTable(data) {
   const tbody = document.getElementById('servico-tbody');
   if (!tbody) return;
-  tbody.innerHTML = data.map(s => `
-    <tr>
-      <td><strong>${s.servico}</strong></td>
+  tbody.innerHTML = data.map(s => {
+    const isPL = s.servico === 'PERSONALIZADO_L';
+    return `<tr${isPL ? ' class="pers-l"' : ''}>
+      <td><strong>${s.servico}</strong>${isPL ? ' <span style="font-size:10px;background:#2E75B6;color:#fff;padding:1px 5px;border-radius:3px;vertical-align:middle">★</span>' : ''}</td>
       <td class="text-right">${s.minutas.toLocaleString('pt-BR')}</td>
       <td class="text-right">${s.pct_total ? s.pct_total.toFixed(1)+'%' : '-'}</td>
       <td>${fmtPctBar(s.margem)}</td>
-    </tr>`).join('');
+    </tr>`;
+  }).join('');
 }
 
 function sortTable(key, col, idx) {
@@ -1337,104 +1393,7 @@ function drawClientes() {
   pag.innerHTML = btns;
 }
 
-// ─── MINUTAS NEGATIVAS TAB ──────────────────────────────────────────────────
-let negPage = 1;
-const NEG_PAGE_SIZE = 50;
-
-function resetNegFilters() {
-  document.getElementById('neg-search').value = '';
-  document.getElementById('neg-uf').value = '';
-  document.getElementById('neg-servico').value = '';
-  document.getElementById('neg-sistema').value = '';
-  document.getElementById('neg-sort').value = 'lucro-asc';
-  renderNeg();
-}
-
-function renderNeg() {
-  negPage = 1;
-  drawNeg();
-}
-
-function drawNeg() {
-  const search = document.getElementById('neg-search').value.toLowerCase();
-  const uf = document.getElementById('neg-uf').value;
-  const servico = document.getElementById('neg-servico').value;
-  const sistema = document.getElementById('neg-sistema').value;
-  const sortVal = document.getElementById('neg-sort').value;
-  
-  let filtered = DATA.minutas_neg.filter(m => {
-    if (search && !m.cliente.toLowerCase().includes(search)) return false;
-    if (uf && m.uf !== uf) return false;
-    if (servico && m.servico !== servico) return false;
-    if (sistema && m.sistema !== sistema) return false;
-    return true;
-  });
-  
-  // Sort
-  const sortMap = {
-    'lucro-asc': (a,b) => a.lucro - b.lucro,
-    'margem-asc': (a,b) => a.margem - b.margem,
-    'frete-desc': (a,b) => b.frete - a.frete,
-    'minuta-asc': (a,b) => parseInt(a.minuta)-parseInt(b.minuta),
-    'data-asc': (a,b) => a.data.localeCompare(b.data),
-  };
-  filtered.sort(sortMap[sortVal] || sortMap['lucro-asc']);
-  
-  const total = filtered.length;
-  const pages = Math.ceil(total / NEG_PAGE_SIZE);
-  negPage = Math.min(negPage, pages || 1);
-  const slice = filtered.slice((negPage-1)*NEG_PAGE_SIZE, negPage*NEG_PAGE_SIZE);
-  
-  document.getElementById('neg-count').textContent = `${total.toLocaleString('pt-BR')} minutas com prejuízo encontradas`;
-  
-  document.getElementById('neg-tbody').innerHTML = slice.map(m => `
-    <tr>
-      <td><strong>${m.minuta}</strong></td>
-      <td style="white-space:nowrap">${m.data}</td>
-      <td><span class="badge" style="background:#e3e8f0;color:#444">${m.sistema}</span></td>
-      <td>${m.cliente}</td>
-      <td><small>${m.servico}</small></td>
-      <td><small>${m.destino}</small></td>
-      <td class="text-right">${m.frete > 0 ? fmtBRL(m.frete) : '-'}</td>
-      <td class="text-right">${m.custo > 0 ? fmtBRL(m.custo) : '-'}</td>
-      <td class="text-right lucro-neg">${fmtBRL(m.lucro)}</td>
-      <td class="text-right">${margBadge(m.margem)}</td>
-    </tr>`).join('') || '<tr><td colspan="10" class="text-center" style="padding:20px;color:#999">Nenhuma minuta encontrada</td></tr>';
-  
-  // Pagination
-  const pag = document.getElementById('neg-pagination');
-  if (pages <= 1) { pag.innerHTML = ''; return; }
-  let btns = `<span>Pág. ${negPage} de ${pages}</span>`;
-  btns += `<button ${negPage===1?'disabled':''} onclick="negPage--;drawNeg()">‹ Ant.</button>`;
-  const start = Math.max(1, negPage-2), end = Math.min(pages, negPage+2);
-  for (let i=start;i<=end;i++) btns += `<button class="${i===negPage?'active':''}" onclick="negPage=${i};drawNeg()">${i}</button>`;
-  btns += `<button ${negPage===pages?'disabled':''} onclick="negPage++;drawNeg()">Próx. ›</button>`;
-  pag.innerHTML = btns;
-}
-
-// ─── INIT ──────────────────────────────────────────────────────────────────
-initOverviewCharts();
-
 // ─── SEM CUSTO DE TRANSPORTE TAB ────────────────────────────────────────────
-const minutasSemCusto = DATA.minutas_sem_custo || [];
-
-// Populate dynamic filters
-(function(){
-  const ufs = [...new Set(minutasSemCusto.map(m => m.uf).filter(Boolean))].sort();
-  const srvs = [...new Set(minutasSemCusto.map(m => m.servico).filter(Boolean))].sort();
-  const ufSel = document.getElementById('sc-uf');
-  const srvSel = document.getElementById('sc-servico');
-  ufs.forEach(u => { const o=document.createElement('option');o.value=o.textContent=u;ufSel.appendChild(o); });
-  srvs.forEach(s => { const o=document.createElement('option');o.value=o.textContent=s;srvSel.appendChild(o); });
-
-  // Badge
-  if (minutasSemCusto.length > 0) {
-    const badge = document.getElementById('sc-count-badge');
-    badge.textContent = minutasSemCusto.length;
-    badge.style.display = '';
-  }
-})();
-
 let scPage = 1;
 const SC_PAGE_SIZE = 50;
 
@@ -1447,7 +1406,10 @@ function resetScFilters() {
   renderSemCusto();
 }
 
-function renderSemCusto() { scPage = 1; drawSemCusto(); }
+function renderSemCusto() {
+  scPage = 1;
+  drawSemCusto();
+}
 
 function drawSemCusto() {
   const search = document.getElementById('sc-search').value.toLowerCase();
@@ -1482,21 +1444,35 @@ function drawSemCusto() {
       ? 'Nenhuma minuta sem custo encontrada para os filtros selecionados'
       : total.toLocaleString('pt-BR') + ' minuta(s) sem custo de transporte';
 
-  document.getElementById('sc-tbody').innerHTML = slice.map(m => `
-    <tr>
-      <td style="white-space:nowrap"><strong>${m.minuta}</strong></td>
-      <td style="white-space:nowrap">${m.data}</td>
-      <td><span class="badge badge-sys">${m.sistema}</span></td>
-      <td>${m.cliente}</td>
-      <td><small>${m.servico}</small></td>
-      <td><small>${m.destino}</small></td>
-      <td class="text-right">${m.frete > 0 ? fmtBRL(m.frete) : '<span style="color:var(--text3)">—</span>'}</td>
-      <td><small style="color:var(--text2)">${m.respColeta||'—'}</small></td>
-      <td><small style="color:var(--text2)">${m.respEntrega||'—'}</small></td>
-      <td><small style="color:var(--text2)">${m.respTransf||'—'}</small></td>
-      <td class="text-right"><span class="val-${m.lucro>=0?'pos':'neg'}">${fmtBRL(m.lucro)}</span></td>
-      <td class="text-right">${margBadge(m.margem)}</td>
-    </tr>`).join('') || '<tr><td colspan="12" class="text-center" style="padding:20px;color:var(--text3)">Nenhuma minuta encontrada</td></tr>';
+  const rows = slice.map((m, i) => {
+    const isPL = (m.servico||'') === 'PERSONALIZADO_L';
+    const bg = isPL ? '#D6E4F7' : (i % 2 === 0 ? '#ffffff' : '#f7f9fc');
+    const lucroColor = m.lucro < 0 ? '#c0392b' : '#27ae60';
+    const margemColor = m.margem < 0 ? '#c0392b' : '#27ae60';
+    const tdS = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;color:#1a1a1a"`;
+    const tdR = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;color:#1a1a1a"`;
+    const tdC = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:center;color:#1a1a1a"`;
+    return `<tr style="background:${bg}"${isPL ? ' class="pers-l"' : ''}>
+      <td ${tdS}>${m.sistema||''}</td>
+      <td ${tdS}>${m.minuta||''}</td>
+      <td ${tdS}>${m.data||''}</td>
+      <td ${tdS} title="${m.cliente||''}">${(m.cliente||'').substring(0,30)}</td>
+      <td ${tdS}>${m.servico||''}</td>
+      <td ${tdS}>${m.destino||''}</td>
+      <td ${tdC}>${m.uf||''}</td>
+      <td ${tdR}>${fmtBRL(m.frete)}</td>
+      <td ${tdS}>${m.respColeta||'—'}</td>
+      <td ${tdR}>${m.custoColeta > 0 ? fmtBRL(m.custoColeta) : '—'}</td>
+      <td ${tdS}>${m.respEntrega||'—'}</td>
+      <td ${tdR}>${m.custoEntrega > 0 ? fmtBRL(m.custoEntrega) : '—'}</td>
+      <td ${tdS}>${m.respTransf||'—'}</td>
+      <td ${tdR}>${m.custoTransf > 0 ? fmtBRL(m.custoTransf) : '—'}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;font-weight:700;color:${lucroColor}">${fmtBRL(m.lucro)}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;font-weight:700;color:${margemColor}">${m.margem.toFixed(1)}%</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="16" style="padding:20px;text-align:center;color:#999">Nenhuma minuta encontrada</td></tr>`;
+
+  document.getElementById('sc-tbody').innerHTML = rows;
 
   // Pagination
   const pag = document.getElementById('sc-pagination');
@@ -1509,7 +1485,92 @@ function drawSemCusto() {
   pag.innerHTML = btns;
 }
 
+// ─── MINUTAS NEGATIVAS TAB ──────────────────────────────────────────────────
+let negPage = 1;
+const NEG_PAGE_SIZE = 50;
 
+function resetNegFilters() {
+  document.getElementById('neg-search').value = '';
+  document.getElementById('neg-uf').value = '';
+  document.getElementById('neg-servico').value = '';
+  document.getElementById('neg-sistema').value = '';
+  document.getElementById('neg-sort').value = 'lucro-asc';
+  renderNeg();
+}
+
+function renderNeg() {
+  negPage = 1;
+  drawNeg();
+}
+
+function drawNeg() {
+  const search = document.getElementById('neg-search').value.toLowerCase();
+  const uf = document.getElementById('neg-uf').value;
+  const servico = document.getElementById('neg-servico').value;
+  const sistema = document.getElementById('neg-sistema').value;
+  const sortVal = document.getElementById('neg-sort').value;
+
+  let filtered = DATA.minutas_neg.filter(m => {
+    if (search && !m.cliente.toLowerCase().includes(search)) return false;
+    if (uf && m.uf !== uf) return false;
+    if (servico && m.servico !== servico) return false;
+    if (sistema && m.sistema !== sistema) return false;
+    return true;
+  });
+
+  const sortMap = {
+    'lucro-asc':   (a,b) => a.lucro - b.lucro,
+    'margem-asc':  (a,b) => a.margem - b.margem,
+    'frete-desc':  (a,b) => b.frete - a.frete,
+    'minuta-asc':  (a,b) => parseInt(a.minuta)-parseInt(b.minuta),
+    'data-asc':    (a,b) => a.data.localeCompare(b.data),
+  };
+  filtered.sort(sortMap[sortVal] || sortMap['lucro-asc']);
+
+  const total = filtered.length;
+  const pages = Math.ceil(total / NEG_PAGE_SIZE);
+  negPage = Math.min(negPage, pages || 1);
+  const slice = filtered.slice((negPage-1)*NEG_PAGE_SIZE, negPage*NEG_PAGE_SIZE);
+
+  document.getElementById('neg-count').textContent = `${total.toLocaleString('pt-BR')} minutas com prejuízo encontradas`;
+
+  const rows = slice.map((m, i) => {
+    const isPL = (m.servico||'') === 'PERSONALIZADO_L';
+    const bg = isPL ? '#D6E4F7' : (i % 2 === 0 ? '#ffffff' : '#fff5f5');
+    const custo = m.custo || 0;
+    const lucroColor = m.lucro < 0 ? '#c0392b' : '#27ae60';
+    const margemColor = m.margem < 0 ? '#c0392b' : '#27ae60';
+    const tdS = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;color:#1a1a1a"`;
+    const tdR = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;color:#1a1a1a"`;
+    const tdC = `style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:center;color:#1a1a1a"`;
+    return `<tr style="background:${bg}"${isPL ? ' class="pers-l"' : ''}>
+      <td ${tdS}>${m.sistema||''}</td>
+      <td ${tdS}>${m.minuta||''}</td>
+      <td ${tdS}>${m.data||''}</td>
+      <td ${tdS} title="${m.cliente||''}">${(m.cliente||'').substring(0,30)}</td>
+      <td ${tdS}>${m.servico||''}</td>
+      <td ${tdS}>${m.destino||''}</td>
+      <td ${tdC}>${m.uf||''}</td>
+      <td ${tdR}>${fmtBRL(m.frete)}</td>
+      <td ${tdR}>${fmtBRL(custo)}</td>
+      <td ${tdR}>${fmtBRL(m.resultado||0)}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;font-weight:700;color:${lucroColor}">${fmtBRL(m.lucro)}</td>
+      <td style="padding:5px 8px;border-bottom:1px solid #e8ecf0;text-align:right;font-weight:700;color:${margemColor}">${m.margem.toFixed(1)}%</td>
+    </tr>`;
+  }).join('') || `<tr><td colspan="12" style="padding:20px;text-align:center;color:#999">Nenhuma minuta encontrada</td></tr>`;
+
+  document.getElementById('neg-tbody').innerHTML = rows;
+
+  // Pagination
+  const pag = document.getElementById('neg-pagination');
+  if (pages <= 1) { pag.innerHTML = ''; return; }
+  let btns = `<span>Pág. ${negPage} de ${pages}</span>`;
+  btns += `<button ${negPage===1?'disabled':''} onclick="negPage--;drawNeg()">‹ Ant.</button>`;
+  const start = Math.max(1, negPage-2), end = Math.min(pages, negPage+2);
+  for (let i=start;i<=end;i++) btns += `<button class="${i===negPage?'active':''}" onclick="negPage=${i};drawNeg()">${i}</button>`;
+  btns += `<button ${negPage===pages?'disabled':''} onclick="negPage++;drawNeg()">Próx. ›</button>`;
+  pag.innerHTML = btns;
+}
 function downloadNegativasExcel() {
   const rows = DATA.minutas_neg || [];
   if (!rows.length) { alert('Nenhuma minuta negativa para exportar.'); return; }
@@ -1552,15 +1613,162 @@ function downloadNegativasExcel() {
   XLSX.writeFile(wb, `CustosAbertos_${periodo}.xlsx`);
 }
 
+function downloadCustosAbertos() {
+  // DATA.minutas_neg já está filtrado pelo período selecionado (applyDateFilter atualiza em tempo real)
+  const rows = DATA.minutas_neg || [];
+  if (!rows.length) { alert('Nenhuma minuta negativa para exportar no período selecionado.'); return; }
+
+  // Aplicar também os filtros visuais da aba (busca, UF, serviço, sistema)
+  const search = (document.getElementById('neg-search')?.value || '').toLowerCase();
+  const ufFlt  = document.getElementById('neg-uf')?.value || '';
+  const svcFlt = document.getElementById('neg-servico')?.value || '';
+  const sisFlt = document.getElementById('neg-sistema')?.value || '';
+
+  const filtered = rows.filter(m => {
+    if (search && !(m.cliente || '').toLowerCase().includes(search)) return false;
+    if (ufFlt  && m.uf      !== ufFlt)  return false;
+    if (svcFlt && m.servico !== svcFlt) return false;
+    if (sisFlt && m.sistema !== sisFlt) return false;
+    return true;
+  });
+
+  if (!filtered.length) { alert('Nenhuma minuta no filtro atual.'); return; }
+
+  // Identificar o período ativo para nomear o arquivo
+  const dFrom = document.getElementById('date-from')?.value || '';
+  const dTo   = document.getElementById('date-to')?.value   || '';
+  let periodoLabel = (DATA.kpis && DATA.kpis.periodo) ? DATA.kpis.periodo : 'Painel';
+  if (dFrom || dTo) {
+    const fmt = s => s ? s.split('-').reverse().join('/') : '?';
+    periodoLabel = `${fmt(dFrom)}_a_${fmt(dTo)}`;
+  }
+  periodoLabel = periodoLabel.replace(/[\/:*?"<>|]/g, '_');
+
+  // ── Formato agrupado por minuta (igual ao Excel Custos Abertos gerado pelo servidor) ──
+  const aoa = [];
+  const merges = [];
+  const styles = {}; // row index → style key
+
+  // Funções auxiliares de formatação
+  const fmtR = v => (v || 0).toFixed(2).replace('.', ',');
+  const fmtP = v => (v || 0).toFixed(1).replace('.', ',') + '%';
+  const COL_COUNT = 7;
+
+  for (const m of filtered) {
+    const frete  = m.frete  || 0;
+    const custo  = m.custo  || 0;
+    const lucro  = m.lucro  || 0;
+    const margem = m.margem || 0;
+
+    // ── Linha de título da minuta ──
+    const titleRow = aoa.length;
+    const sistLabel = m.sistema === 'PORTOEX' ? 'PORTOEX' : 'PEX LOGÍSTICA';
+    aoa.push([
+      `MINUTA ${m.minuta}  |  ${m.cliente}  |  ${m.servico}  |  ${m.destino}  [${sistLabel}  ${m.data}]   ` +
+      `Frete: R$ ${fmtR(frete)}   Custo Total: R$ ${fmtR(custo)}   Lucro Líq.: R$ ${fmtR(lucro)}   Margem: ${fmtP(margem)}`,
+      '','','','','',''
+    ]);
+    merges.push({s:{r:titleRow,c:0}, e:{r:titleRow,c:COL_COUNT-1}});
+    styles[titleRow] = 'title';
+
+    // ── Linha de cabeçalho dos custos ──
+    const hdrRow = aoa.length;
+    aoa.push(['TIPO DE CUSTO','RESPONSÁVEL / EMPRESA','REFERÊNCIA / DESCRIÇÃO','VALOR (R$)','ACUMULADO (R$)','% DO CUSTO','% DO FRETE']);
+    styles[hdrRow] = 'header';
+
+    // ── Linhas de custo ──
+    const custos = [
+      { tipo: 'COLETA',   resp: m.respColeta  || '-', desc: '', valor: m.custoColeta  || 0 },
+      { tipo: 'ENTREGA',  resp: m.respEntrega || '-', desc: '', valor: m.custoEntrega || 0 },
+      { tipo: 'TRANSF',   resp: m.respTransf  || '-', desc: '', valor: m.custoTransf  || 0 },
+      { tipo: 'ICMS/ISS', resp: '',                   desc: '', valor: m.icms    || 0 },
+      { tipo: 'DIFAL',    resp: '',                   desc: '', valor: m.difal   || 0 },
+      { tipo: 'DESPACHO', resp: '',                   desc: '', valor: m.despacho|| 0 },
+      { tipo: 'SEGURO',   resp: '',                   desc: '', valor: m.seguro  || 0 },
+      { tipo: 'OUTROS',   resp: '',                   desc: '', valor: m.outros  || 0 },
+    ].filter(c => c.valor > 0 || ['COLETA','ENTREGA','TRANSF'].includes(c.tipo)); // sempre mostra os 3 de transporte
+
+    let acumulado = 0;
+    for (const c of custos) {
+      acumulado += c.valor;
+      const pctCusto = custo > 0 ? (c.valor / custo * 100) : 0;
+      const pctFrete = frete > 0 ? (c.valor / frete * 100) : 0;
+      const dataRow = aoa.length;
+      aoa.push([c.tipo, c.resp, c.desc, c.valor, acumulado, pctCusto, pctFrete]);
+      styles[dataRow] = 'data';
+    }
+
+    // ── Linha TOTAL CUSTO ──
+    const totRow = aoa.length;
+    aoa.push(['TOTAL CUSTO', '', '', custo, '', '', '']);
+    merges.push({s:{r:totRow,c:0}, e:{r:totRow,c:2}});
+    styles[totRow] = 'total';
+
+    // ── Linha LUCRO LÍQ. ──
+    const lucRow = aoa.length;
+    aoa.push(['LUCRO LÍQ.', '', '', lucro, '', '', '']);
+    merges.push({s:{r:lucRow,c:0}, e:{r:lucRow,c:2}});
+    styles[lucRow] = lucro < 0 ? 'lucro_neg' : 'lucro_pos';
+
+    // ── Linha separadora ──
+    aoa.push(['','','','','','','']);
+  }
+
+  const ws = XLSX.utils.aoa_to_sheet(aoa);
+
+  // Aplicar larguras de coluna
+  ws['!cols'] = [{wch:14},{wch:35},{wch:35},{wch:14},{wch:14},{wch:12},{wch:12}];
+
+  // Aplicar merges
+  ws['!merges'] = merges;
+
+  // Aplicar estilos básicos via cell-level (SheetJS free não suporta estilos completos, mas formatamos via z format)
+  // Formatar colunas numéricas
+  const range = XLSX.utils.decode_range(ws['!ref']);
+  for (let R = range.s.r; R <= range.e.r; R++) {
+    for (let C = 3; C <= 6; C++) {
+      const cell_addr = XLSX.utils.encode_cell({r:R, c:C});
+      const cell = ws[cell_addr];
+      if (cell && typeof cell.v === 'number') {
+        if (C <= 4) cell.z = '#,##0.00'; // valor e acumulado
+        else        cell.z = '0.0"%"';   // percentuais
+      }
+    }
+  }
+
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Custos Abertos');
+  XLSX.writeFile(wb, `CustosAbertos_${periodoLabel}.xlsx`);
+}
+
 function downloadSemCustoExcel() {
+  // DATA.minutas_sem_custo já é filtrado pelo período global (applyDateFilter atualiza em tempo real)
   const rows = DATA.minutas_sem_custo || [];
-  if (!rows.length) { alert('Nenhuma minuta sem custo para exportar.'); return; }
+  if (!rows.length) { alert('Nenhuma minuta sem custo para exportar no período selecionado.'); return; }
+
+  // Aplicar também os filtros visuais da aba (sistema)
+  const sisFlt = document.getElementById('sc-sistema')?.value || '';
+  const filtered = rows.filter(m => {
+    if (sisFlt && m.sistema !== sisFlt) return false;
+    return true;
+  });
+  if (!filtered.length) { alert('Nenhuma minuta no filtro atual.'); return; }
+
+  // Nome do arquivo com período ativo
+  const dFrom = document.getElementById('date-from')?.value || '';
+  const dTo   = document.getElementById('date-to')?.value   || '';
+  let periodoLabel = (DATA.kpis && DATA.kpis.periodo) ? DATA.kpis.periodo : 'Painel';
+  if (dFrom || dTo) {
+    const fmt = s => s ? s.split('-').reverse().join('/') : '?';
+    periodoLabel = `${fmt(dFrom)}_a_${fmt(dTo)}`;
+  }
+  periodoLabel = periodoLabel.replace(/[\/:*?"<>|]/g, '_');
 
   const headers = ['Sistema','Minuta','Tipo CT-e','Data','Cliente','Serviço','Destino','UF',
     'Frete (R$)','Resp. Coleta','Custo Coleta','Resp. Entrega','Custo Entrega',
     'Resp. Transf.','Custo Transf.','Resultado (R$)','Comissão (R$)','Lucro Líq. (R$)','Margem (%)'];
 
-  const data = [headers, ...rows.map(m => [
+  const data = [headers, ...filtered.map(m => [
     m.sistema, m.minuta, m.tipoCte||'', m.data, m.cliente, m.servico, m.destino, m.uf,
     m.frete, m.respColeta||'', m.custoColeta||0,
     m.respEntrega||'', m.custoEntrega||0,
@@ -1569,16 +1777,13 @@ function downloadSemCustoExcel() {
   ])];
 
   const ws = XLSX.utils.aoa_to_sheet(data);
-  // Larguras de coluna
   ws['!cols'] = [
     {wch:14},{wch:10},{wch:16},{wch:12},{wch:35},{wch:16},{wch:22},{wch:5},
     {wch:13},{wch:20},{wch:13},{wch:20},{wch:14},{wch:20},{wch:13},{wch:14},{wch:13},{wch:14},{wch:10}
   ];
   const wb = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb, ws, 'Sem Custo Transporte');
-
-  const periodo = (DATA.kpis && DATA.kpis.periodo) ? DATA.kpis.periodo.replace(/[\/:*?"<>|]/g,'_') : 'Painel';
-  XLSX.writeFile(wb, `SemCusto_${periodo}.xlsx`);
+  XLSX.writeFile(wb, `SemCusto_${periodoLabel}.xlsx`);
 }
 </script>
 </body>
