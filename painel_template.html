@@ -893,7 +893,7 @@ function _recalcFromMinutas(allMinutas) {
     byS[s].minutas++; byS[s].frete+=(r.frete||0); byS[s].custo+=(r.custo||0); byS[s].resultado+=(r.lucro||0);
   }
   const totF = Object.values(byS).reduce((s,v)=>s+v.frete,0);
-  const SVC_ORDER=['EXPRESSO','ECONOMICO','PERSONALIZADO','PERSONALIZADO_L'];
+  const SVC_ORDER=['ECONOMICO','EXPRESSO','PERSONALIZADO','PERSONALIZADO_L'];
   DATA.por_servico = Object.values(byS).map(v=>({...v,
     frete:Math.round(v.frete*100)/100, custo:Math.round(v.custo*100)/100,
     resultado:Math.round(v.resultado*100)/100,

@@ -240,7 +240,7 @@ def construir_data(registros_todos, periodo, data_ini, data_fin):
         por_serv[s]['custo']   += r['custo']
         por_serv[s]['lucro']   += r['lucro']
 
-    SVC_ORDER = ['EXPRESSO', 'ECONOMICO', 'PERSONALIZADO', 'PERSONALIZADO_L']
+    SVC_ORDER = ['ECONOMICO', 'EXPRESSO', 'PERSONALIZADO', 'PERSONALIZADO_L']
     def svc_sort_key(item):
         s = item[0]
         return SVC_ORDER.index(s) if s in SVC_ORDER else 99
