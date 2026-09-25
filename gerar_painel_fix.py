@@ -336,8 +336,9 @@ def construir_data(registros_todos, periodo, data_ini, data_fin):
             'respTransf':   str(r.get('resp_transf', '') or ''),
             'custoTransf':  round(r.get('custo_transf', 0), 2),
         }
-        for r in registros_todos   # todas as minutas (inclui excluídos também para análise de prejuízo)
+        for r in registros_todos
         if r['lucro'] < 0
+        and not is_excluido(r['servico'])  # exclui REPASSE, CORTESIA, SERVIÇO LOGÍSTICO
     ]
     minutas_neg.sort(key=lambda x: x['lucro'])
 
@@ -382,6 +383,7 @@ def construir_data(registros_todos, periodo, data_ini, data_fin):
             'margem':   round(r['margem'], 2),
         }
         for r in registros_todos
+        if not is_excluido(r['servico'])  # exclui REPASSE, CORTESIA, SERVIÇO LOGÍSTICO
     ]
 
     # ── Sem Custo de Transporte ───────────────────────────────────────────────
