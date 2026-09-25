@@ -984,9 +984,12 @@ function applyDateFilter() {
   _recalcFromMinutas(DATA.minutas);
   document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
   document.getElementById('sc-count-badge').textContent=DATA.minutas_sem_custo.length;
+  // KPI % com prejuízo deve refletir exatamente a lista filtrada de minutas_neg
+  const _negN=DATA.minutas_neg.length, _totN=DATA.minutas.length;
+  document.getElementById('kpi-prej-count').textContent=_negN.toLocaleString('pt-BR')+' minutas negativas';
+  document.getElementById('kpi-prejuizo').textContent=(_totN?(_negN/_totN*100):0).toFixed(1)+'%';
   if(typeof renderNeg==='function')renderNeg();
   if(typeof renderSemCusto==='function')renderSemCusto();
-  // badges e tabelas de neg/sem-custo sempre atualizados com o período filtrado
 }
 
 function resetDateFilter() {
@@ -996,6 +999,10 @@ function resetDateFilter() {
   _recalcFromMinutas(DATA.minutas);
   document.getElementById('neg-count-badge').textContent=DATA.minutas_neg.length;
   document.getElementById('sc-count-badge').textContent=DATA.minutas_sem_custo.length;
+  // KPI % com prejuízo deve refletir exatamente a lista filtrada de minutas_neg
+  const _negNR=DATA.minutas_neg.length, _totNR=DATA.minutas.length;
+  document.getElementById('kpi-prej-count').textContent=_negNR.toLocaleString('pt-BR')+' minutas negativas';
+  document.getElementById('kpi-prejuizo').textContent=(_totNR?(_negNR/_totNR*100):0).toFixed(1)+'%';
   if(typeof renderNeg==='function')renderNeg();
   if(typeof renderSemCusto==='function')renderSemCusto();
 }
@@ -1046,9 +1053,11 @@ function renderCurvaABC() {
 document.getElementById('kpi-minutas').textContent = kpis.minutas.toLocaleString('pt-BR');
 document.getElementById('kpi-margem').textContent = kpis.margem.toFixed(1) + '%';
 document.getElementById('kpi-lucrativas').textContent = kpis.pct_lucrativas.toFixed(1) + '%';
-document.getElementById('kpi-prejuizo').textContent = kpis.pct_prejuizo.toFixed(1) + '%';
+// % com prejuízo e contagem usam DATA.minutas_neg (já com MINUTAS_EXCLUIR_NEG aplicado)
+const _initNeg = DATA.minutas_neg.length, _initTot = DATA.minutas.length;
+document.getElementById('kpi-prejuizo').textContent = (_initTot ? (_initNeg / _initTot * 100) : 0).toFixed(1) + '%';
 document.getElementById('kpi-lucro-count').textContent = kpis.com_lucro.toLocaleString('pt-BR') + ' minutas com lucro';
-document.getElementById('kpi-prej-count').textContent = kpis.com_prejuizo.toLocaleString('pt-BR') + ' minutas negativas'
+document.getElementById('kpi-prej-count').textContent = _initNeg.toLocaleString('pt-BR') + ' minutas negativas'
   // Período no cabeçalho
   const periodoEl = document.getElementById('header-periodo');
   if (periodoEl && kpis.data_inicial && kpis.data_final) {
@@ -1056,7 +1065,7 @@ document.getElementById('kpi-prej-count').textContent = kpis.com_prejuizo.toLoca
   } else if (periodoEl) {
     periodoEl.innerHTML = (kpis.periodo || '') + ' &nbsp;|&nbsp; Dados: Resultado 147';
   };
-document.getElementById('neg-count-badge').textContent = kpis.com_prejuizo.toLocaleString('pt-BR');
+document.getElementById('neg-count-badge').textContent = DATA.minutas_neg.length;
 
 // ─── Pré-preencher calendário do filtro de período com as datas do relatório ──
 if (kpis.data_inicial && kpis.data_final) {
