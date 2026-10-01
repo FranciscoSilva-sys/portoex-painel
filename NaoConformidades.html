@@ -12,21 +12,131 @@
   header .per{text-align:right; font-size:13px; color:var(--lightblue); padding-top:2px;}
   header .per b{color:var(--gold); display:block; font-size:15px;}
   header .per small{display:block; margin-top:4px; color:var(--mutedblue); font-size:11px;}
-  .wrap{max-width:900px; margin:60px auto; padding:0 24px; text-align:center;}
-  .empty-card{background:var(--white); border-radius:14px; padding:48px 36px; box-shadow:0 6px 18px rgba(15,30,60,.12);}
+  .month-bar{background:var(--navy2); padding:14px 48px; display:flex; align-items:center; gap:12px;}
+  .month-bar label{color:var(--lightblue); font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.4px;}
+  .month-select{background:var(--white); color:var(--navy); border:none; border-radius:8px; padding:9px 14px; font-size:13.5px; font-weight:700; cursor:pointer;}
+  .month-block{display:none;} .month-block.active{display:block;}
+  .tabs-sector{display:flex; gap:6px; padding:22px 48px 0; background:transparent; flex-wrap:wrap; overflow-x:auto;}
+  .tab-btn{background:rgba(15,30,60,.08); color:var(--navy2); border:none; padding:12px 18px; border-radius:10px 10px 0 0; font-size:12.5px; font-weight:700; letter-spacing:.3px; cursor:pointer; text-transform:uppercase; transition:.15s; white-space:nowrap;}
+  .tab-btn .tab-count{background:rgba(15,30,60,.12); border-radius:20px; padding:1px 8px; font-size:11px; margin-left:6px;}
+  .tab-btn:hover{background:rgba(15,30,60,.14);}
+  .tab-btn.active{background:var(--navy); color:var(--white);}
+  .tab-btn.active .tab-count{background:var(--gold); color:var(--navy);}
+  .wrap-inner{max-width:1220px; margin:0 auto; padding:0 24px;}
+  .tab-panel{display:none;} .tab-panel.active{display:block;}
+  .kpis{display:grid; grid-template-columns:repeat(4,1fr); gap:14px; padding-top:28px;}
+  .kpi{background:var(--white); border-radius:10px; padding:16px 14px; box-shadow:0 6px 18px rgba(15,30,60,.12); border-top:4px solid var(--navy2);}
+  .kpi.warn{border-top-color:var(--red);} .kpi .val{font-size:25px; font-weight:800; color:var(--navy);} .kpi.warn .val{color:var(--red);}
+  .kpi .lbl{font-size:11.5px; color:var(--graytxt); margin-top:4px; font-weight:600; text-transform:uppercase; letter-spacing:.3px;}
+  section{margin-top:34px;}
+  .sec-title{font-size:16px; font-weight:800; color:var(--navy2); text-transform:uppercase; letter-spacing:.6px; border-left:5px solid var(--gold); padding-left:10px; margin-bottom:16px;}
+  .grid3{display:grid; grid-template-columns:1.3fr 1fr 1fr; gap:20px;} .grid2{display:grid; grid-template-columns:1fr 1fr; gap:20px; margin-top:20px;}
+  .card{background:var(--white); border-radius:10px; padding:22px; box-shadow:0 4px 14px rgba(15,30,60,.08);}
+  .card h3{font-size:13px; color:var(--navy2); text-transform:uppercase; letter-spacing:.4px; margin-bottom:16px; font-weight:800;}
+  .cat-row{margin-bottom:12px;} .cat-row .cat-top{display:flex; justify-content:space-between; font-size:12.5px; font-weight:600; color:var(--navy); margin-bottom:4px;}
+  .cat-row .cat-top span:last-child{color:var(--graytxt); font-weight:700;}
+  .cat-row .bar-bg{background:#E5EAF2; border-radius:6px; height:9px; overflow:hidden;}
+  .cat-row .bar-fill{height:100%; border-radius:6px; background:linear-gradient(90deg,var(--navy2),var(--mutedblue));}
+  .cat-row.gold .bar-fill{background:linear-gradient(90deg,var(--gold),#E8A800);} .cat-row.red .bar-fill{background:linear-gradient(90deg,var(--red),#E07568);}
+  .donuts{display:flex; justify-content:space-around; align-items:center; gap:10px; flex-wrap:wrap;} .donut-item{text-align:center;}
+  .donut{width:100px; height:100px; border-radius:50%; display:flex; align-items:center; justify-content:center; margin:0 auto 8px;}
+  .donut .hole{width:66px; height:66px; background:var(--white); border-radius:50%; display:flex; align-items:center; justify-content:center; flex-direction:column;}
+  .donut .hole .n{font-size:16px; font-weight:800; color:var(--navy);} .donut .hole .p{font-size:9px; color:var(--graytxt); font-weight:600;}
+  .legend{display:flex; gap:12px; justify-content:center; margin-top:6px; font-size:11px; color:var(--graytxt);}
+  .legend span{display:inline-flex; align-items:center; gap:5px;} .legend i{width:10px; height:10px; border-radius:3px; display:inline-block;}
+  .toolbar{display:flex; justify-content:space-between; align-items:center; gap:12px; margin-bottom:14px; flex-wrap:wrap;}
+  .toolbar input{padding:10px 14px; border-radius:8px; border:1px solid #D7DEE9; font-size:13.5px; width:340px; max-width:100%; background:var(--white);}
+  .toolbar .count-txt{font-size:12.5px; color:var(--graytxt); font-weight:600;}
+  table{width:100%; border-collapse:collapse; font-size:13px;}
+  thead th{background:var(--navy); color:var(--white); text-align:left; padding:10px 12px; font-weight:700; font-size:11.5px; text-transform:uppercase; letter-spacing:.3px;}
+  thead th:first-child{border-radius:8px 0 0 0;} thead th:last-child{border-radius:0 8px 0 0;}
+  tbody td{padding:10px 12px; border-bottom:1px solid #E5EAF2; vertical-align:top;} tbody tr.row-main{cursor:pointer;} tbody tr.row-main:hover{background:#F5F8FC;}
+  .badge{display:inline-block; padding:3px 9px; border-radius:20px; font-size:10.5px; font-weight:700; letter-spacing:.3px;}
+  .badge.aberto{background:#FDECEA; color:var(--red);} .badge.finalizada{background:#E9F9F0; color:var(--green);}
+  .badge.outro{background:#FFF4DE; color:#D97706;} .badge.def{background:#E9F9F0; color:var(--green);} .badge.undef{background:#FDECEA; color:var(--red);}
+  .badge.empresa{background:#E8EEF7; color:var(--navy2);}
+  .chev{color:var(--mutedblue); font-size:11px; transition:transform .2s; display:inline-block;} tr.row-main.open .chev{transform:rotate(90deg);}
+  tr.row-detail td{background:#F9FAFC; padding:0; border-bottom:1px solid #E5EAF2;} .detail-inner{display:none; padding:16px 20px 20px;} tr.row-detail.open .detail-inner{display:block;}
+  .meta-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin-bottom:12px;}
+  .meta-box{background:var(--white); border-radius:8px; padding:9px 11px;} .meta-box .k{font-size:10px; color:var(--graytxt); text-transform:uppercase; font-weight:700; letter-spacing:.3px;}
+  .meta-box .v{font-size:12.5px; color:var(--navy); font-weight:600; margin-top:3px;} .meta-box .v.empty{color:var(--mutedblue); font-style:italic; font-weight:500;}
+  .panel-block{margin-top:10px;} .panel-block .h{font-size:11px; font-weight:800; text-transform:uppercase; letter-spacing:.4px; color:var(--navy2); margin-bottom:4px;}
+  .panel-block .t{font-size:12.8px; line-height:1.55; color:var(--graytxt); background:var(--white); border-left:3px solid var(--navy2); padding:9px 13px; border-radius:0 6px 6px 0;}
+  .panel-block.raiz .t{border-left-color:var(--gold);} .panel-block.acao .t{border-left-color:var(--green);}
+  .panel-block.raiz .t.undef, .panel-block.acao .t.undef{border-left-color:var(--red); color:var(--red); font-weight:600;}
+  .attn{display:grid; grid-template-columns:repeat(2,1fr); gap:14px;}
+  .attn-item{background:var(--white); border-radius:10px; padding:16px 18px; box-shadow:0 4px 14px rgba(15,30,60,.08); display:flex; gap:14px; align-items:flex-start;}
+  .attn-item .num{background:var(--navy); color:var(--gold); font-weight:800; font-size:14px; min-width:30px; height:30px; border-radius:50%; display:flex; align-items:center; justify-content:center;}
+  .attn-item p{font-size:13.5px; color:var(--graytxt); line-height:1.5;} .attn-item b{color:var(--navy);}
+  .empty-card{max-width:700px; margin:50px auto; background:var(--white); border-radius:14px; padding:48px 36px; box-shadow:0 6px 18px rgba(15,30,60,.12); text-align:center;}
   .empty-card .icon{font-size:40px; margin-bottom:16px;}
   .empty-card h2{font-size:20px; color:var(--navy); margin-bottom:10px;}
   .empty-card p{font-size:14px; color:var(--graytxt); line-height:1.6;}
   footer{max-width:1220px; margin:40px auto 0; padding:18px 24px; text-align:center; font-size:12px; color:var(--mutedblue);}
 </style></head><body>
 <header><div><div class="brand">PORTOEX</div><h1>Painel de Não Conformidades</h1></div>
-<div class="per">Período<b>01/10/2026 a 01/10/2026</b><small>Bases: AZPORTOEX + PEX LOGÍSTICA · gerado em 01/10/2026 09:02</small></div></header>
-<div class="wrap">
-  <div class="empty-card">
-    <div class="icon">📋</div>
-    <h2>Nenhuma ocorrência registrada neste período</h2>
-    <p>Não há não conformidades lançadas na tela 295 (Lista de Atendimento) do Brudam para AZPORTOEX ou PEX LOGÍSTICA entre 01/10/2026 a 01/10/2026.<br>O painel será atualizado automaticamente conforme novas ocorrências forem registradas.</p>
-  </div>
-</div>
-<footer>Painel gerado automaticamente a partir da tela 295 (Lista de Atendimento) do Brudam · AZPORTOEX + PEX LOGÍSTICA · Portoex Logística</footer>
-</body></html>
+<div class="per">Histórico acumulado<b>0 ocorrências</b><small>Bases: AZPORTOEX + PEX LOGÍSTICA · gerado em 01/10/2026 09:09</small></div></header>
+
+<div class="wrap-inner"><div class="empty-card"><div class="icon">📋</div><h2>Ainda não há histórico acumulado</h2><p>O painel passou a acumular ocorrências por mês a partir de 01/10/2026. Assim que houver registros, os meses vão aparecer aqui no seletor.</p></div></div>
+<footer>Painel gerado automaticamente a partir da tela 295 (Lista de Atendimento) do Brudam · AZPORTOEX + PEX LOGÍSTICA · Portoex Logística · Histórico acumulado desde 01/10/2026</footer>
+<script>
+const DATA = {};
+function esc(s){ return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function statusClass(s){ if(s==='ABERTO') return 'aberto'; if(s==='FINALIZADA') return 'finalizada'; return 'outro'; }
+function renderTable(fullKey, list){
+  const tbody = document.getElementById('tbody-' + fullKey);
+  const countTxt = document.getElementById('count-' + fullKey);
+  if(!tbody) return;
+  tbody.innerHTML = ''; countTxt.textContent = list.length + ' ocorrências';
+  list.forEach((r) => {
+    const trMain = document.createElement('tr'); trMain.className = 'row-main';
+    trMain.innerHTML = `<td><span class="chev">▶</span></td><td><b>${esc(r.codigo)}</b></td><td><span class="badge empresa">${esc(r.empresa)}</span></td><td>${esc(r.data)}</td><td>${esc(r.cliente)}</td><td>${esc(r.categoria)}</td><td><span class="badge ${statusClass(r.status)}">${esc(r.status)}</span></td><td>${r.causa_raiz ? '<span class="badge def">Definida</span>' : '<span class="badge undef">Não definida</span>'}</td>`;
+    const trDetail = document.createElement('tr'); trDetail.className = 'row-detail';
+    trDetail.innerHTML = `<td colspan="8"><div class="detail-inner">
+      <div class="meta-grid">
+        <div class="meta-box"><div class="k">Empresa</div><div class="v">${esc(r.empresa)}</div></div>
+        <div class="meta-box"><div class="k">Data / Hora</div><div class="v">${esc(r.data)} · ${esc(r.hora)}</div></div>
+        <div class="meta-box"><div class="k">Solicitante</div><div class="v">${esc(r.solicitante)||'-'}</div></div>
+        <div class="meta-box"><div class="k">Responsável</div><div class="v ${r.responsavel?'':'empty'}">${esc(r.responsavel)||'Não atribuído'}</div></div>
+      </div>
+      <div class="meta-grid" style="grid-template-columns:1fr 1fr 1fr;">
+        <div class="meta-box"><div class="k">Prazo</div><div class="v ${r.prazo?'':'empty'}">${esc(r.prazo)||'Não definido'}</div></div>
+        <div class="meta-box"><div class="k">Minuta</div><div class="v ${r.minuta?'':'empty'}">${esc(r.minuta)||'Não informado'}</div></div>
+        <div class="meta-box"><div class="k">Atendente</div><div class="v ${r.atendente?'':'empty'}">${esc(r.atendente)||'Não informado'}</div></div>
+      </div>
+      <div class="panel-block"><div class="h">Resumo</div><div class="t">${esc(r.resumo)||'Sem resumo registrado.'}</div></div>
+      <div class="panel-block raiz"><div class="h">Causa Raiz</div><div class="t ${r.causa_raiz?'':'undef'}">${esc(r.causa_raiz)||'Não definida na base'}</div></div>
+      <div class="panel-block acao"><div class="h">Plano de Ação</div><div class="t ${r.plano_acao?'':'undef'}">${esc(r.plano_acao)||'Sem plano de ação registrado'}</div></div>
+    </div></td>`;
+    trMain.addEventListener('click', () => { trMain.classList.toggle('open'); trDetail.classList.toggle('open'); });
+    tbody.appendChild(trMain); tbody.appendChild(trDetail);
+  });
+}
+Object.keys(DATA).forEach(fullKey => {
+  renderTable(fullKey, DATA[fullKey]);
+  const searchBox = document.getElementById('search-' + fullKey);
+  if (searchBox) {
+    searchBox.addEventListener('input', () => {
+      const q = searchBox.value.trim().toLowerCase();
+      const list = !q ? DATA[fullKey] : DATA[fullKey].filter(r => (r.codigo||'').toLowerCase().includes(q) || (r.cliente||'').toLowerCase().includes(q) || (r.categoria||'').toLowerCase().includes(q) || (r.responsavel||'').toLowerCase().includes(q) || (r.empresa||'').toLowerCase().includes(q));
+      renderTable(fullKey, list);
+    });
+  }
+});
+document.querySelectorAll('.tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const monthBlock = btn.closest('.month-block');
+    monthBlock.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    monthBlock.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    btn.classList.add('active');
+    document.getElementById('tab-' + btn.dataset.fullKey).classList.add('active');
+  });
+});
+const monthSelect = document.getElementById('month-select');
+if (monthSelect) {
+  monthSelect.addEventListener('change', () => {
+    document.querySelectorAll('.month-block').forEach(b => b.classList.remove('active'));
+    document.getElementById('month-' + monthSelect.value).classList.add('active');
+  });
+}
+</script></body></html>
